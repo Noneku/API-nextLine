@@ -24,8 +24,8 @@ services:
       POSTGRES_USER: postgres  # Nom d'utilisateur pour PostgreSQL.
       POSTGRES_PASSWORD: password  # Mot de passe pour PostgreSQL.
       POSTGRES_DB: nextline  # Nom de la base de données.
-    # volumes:
-    #   - ./backup.sql:/docker-entrypoint-initdb.d/init.sql  # Monte un volume nommé `pgdata` pour persister les données de PostgreSQL.
+    volumes:
+       - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Monte un volume nommé `pgdata` pour persister les données de PostgreSQL.
     ports:
       - "5432:5432"
 
