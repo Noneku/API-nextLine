@@ -1,0 +1,14 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "NextLineServer",
+      "Group": "Servers",
+      "Host": "nextline-db",
+      "Port": 5432,
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "Username": "postgres",
+      "Password": "password"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+services:
+  pgadmin:
+    container_name: pgadmin-container  # Nom du conteneur pour pgAdmin.
+    image: dpage/pgadmin4  # Utilise l'image pgAdmin personnalisée stockée sur DockerHub.
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com  # Email par défaut pour la connexion à pgAdmin.
+      PGADMIN_DEFAULT_PASSWORD: admin  # Mot de passe par défaut pour la connexion à pgAdmin.
+      PGADMIN_DEFAULT_SERVER: NextLineServer  # Nom du serveur pgAdmin.
+      PGADMIN_DEFAULT_SERVER_HOST: nextline-db  # Hôte de la base de données PostgreSQL.
+      PGADMIN_DEFAULT_SERVER_PORT: 5432  # Port de la base de données PostgreSQL.
+      PGADMIN_DEFAULT_SERVER_SSL_MODE: prefer  # Mode SSL de la connexion.
+      PGADMIN_DEFAULT_SERVER_MAINTENANCEDB: postgres  # Base de données de maintenance.
+      PGADMIN_DEFAULT_SERVER_USERNAME: postgres  # Nom d'utilisateur PostgreSQL.
+      PGADMIN_DEFAULT_SERVER_PASSWORD: password  # Mot de passe PostgreSQL.
+    volumes:
+      - "./servers.json:/pgadmin4/servers.json"
+    ports:
+      - "8080:80"  # Mappe le port 8080 de l'hôte au port 80 du conteneur pour accéder à pgAdmin via un navigateur.
+
+  nextline-db:
+    container_name: NextLineDataBase-container  # Nom du conteneur pour PostgreSQL.
+    image: postgres:latest  # Utilise l'image PostgreSQL personnalisée stockée sur DockerHub.
+    environment:
+      POSTGRES_USER: postgres  # Nom d'utilisateur pour PostgreSQL.
+      POSTGRES_PASSWORD: password  # Mot de passe pour PostgreSQL.
+      POSTGRES_DB: nextline  # Nom de la base de données.
+    volumes:
+       - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Monte un volume nommé `pgdata` pour persister les données de PostgreSQL.
+    ports:
+      - "5432:5432"
+
+networks:
+  default:  # Utilise le réseau par défaut pour les services.
+
+volumes:
+  pgdata:  # Déclare un volume pour persister les données de PostgreSQL.
