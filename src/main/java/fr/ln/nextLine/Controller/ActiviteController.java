@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/activites")
+@RequestMapping("/activite")
 public class ActiviteController {
 
     private final ActiviteService activiteService;

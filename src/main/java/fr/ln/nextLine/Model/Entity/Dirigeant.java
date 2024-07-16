@@ -10,6 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "dirigeant", schema = "public")
 public class Dirigeant {
+
     @Id
     @ColumnDefault("nextval('dirigeant_id_dirigeant_seq'::regclass)")
     @Column(name = "id_dirigeant", nullable = false)
