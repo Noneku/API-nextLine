@@ -11,3 +11,5 @@ k
 ;src/main/java/fr/ln/nextLine/Model/Entity/ParticiperId.java,3\5\35acc285351e47da089b0cab7c3f59eaa3118037
 H
 nextLine-docker/init.sql,f\5\f5842dd0afae5f6c123251fd0140aa3027b31edb
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
