@@ -1,5 +1,7 @@
 package fr.ln.nextLine.Model.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +11,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Entity
 @Table(name = "dirigeant", schema = "public")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Dirigeant {
 
     @Id
@@ -17,6 +20,7 @@ public class Dirigeant {
     private Integer id;
 
     @Column(name = "nom_dirigeant", nullable = false, length = 50)
+    @JsonProperty("nomDirigeant")
     private String nomDirigeant;
 
     @Column(name = "prenom_dirigeant", nullable = false, length = 50)

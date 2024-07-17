@@ -15,7 +15,7 @@ public class JacksonConfig {
 
         // Configure Hibernate5Module to handle Hibernate lazy loading
         Hibernate5Module hibernateModule = new Hibernate5Module();
-        hibernateModule.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, false);
+        hibernateModule.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, true);
         mapper.registerModule(hibernateModule);
 
         // Register JavaTimeModule for LocalDate serialization/deserialization

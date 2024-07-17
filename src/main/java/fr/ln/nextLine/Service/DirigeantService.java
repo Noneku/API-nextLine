@@ -34,7 +34,13 @@ public class DirigeantService {
     }
 
     public Dirigeant updateDirigeant(Integer id, Dirigeant updatedDirigeant) {
-        return null;
+         Dirigeant existingDirigeant = DirigeantRepository.getReferenceById(updatedDirigeant.getId());
+
+        existingDirigeant.setEmailDirigeant(updatedDirigeant.getEmailDirigeant());
+        existingDirigeant.setNomDirigeant(updatedDirigeant.getNomDirigeant());
+        existingDirigeant.setPrenomDirigeant(updatedDirigeant.getPrenomDirigeant());
+
+        return DirigeantRepository.save(updatedDirigeant);
     }
 
     public boolean deleteDirigeant(Integer id) {

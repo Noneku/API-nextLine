@@ -38,13 +38,13 @@ public class DirigeantController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Dirigeant> createDirigeant(@RequestBody Dirigeant Dirigeant) {
         Dirigeant createdDirigeant = DirigeantService.createDirigeant(Dirigeant);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDirigeant);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public ResponseEntity<Dirigeant> updateDirigeant(@PathVariable Integer id, @RequestBody Dirigeant Dirigeant) {
         Dirigeant updatedDirigeant = DirigeantService.updateDirigeant(id, Dirigeant);
         if (updatedDirigeant != null) {
