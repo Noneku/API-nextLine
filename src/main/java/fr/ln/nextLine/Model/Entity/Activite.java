@@ -34,5 +34,4 @@ public class Activite {
 
     @Column(name = "date_declaration_derogee")
     private LocalDate dateDeclarationDerogee;
-
 }
