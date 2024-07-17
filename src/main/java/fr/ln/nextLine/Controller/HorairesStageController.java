@@ -13,38 +13,38 @@ import java.util.List;
 @RequestMapping("/horaires-stages")
 public class HorairesStageController {
 
-    private final HorairesStageService HorairesStageService;
+    private final HorairesStageService horairesStageService;
 
     @Autowired
-    public HorairesStageController(HorairesStageService HorairesStageService) {
-        this.HorairesStageService = HorairesStageService;
+    public HorairesStageController(HorairesStageService horairesStageService) {
+        this.horairesStageService = horairesStageService;
     }
 
     @GetMapping
     public ResponseEntity<List<HorairesStage>> getAllHorairesStages() {
-        List<HorairesStage> HorairesStages = HorairesStageService.getAllHorairesStages();
-        return ResponseEntity.ok(HorairesStages);
+        List<HorairesStage> horairesStages = horairesStageService.getAllHorairesStages();
+        return ResponseEntity.ok(horairesStages);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<HorairesStage> getHorairesStageById(@PathVariable Integer id) {
-        HorairesStage HorairesStage = HorairesStageService.getHorairesStageById(id);
-        if (HorairesStage != null) {
-            return ResponseEntity.ok(HorairesStage);
+        HorairesStage horairesStage = horairesStageService.getHorairesStageById(id);
+        if (horairesStage != null) {
+            return ResponseEntity.ok(horairesStage);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<HorairesStage> createHorairesStage(@RequestBody HorairesStage HorairesStage) {
-        HorairesStage createdHorairesStage = HorairesStageService.createHorairesStage(HorairesStage);
+    public ResponseEntity<HorairesStage> createHorairesStage(@RequestBody HorairesStage horairesStage) {
+        HorairesStage createdHorairesStage = horairesStageService.createHorairesStage(horairesStage);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdHorairesStage);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HorairesStage> updateHorairesStage(@PathVariable Integer id, @RequestBody HorairesStage HorairesStage) {
-        HorairesStage updatedHorairesStage = HorairesStageService.updateHorairesStage(id, HorairesStage);
+    public ResponseEntity<HorairesStage> updateHorairesStage(@PathVariable Integer id, @RequestBody HorairesStage horairesStage) {
+        HorairesStage updatedHorairesStage = horairesStageService.updateHorairesStage(id, horairesStage);
         if (updatedHorairesStage != null) {
             return ResponseEntity.ok(updatedHorairesStage);
         } else {
@@ -54,7 +54,7 @@ public class HorairesStageController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHorairesStage(@PathVariable Integer id) {
-        boolean deleted = HorairesStageService.deleteHorairesStage(id);
+        boolean deleted = horairesStageService.deleteHorairesStage(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {

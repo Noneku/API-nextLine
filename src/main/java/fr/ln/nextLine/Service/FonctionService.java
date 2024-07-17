@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class FonctionService {
 
-    private final FonctionRepository FonctionRepository;
+    private final FonctionRepository fonctionRepository;
 
     @Autowired
-    public FonctionService(FonctionRepository FonctionRepository) {
-        this.FonctionRepository = FonctionRepository;
+    public FonctionService(FonctionRepository fonctionRepository) {
+        this.fonctionRepository = fonctionRepository;
     }
 
     public List<Fonction> getAllFonctions() {
-        return FonctionRepository.findAll();
+        return fonctionRepository.findAll();
     }
 
     public Fonction getFonctionById(Integer id) {
-        Optional<Fonction> Fonction = FonctionRepository.findById(id);
-        return Fonction.orElse(null);
+        Optional<Fonction> fonction = fonctionRepository.findById(id);
+        return fonction.orElse(null);
     }
 
-    public Fonction createFonction(Fonction Fonction) {
-        return FonctionRepository.save(Fonction);
+    public Fonction createFonction(Fonction fonction) {
+        return fonctionRepository.save(fonction);
     }
 
     public Fonction updateFonction(Integer id, Fonction updatedFonction) {
@@ -38,9 +38,9 @@ public class FonctionService {
     }
 
     public boolean deleteFonction(Integer id) {
-        Optional<Fonction> FonctionOptional = FonctionRepository.findById(id);
-        if (FonctionOptional.isPresent()) {
-            FonctionRepository.deleteById(id);
+        Optional<Fonction> fonctionOptional = fonctionRepository.findById(id);
+        if (fonctionOptional.isPresent()) {
+            fonctionRepository.deleteById(id);
             return true;
         } else {
             return false;

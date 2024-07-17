@@ -10,41 +10,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/formation")
+@RequestMapping("/formations")
 public class FormationController {
 
-    private final FormationService FormationService;
+    private final FormationService formationService;
 
     @Autowired
-    public FormationController(FormationService FormationService) {
-        this.FormationService = FormationService;
+    public FormationController(FormationService formationService) {
+        this.formationService = formationService;
     }
 
     @GetMapping
     public ResponseEntity<List<Formation>> getAllFormations() {
-        List<Formation> Formations = FormationService.getAllFormations();
-        return ResponseEntity.ok(Formations);
+        List<Formation> formations = formationService.getAllFormations();
+        return ResponseEntity.ok(formations);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Formation> getFormationById(@PathVariable Integer id) {
-        Formation Formation = FormationService.getFormationById(id);
-        if (Formation != null) {
-            return ResponseEntity.ok(Formation);
+        Formation formation = formationService.getFormationById(id);
+        if (formation != null) {
+            return ResponseEntity.ok(formation);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Formation> createFormation(@RequestBody Formation Formation) {
-        Formation createdFormation = FormationService.createFormation(Formation);
+    public ResponseEntity<Formation> createFormation(@RequestBody Formation formation) {
+        Formation createdFormation = formationService.createFormation(formation);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFormation);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Formation> updateFormation(@PathVariable Integer id, @RequestBody Formation Formation) {
-        Formation updatedFormation = FormationService.updateFormation(id, Formation);
+    public ResponseEntity<Formation> updateFormation(@PathVariable Integer id, @RequestBody Formation formation) {
+        Formation updatedFormation = formationService.updateFormation(id, formation);
         if (updatedFormation != null) {
             return ResponseEntity.ok(updatedFormation);
         } else {
@@ -54,7 +54,7 @@ public class FormationController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFormation(@PathVariable Integer id) {
-        boolean deleted = FormationService.deleteFormation(id);
+        boolean deleted = formationService.deleteFormation(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {

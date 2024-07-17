@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class DefinirService {
 
-    private final DefinirRepository DefinirRepository;
+    private final DefinirRepository definirRepository;
 
     @Autowired
-    public DefinirService(DefinirRepository DefinirRepository) {
-        this.DefinirRepository = DefinirRepository;
+    public DefinirService(DefinirRepository definirRepository) {
+        this.definirRepository = definirRepository;
     }
 
     public List<Definir> getAllDefinirs() {
-        return DefinirRepository.findAll();
+        return definirRepository.findAll();
     }
 
     public Definir getDefinirById(Integer id) {
-        Optional<Definir> Definir = DefinirRepository.findById(id);
-        return Definir.orElse(null);
+        Optional<Definir> definir = definirRepository.findById(id);
+        return definir.orElse(null);
     }
 
-    public Definir createDefinir(Definir Definir) {
-        return DefinirRepository.save(Definir);
+    public Definir createDefinir(Definir definir) {
+        return definirRepository.save(definir);
     }
 
     public Definir updateDefinir(Integer id, Definir updatedDefinir) {
@@ -38,9 +38,9 @@ public class DefinirService {
     }
 
     public boolean deleteDefinir(Integer id) {
-        Optional<Definir> DefinirOptional = DefinirRepository.findById(id);
-        if (DefinirOptional.isPresent()) {
-            DefinirRepository.deleteById(id);
+        Optional<Definir> definirOptional = definirRepository.findById(id);
+        if (definirOptional.isPresent()) {
+            definirRepository.deleteById(id);
             return true;
         } else {
             return false;

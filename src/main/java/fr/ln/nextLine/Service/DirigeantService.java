@@ -13,40 +13,40 @@ import java.util.Optional;
 @Transactional
 public class DirigeantService {
 
-    private final DirigeantRepository DirigeantRepository;
+    private final DirigeantRepository dirigeantRepository;
 
     @Autowired
-    public DirigeantService(DirigeantRepository DirigeantRepository) {
-        this.DirigeantRepository = DirigeantRepository;
+    public DirigeantService(DirigeantRepository dirigeantRepository) {
+        this.dirigeantRepository = dirigeantRepository;
     }
 
     public List<Dirigeant> getAllDirigeants() {
-        return DirigeantRepository.findAll();
+        return dirigeantRepository.findAll();
     }
 
     public Dirigeant getDirigeantById(Integer id) {
-        Optional<Dirigeant> Dirigeant = DirigeantRepository.findById(id);
-        return Dirigeant.orElse(null);
+        Optional<Dirigeant> dirigeant = dirigeantRepository.findById(id);
+        return dirigeant.orElse(null);
     }
 
-    public Dirigeant createDirigeant(Dirigeant Dirigeant) {
-        return DirigeantRepository.save(Dirigeant);
+    public Dirigeant createDirigeant(Dirigeant dirigeant) {
+        return dirigeantRepository.save(dirigeant);
     }
 
     public Dirigeant updateDirigeant(Integer id, Dirigeant updatedDirigeant) {
-         Dirigeant existingDirigeant = DirigeantRepository.getReferenceById(updatedDirigeant.getId());
+         Dirigeant existingDirigeant = dirigeantRepository.getReferenceById(updatedDirigeant.getId());
 
         existingDirigeant.setEmailDirigeant(updatedDirigeant.getEmailDirigeant());
         existingDirigeant.setNomDirigeant(updatedDirigeant.getNomDirigeant());
         existingDirigeant.setPrenomDirigeant(updatedDirigeant.getPrenomDirigeant());
 
-        return DirigeantRepository.save(updatedDirigeant);
+        return dirigeantRepository.save(updatedDirigeant);
     }
 
     public boolean deleteDirigeant(Integer id) {
-        Optional<Dirigeant> DirigeantOptional = DirigeantRepository.findById(id);
-        if (DirigeantOptional.isPresent()) {
-            DirigeantRepository.deleteById(id);
+        Optional<Dirigeant> dirigeantOptional = dirigeantRepository.findById(id);
+        if (dirigeantOptional.isPresent()) {
+            dirigeantRepository.deleteById(id);
             return true;
         } else {
             return false;

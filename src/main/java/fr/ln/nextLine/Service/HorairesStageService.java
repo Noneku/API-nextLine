@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class HorairesStageService {
 
-    private final HorairesStageRepository HorairesStageRepository;
+    private final HorairesStageRepository horairesStageRepository;
 
     @Autowired
-    public HorairesStageService(HorairesStageRepository HorairesStageRepository) {
-        this.HorairesStageRepository = HorairesStageRepository;
+    public HorairesStageService(HorairesStageRepository horairesStageRepository) {
+        this.horairesStageRepository = horairesStageRepository;
     }
 
     public List<HorairesStage> getAllHorairesStages() {
-        return HorairesStageRepository.findAll();
+        return horairesStageRepository.findAll();
     }
 
     public HorairesStage getHorairesStageById(Integer id) {
-        Optional<HorairesStage> HorairesStage = HorairesStageRepository.findById(id);
-        return HorairesStage.orElse(null);
+        Optional<HorairesStage> horairesStage = horairesStageRepository.findById(id);
+        return horairesStage.orElse(null);
     }
 
-    public HorairesStage createHorairesStage(HorairesStage HorairesStage) {
-        return HorairesStageRepository.save(HorairesStage);
+    public HorairesStage createHorairesStage(HorairesStage horairesStage) {
+        return horairesStageRepository.save(horairesStage);
     }
 
     public HorairesStage updateHorairesStage(Integer id, HorairesStage updatedHorairesStage) {
@@ -38,9 +38,9 @@ public class HorairesStageService {
     }
 
     public boolean deleteHorairesStage(Integer id) {
-        Optional<HorairesStage> HorairesStageOptional = HorairesStageRepository.findById(id);
-        if (HorairesStageOptional.isPresent()) {
-            HorairesStageRepository.deleteById(id);
+        Optional<HorairesStage> horairesStageOptional = horairesStageRepository.findById(id);
+        if (horairesStageOptional.isPresent()) {
+            horairesStageRepository.deleteById(id);
             return true;
         } else {
             return false;

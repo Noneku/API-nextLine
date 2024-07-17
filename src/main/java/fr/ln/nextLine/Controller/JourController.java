@@ -10,41 +10,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/jour")
+@RequestMapping("/jours")
 public class JourController {
 
-    private final JourService JourService;
+    private final JourService jourService;
 
     @Autowired
-    public JourController(JourService JourService) {
-        this.JourService = JourService;
+    public JourController(JourService jourService) {
+        this.jourService = jourService;
     }
 
     @GetMapping
     public ResponseEntity<List<Jour>> getAllJours() {
-        List<Jour> Jours = JourService.getAllJours();
-        return ResponseEntity.ok(Jours);
+        List<Jour> jours = jourService.getAllJours();
+        return ResponseEntity.ok(jours);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Jour> getJourById(@PathVariable Integer id) {
-        Jour Jour = JourService.getJourById(id);
-        if (Jour != null) {
-            return ResponseEntity.ok(Jour);
+        Jour jour = jourService.getJourById(id);
+        if (jour != null) {
+            return ResponseEntity.ok(jour);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Jour> createJour(@RequestBody Jour Jour) {
-        Jour createdJour = JourService.createJour(Jour);
+    public ResponseEntity<Jour> createJour(@RequestBody Jour jour) {
+        Jour createdJour = jourService.createJour(jour);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdJour);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Jour> updateJour(@PathVariable Integer id, @RequestBody Jour Jour) {
-        Jour updatedJour = JourService.updateJour(id, Jour);
+    public ResponseEntity<Jour> updateJour(@PathVariable Integer id, @RequestBody Jour jour) {
+        Jour updatedJour = jourService.updateJour(id, jour);
         if (updatedJour != null) {
             return ResponseEntity.ok(updatedJour);
         } else {
@@ -54,7 +54,7 @@ public class JourController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteJour(@PathVariable Integer id) {
-        boolean deleted = JourService.deleteJour(id);
+        boolean deleted = jourService.deleteJour(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {

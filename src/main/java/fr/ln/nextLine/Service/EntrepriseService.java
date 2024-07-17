@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class EntrepriseService {
 
-    private final EntrepriseRepository EntrepriseRepository;
+    private final EntrepriseRepository entrepriseRepository;
 
     @Autowired
-    public EntrepriseService(EntrepriseRepository EntrepriseRepository) {
-        this.EntrepriseRepository = EntrepriseRepository;
+    public EntrepriseService(EntrepriseRepository entrepriseRepository) {
+        this.entrepriseRepository = entrepriseRepository;
     }
 
     public List<Entreprise> getAllEntreprises() {
-        return EntrepriseRepository.findAll();
+        return entrepriseRepository.findAll();
     }
 
     public Entreprise getEntrepriseById(Integer id) {
-        Optional<Entreprise> Entreprise = EntrepriseRepository.findById(id);
-        return Entreprise.orElse(null);
+        Optional<Entreprise> entreprise = entrepriseRepository.findById(id);
+        return entreprise.orElse(null);
     }
 
-    public Entreprise createEntreprise(Entreprise Entreprise) {
-        return EntrepriseRepository.save(Entreprise);
+    public Entreprise createEntreprise(Entreprise entreprise) {
+        return entrepriseRepository.save(entreprise);
     }
 
     public Entreprise updateEntreprise(Integer id, Entreprise updatedEntreprise) {
@@ -38,9 +38,9 @@ public class EntrepriseService {
     }
 
     public boolean deleteEntreprise(Integer id) {
-        Optional<Entreprise> EntrepriseOptional = EntrepriseRepository.findById(id);
-        if (EntrepriseOptional.isPresent()) {
-            EntrepriseRepository.deleteById(id);
+        Optional<Entreprise> entrepriseOptional = entrepriseRepository.findById(id);
+        if (entrepriseOptional.isPresent()) {
+            entrepriseRepository.deleteById(id);
             return true;
         } else {
             return false;

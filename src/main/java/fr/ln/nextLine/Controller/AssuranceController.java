@@ -10,41 +10,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/assurance")
+@RequestMapping("/assurances")
 public class AssuranceController {
 
-    private final AssuranceService AssuranceService;
+    private final AssuranceService assuranceService;
 
     @Autowired
-    public AssuranceController(AssuranceService AssuranceService) {
-        this.AssuranceService = AssuranceService;
+    public AssuranceController(AssuranceService assuranceService) {
+        this.assuranceService = assuranceService;
     }
 
     @GetMapping
     public ResponseEntity<List<Assurance>> getAllAssurances() {
-        List<Assurance> Assurances = AssuranceService.getAllAssurances();
-        return ResponseEntity.ok(Assurances);
+        List<Assurance> assurances = assuranceService.getAllAssurances();
+        return ResponseEntity.ok(assurances);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Assurance> getAssuranceById(@PathVariable Integer id) {
-        Assurance Assurance = AssuranceService.getAssuranceById(id);
-        if (Assurance != null) {
-            return ResponseEntity.ok(Assurance);
+        Assurance assurance = assuranceService.getAssuranceById(id);
+        if (assurance != null) {
+            return ResponseEntity.ok(assurance);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Assurance> createAssurance(@RequestBody Assurance Assurance) {
-        Assurance createdAssurance = AssuranceService.createAssurance(Assurance);
+    public ResponseEntity<Assurance> createAssurance(@RequestBody Assurance assurance) {
+        Assurance createdAssurance = assuranceService.createAssurance(assurance);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAssurance);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Assurance> updateAssurance(@PathVariable Integer id, @RequestBody Assurance Assurance) {
-        Assurance updatedAssurance = AssuranceService.updateAssurance(id, Assurance);
+        Assurance updatedAssurance = assuranceService.updateAssurance(id, Assurance);
         if (updatedAssurance != null) {
             return ResponseEntity.ok(updatedAssurance);
         } else {
@@ -54,7 +54,7 @@ public class AssuranceController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAssurance(@PathVariable Integer id) {
-        boolean deleted = AssuranceService.deleteAssurance(id);
+        boolean deleted = assuranceService.deleteAssurance(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {

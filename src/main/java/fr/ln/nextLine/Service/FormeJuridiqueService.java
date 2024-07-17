@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class FormeJuridiqueService {
 
-    private final FormeJuridiqueRepository FormeJuridiqueRepository;
+    private final FormeJuridiqueRepository formeJuridiqueRepository;
 
     @Autowired
-    public FormeJuridiqueService(FormeJuridiqueRepository FormeJuridiqueRepository) {
-        this.FormeJuridiqueRepository = FormeJuridiqueRepository;
+    public FormeJuridiqueService(FormeJuridiqueRepository formeJuridiqueRepository) {
+        this.formeJuridiqueRepository = formeJuridiqueRepository;
     }
 
     public List<FormeJuridique> getAllFormeJuridiques() {
-        return FormeJuridiqueRepository.findAll();
+        return formeJuridiqueRepository.findAll();
     }
 
     public FormeJuridique getFormeJuridiqueById(Integer id) {
-        Optional<FormeJuridique> FormeJuridique = FormeJuridiqueRepository.findById(id);
-        return FormeJuridique.orElse(null);
+        Optional<FormeJuridique> formeJuridique = formeJuridiqueRepository.findById(id);
+        return formeJuridique.orElse(null);
     }
 
-    public FormeJuridique createFormeJuridique(FormeJuridique FormeJuridique) {
-        return FormeJuridiqueRepository.save(FormeJuridique);
+    public FormeJuridique createFormeJuridique(FormeJuridique formeJuridique) {
+        return formeJuridiqueRepository.save(formeJuridique);
     }
 
     public FormeJuridique updateFormeJuridique(Integer id, FormeJuridique updatedFormeJuridique) {
@@ -38,9 +38,9 @@ public class FormeJuridiqueService {
     }
 
     public boolean deleteFormeJuridique(Integer id) {
-        Optional<FormeJuridique> FormeJuridiqueOptional = FormeJuridiqueRepository.findById(id);
-        if (FormeJuridiqueOptional.isPresent()) {
-            FormeJuridiqueRepository.deleteById(id);
+        Optional<FormeJuridique> formeJuridiqueOptional = formeJuridiqueRepository.findById(id);
+        if (formeJuridiqueOptional.isPresent()) {
+            formeJuridiqueRepository.deleteById(id);
             return true;
         } else {
             return false;

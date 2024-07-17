@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class FrequenceService {
 
-    private final FrequenceRepository FrequenceRepository;
+    private final FrequenceRepository frequenceRepository;
 
     @Autowired
-    public FrequenceService(FrequenceRepository FrequenceRepository) {
-        this.FrequenceRepository = FrequenceRepository;
+    public FrequenceService(FrequenceRepository frequenceRepository) {
+        this.frequenceRepository = frequenceRepository;
     }
 
     public List<Frequence> getAllFrequences() {
-        return FrequenceRepository.findAll();
+        return frequenceRepository.findAll();
     }
 
     public Frequence getFrequenceById(Integer id) {
-        Optional<Frequence> Frequence = FrequenceRepository.findById(id);
-        return Frequence.orElse(null);
+        Optional<Frequence> frequence = frequenceRepository.findById(id);
+        return frequence.orElse(null);
     }
 
-    public Frequence createFrequence(Frequence Frequence) {
-        return FrequenceRepository.save(Frequence);
+    public Frequence createFrequence(Frequence frequence) {
+        return frequenceRepository.save(frequence);
     }
 
     public Frequence updateFrequence(Integer id, Frequence updatedFrequence) {
@@ -38,9 +38,9 @@ public class FrequenceService {
     }
 
     public boolean deleteFrequence(Integer id) {
-        Optional<Frequence> FrequenceOptional = FrequenceRepository.findById(id);
-        if (FrequenceOptional.isPresent()) {
-            FrequenceRepository.deleteById(id);
+        Optional<Frequence> frequenceOptional = frequenceRepository.findById(id);
+        if (frequenceOptional.isPresent()) {
+            frequenceRepository.deleteById(id);
             return true;
         } else {
             return false;

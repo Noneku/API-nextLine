@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class ActiviteService {
 
-    private final ActiviteRepository ActiviteRepository;
+    private final ActiviteRepository activiteRepository;
 
     @Autowired
-    public ActiviteService(ActiviteRepository ActiviteRepository) {
-        this.ActiviteRepository = ActiviteRepository;
+    public ActiviteService(ActiviteRepository activiteRepository) {
+        this.activiteRepository = activiteRepository;
     }
 
     public List<Activite> getAllActivites() {
-        return ActiviteRepository.findAll();
+        return activiteRepository.findAll();
     }
 
     public Activite getActiviteById(Integer id) {
-        Optional<Activite> Activite = ActiviteRepository.findById(id);
-        return Activite.orElse(null);
+        Optional<Activite> activite = activiteRepository.findById(id);
+        return activite.orElse(null);
     }
 
-    public Activite createActivite(Activite Activite) {
-        return ActiviteRepository.save(Activite);
+    public Activite createActivite(Activite activite) {
+        return activiteRepository.save(activite);
     }
 
     public Activite updateActivite(Integer id, Activite updatedActivite) {
@@ -38,9 +38,9 @@ public class ActiviteService {
     }
 
     public boolean deleteActivite(Integer id) {
-        Optional<Activite> ActiviteOptional = ActiviteRepository.findById(id);
-        if (ActiviteOptional.isPresent()) {
-            ActiviteRepository.deleteById(id);
+        Optional<Activite> activiteOptional = activiteRepository.findById(id);
+        if (activiteOptional.isPresent()) {
+            activiteRepository.deleteById(id);
             return true;
         } else {
             return false;

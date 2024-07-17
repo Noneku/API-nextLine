@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import fr.ln.nextLine.Model.Entity.Dirigeant;
 import fr.ln.nextLine.Service.DirigeantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,42 +10,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/dirigeant")
+@RequestMapping("/dirigeants")
 
 public class DirigeantController {
 
-    private final DirigeantService DirigeantService;
+    private final DirigeantService dirigeantService;
 
     @Autowired
-    public DirigeantController(DirigeantService DirigeantService) {
-        this.DirigeantService = DirigeantService;
+    public DirigeantController(DirigeantService dirigeantService) {
+        this.dirigeantService = dirigeantService;
     }
 
     @GetMapping
     public ResponseEntity<List<Dirigeant>> getAllDirigeants() {
-        List<Dirigeant> Dirigeants = DirigeantService.getAllDirigeants();
-        return ResponseEntity.ok(Dirigeants);
+        List<Dirigeant> dirigeants = dirigeantService.getAllDirigeants();
+        return ResponseEntity.ok(dirigeants);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Dirigeant> getDirigeantById(@PathVariable Integer id) {
-        Dirigeant Dirigeant = DirigeantService.getDirigeantById(id);
-        if (Dirigeant != null) {
-            return ResponseEntity.ok(Dirigeant);
+        Dirigeant dirigeant = dirigeantService.getDirigeantById(id);
+        if (dirigeant != null) {
+            return ResponseEntity.ok(dirigeant);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Dirigeant> createDirigeant(@RequestBody Dirigeant Dirigeant) {
-        Dirigeant createdDirigeant = DirigeantService.createDirigeant(Dirigeant);
+    public ResponseEntity<Dirigeant> createDirigeant(@RequestBody Dirigeant dirigeant) {
+        Dirigeant createdDirigeant = dirigeantService.createDirigeant(dirigeant);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDirigeant);
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<Dirigeant> updateDirigeant(@PathVariable Integer id, @RequestBody Dirigeant Dirigeant) {
-        Dirigeant updatedDirigeant = DirigeantService.updateDirigeant(id, Dirigeant);
+    public ResponseEntity<Dirigeant> updateDirigeant(@PathVariable Integer id, @RequestBody Dirigeant dirigeant) {
+        Dirigeant updatedDirigeant = dirigeantService.updateDirigeant(id, dirigeant);
         if (updatedDirigeant != null) {
             return ResponseEntity.ok(updatedDirigeant);
         } else {
@@ -56,7 +55,7 @@ public class DirigeantController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDirigeant(@PathVariable Integer id) {
-        boolean deleted = DirigeantService.deleteDirigeant(id);
+        boolean deleted = dirigeantService.deleteDirigeant(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {

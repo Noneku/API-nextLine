@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class JourService {
 
-    private final JourRepository JourRepository;
+    private final JourRepository jourRepository;
 
     @Autowired
-    public JourService(JourRepository JourRepository) {
-        this.JourRepository = JourRepository;
+    public JourService(JourRepository jourRepository) {
+        this.jourRepository = jourRepository;
     }
 
     public List<Jour> getAllJours() {
-        return JourRepository.findAll();
+        return jourRepository.findAll();
     }
 
     public Jour getJourById(Integer id) {
-        Optional<Jour> Jour = JourRepository.findById(id);
-        return Jour.orElse(null);
+        Optional<Jour> jour = jourRepository.findById(id);
+        return jour.orElse(null);
     }
 
-    public Jour createJour(Jour Jour) {
-        return JourRepository.save(Jour);
+    public Jour createJour(Jour jour) {
+        return jourRepository.save(jour);
     }
 
     public Jour updateJour(Integer id, Jour updatedJour) {
@@ -38,9 +38,9 @@ public class JourService {
     }
 
     public boolean deleteJour(Integer id) {
-        Optional<Jour> JourOptional = JourRepository.findById(id);
-        if (JourOptional.isPresent()) {
-            JourRepository.deleteById(id);
+        Optional<Jour> jourOptional = jourRepository.findById(id);
+        if (jourOptional.isPresent()) {
+            jourRepository.deleteById(id);
             return true;
         } else {
             return false;

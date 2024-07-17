@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Service;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import fr.ln.nextLine.Model.Entity.Document;
 import fr.ln.nextLine.Model.Repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class DocumentService {
 
-    private final DocumentRepository DocumentRepository;
+    private final DocumentRepository documentRepository;
 
     @Autowired
-    public DocumentService(DocumentRepository DocumentRepository) {
-        this.DocumentRepository = DocumentRepository;
+    public DocumentService(DocumentRepository documentRepository) {
+        this.documentRepository = documentRepository;
     }
 
     public List<Document> getAllDocuments() {
-        return DocumentRepository.findAll();
+        return documentRepository.findAll();
     }
 
     public Document getDocumentById(Integer id) {
-        Optional<Document> Document = DocumentRepository.findById(id);
-        return Document.orElse(null);
+        Optional<Document> document = documentRepository.findById(id);
+        return document.orElse(null);
     }
 
-    public Document createDocument(Document Document) {
-        return DocumentRepository.save(Document);
+    public Document createDocument(Document document) {
+        return documentRepository.save(document);
     }
 
     public Document updateDocument(Integer id, Document updatedDocument) {
@@ -39,9 +38,9 @@ public class DocumentService {
     }
 
     public boolean deleteDocument(Integer id) {
-        Optional<Document> DocumentOptional = DocumentRepository.findById(id);
-        if (DocumentOptional.isPresent()) {
-            DocumentRepository.deleteById(id);
+        Optional<Document> documentOptional = documentRepository.findById(id);
+        if (documentOptional.isPresent()) {
+            documentRepository.deleteById(id);
             return true;
         } else {
             return false;

@@ -10,41 +10,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/document")
+@RequestMapping("/documents")
 public class DocumentController {
 
-    private final DocumentService DocumentService;
+    private final DocumentService documentService;
 
     @Autowired
-    public DocumentController(DocumentService DocumentService) {
-        this.DocumentService = DocumentService;
+    public DocumentController(DocumentService documentService) {
+        this.documentService = documentService;
     }
 
     @GetMapping
     public ResponseEntity<List<Document>> getAllDocuments() {
-        List<Document> Documents = DocumentService.getAllDocuments();
-        return ResponseEntity.ok(Documents);
+        List<Document> documents = documentService.getAllDocuments();
+        return ResponseEntity.ok(documents);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Document> getDocumentById(@PathVariable Integer id) {
-        Document Document = DocumentService.getDocumentById(id);
-        if (Document != null) {
-            return ResponseEntity.ok(Document);
+        Document document = documentService.getDocumentById(id);
+        if (document != null) {
+            return ResponseEntity.ok(document);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Document> createDocument(@RequestBody Document Document) {
-        Document createdDocument = DocumentService.createDocument(Document);
+    public ResponseEntity<Document> createDocument(@RequestBody Document document) {
+        Document createdDocument = documentService.createDocument(document);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDocument);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Document> updateDocument(@PathVariable Integer id, @RequestBody Document Document) {
-        Document updatedDocument = DocumentService.updateDocument(id, Document);
+    public ResponseEntity<Document> updateDocument(@PathVariable Integer id, @RequestBody Document document) {
+        Document updatedDocument = documentService.updateDocument(id, document);
         if (updatedDocument != null) {
             return ResponseEntity.ok(updatedDocument);
         } else {
@@ -54,7 +54,7 @@ public class DocumentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDocument(@PathVariable Integer id) {
-        boolean deleted = DocumentService.deleteDocument(id);
+        boolean deleted = documentService.deleteDocument(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {

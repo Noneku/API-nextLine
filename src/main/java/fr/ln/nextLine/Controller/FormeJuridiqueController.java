@@ -10,41 +10,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/forme-juridique")
+@RequestMapping("/formes-juridiques")
 public class FormeJuridiqueController {
 
-    private final FormeJuridiqueService FormeJuridiqueService;
+    private final FormeJuridiqueService formeJuridiqueService;
 
     @Autowired
-    public FormeJuridiqueController(FormeJuridiqueService FormeJuridiqueService) {
-        this.FormeJuridiqueService = FormeJuridiqueService;
+    public FormeJuridiqueController(FormeJuridiqueService formeJuridiqueService) {
+        this.formeJuridiqueService = formeJuridiqueService;
     }
 
     @GetMapping
     public ResponseEntity<List<FormeJuridique>> getAllFormeJuridiques() {
-        List<FormeJuridique> FormeJuridiques = FormeJuridiqueService.getAllFormeJuridiques();
-        return ResponseEntity.ok(FormeJuridiques);
+        List<FormeJuridique> formeJuridiques = formeJuridiqueService.getAllFormeJuridiques();
+        return ResponseEntity.ok(formeJuridiques);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FormeJuridique> getFormeJuridiqueById(@PathVariable Integer id) {
-        FormeJuridique FormeJuridique = FormeJuridiqueService.getFormeJuridiqueById(id);
-        if (FormeJuridique != null) {
-            return ResponseEntity.ok(FormeJuridique);
+        FormeJuridique formeJuridique = formeJuridiqueService.getFormeJuridiqueById(id);
+        if (formeJuridique != null) {
+            return ResponseEntity.ok(formeJuridique);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<FormeJuridique> createFormeJuridique(@RequestBody FormeJuridique FormeJuridique) {
-        FormeJuridique createdFormeJuridique = FormeJuridiqueService.createFormeJuridique(FormeJuridique);
+    public ResponseEntity<FormeJuridique> createFormeJuridique(@RequestBody FormeJuridique formeJuridique) {
+        FormeJuridique createdFormeJuridique = formeJuridiqueService.createFormeJuridique(formeJuridique);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFormeJuridique);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FormeJuridique> updateFormeJuridique(@PathVariable Integer id, @RequestBody FormeJuridique FormeJuridique) {
-        FormeJuridique updatedFormeJuridique = FormeJuridiqueService.updateFormeJuridique(id, FormeJuridique);
+    public ResponseEntity<FormeJuridique> updateFormeJuridique(@PathVariable Integer id, @RequestBody FormeJuridique formeJuridique) {
+        FormeJuridique updatedFormeJuridique = formeJuridiqueService.updateFormeJuridique(id, formeJuridique);
         if (updatedFormeJuridique != null) {
             return ResponseEntity.ok(updatedFormeJuridique);
         } else {
@@ -54,7 +54,7 @@ public class FormeJuridiqueController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFormeJuridique(@PathVariable Integer id) {
-        boolean deleted = FormeJuridiqueService.deleteFormeJuridique(id);
+        boolean deleted = formeJuridiqueService.deleteFormeJuridique(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {

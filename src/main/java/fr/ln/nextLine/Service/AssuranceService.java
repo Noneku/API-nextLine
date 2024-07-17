@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class AssuranceService {
 
-    private final AssuranceRepository AssuranceRepository;
+    private final AssuranceRepository assuranceRepository;
 
     @Autowired
-    public AssuranceService(AssuranceRepository AssuranceRepository) {
-        this.AssuranceRepository = AssuranceRepository;
+    public AssuranceService(AssuranceRepository assuranceRepository) {
+        this.assuranceRepository = assuranceRepository;
     }
 
     public List<Assurance> getAllAssurances() {
-        return AssuranceRepository.findAll();
+        return assuranceRepository.findAll();
     }
 
     public Assurance getAssuranceById(Integer id) {
-        Optional<Assurance> Assurance = AssuranceRepository.findById(id);
-        return Assurance.orElse(null);
+        Optional<Assurance> assurance = assuranceRepository.findById(id);
+        return assurance.orElse(null);
     }
 
-    public Assurance createAssurance(Assurance Assurance) {
-        return AssuranceRepository.save(Assurance);
+    public Assurance createAssurance(Assurance assurance) {
+        return assuranceRepository.save(assurance);
     }
 
     public Assurance updateAssurance(Integer id, Assurance updatedAssurance) {
@@ -38,9 +38,9 @@ public class AssuranceService {
     }
 
     public boolean deleteAssurance(Integer id) {
-        Optional<Assurance> AssuranceOptional = AssuranceRepository.findById(id);
-        if (AssuranceOptional.isPresent()) {
-            AssuranceRepository.deleteById(id);
+        Optional<Assurance> assuranceOptional = assuranceRepository.findById(id);
+        if (assuranceOptional.isPresent()) {
+            assuranceRepository.deleteById(id);
             return true;
         } else {
             return false;

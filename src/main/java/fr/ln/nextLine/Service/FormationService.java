@@ -13,24 +13,24 @@ import java.util.Optional;
 @Transactional
 public class FormationService {
 
-    private final FormationRepository FormationRepository;
+    private final FormationRepository formationRepository;
 
     @Autowired
-    public FormationService(FormationRepository FormationRepository) {
-        this.FormationRepository = FormationRepository;
+    public FormationService(FormationRepository formationRepository) {
+        this.formationRepository = formationRepository;
     }
 
     public List<Formation> getAllFormations() {
-        return FormationRepository.findAll();
+        return formationRepository.findAll();
     }
 
     public Formation getFormationById(Integer id) {
-        Optional<Formation> Formation = FormationRepository.findById(id);
-        return Formation.orElse(null);
+        Optional<Formation> formation = formationRepository.findById(id);
+        return formation.orElse(null);
     }
 
-    public Formation createFormation(Formation Formation) {
-        return FormationRepository.save(Formation);
+    public Formation createFormation(Formation formation) {
+        return formationRepository.save(formation);
     }
 
     public Formation updateFormation(Integer id, Formation updatedFormation) {
@@ -38,9 +38,9 @@ public class FormationService {
     }
 
     public boolean deleteFormation(Integer id) {
-        Optional<Formation> FormationOptional = FormationRepository.findById(id);
-        if (FormationOptional.isPresent()) {
-            FormationRepository.deleteById(id);
+        Optional<Formation> formationOptional = formationRepository.findById(id);
+        if (formationOptional.isPresent()) {
+            formationRepository.deleteById(id);
             return true;
         } else {
             return false;

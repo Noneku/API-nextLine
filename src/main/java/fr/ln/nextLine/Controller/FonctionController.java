@@ -10,41 +10,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fonction")
+@RequestMapping("/fonctions")
 public class FonctionController {
 
-    private final FonctionService FonctionService;
+    private final FonctionService fonctionService;
 
     @Autowired
-    public FonctionController(FonctionService FonctionService) {
-        this.FonctionService = FonctionService;
+    public FonctionController(FonctionService fonctionService) {
+        this.fonctionService = fonctionService;
     }
 
     @GetMapping
     public ResponseEntity<List<Fonction>> getAllFonctions() {
-        List<Fonction> Fonctions = FonctionService.getAllFonctions();
-        return ResponseEntity.ok(Fonctions);
+        List<Fonction> fonctions = fonctionService.getAllFonctions();
+        return ResponseEntity.ok(fonctions);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Fonction> getFonctionById(@PathVariable Integer id) {
-        Fonction Fonction = FonctionService.getFonctionById(id);
-        if (Fonction != null) {
-            return ResponseEntity.ok(Fonction);
+        Fonction fonction = fonctionService.getFonctionById(id);
+        if (fonction != null) {
+            return ResponseEntity.ok(fonction);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Fonction> createFonction(@RequestBody Fonction Fonction) {
-        Fonction createdFonction = FonctionService.createFonction(Fonction);
+    public ResponseEntity<Fonction> createFonction(@RequestBody Fonction fonction) {
+        Fonction createdFonction = fonctionService.createFonction(fonction);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFonction);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Fonction> updateFonction(@PathVariable Integer id, @RequestBody Fonction Fonction) {
-        Fonction updatedFonction = FonctionService.updateFonction(id, Fonction);
+    public ResponseEntity<Fonction> updateFonction(@PathVariable Integer id, @RequestBody Fonction fonction) {
+        Fonction updatedFonction = fonctionService.updateFonction(id, fonction);
         if (updatedFonction != null) {
             return ResponseEntity.ok(updatedFonction);
         } else {
@@ -54,7 +54,7 @@ public class FonctionController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFonction(@PathVariable Integer id) {
-        boolean deleted = FonctionService.deleteFonction(id);
+        boolean deleted = fonctionService.deleteFonction(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {

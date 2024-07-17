@@ -10,41 +10,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/definir")
+@RequestMapping("/definirs")
 public class DefinirController {
 
-    private final DefinirService DefinirService;
+    private final DefinirService definirService;
 
     @Autowired
-    public DefinirController(DefinirService DefinirService) {
-        this.DefinirService = DefinirService;
+    public DefinirController(DefinirService definirService) {
+        this.definirService = definirService;
     }
 
     @GetMapping
     public ResponseEntity<List<Definir>> getAllDefinirs() {
-        List<Definir> Definirs = DefinirService.getAllDefinirs();
-        return ResponseEntity.ok(Definirs);
+        List<Definir> definirs = definirService.getAllDefinirs();
+        return ResponseEntity.ok(definirs);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Definir> getDefinirById(@PathVariable Integer id) {
-        Definir Definir = DefinirService.getDefinirById(id);
-        if (Definir != null) {
-            return ResponseEntity.ok(Definir);
+        Definir definir = definirService.getDefinirById(id);
+        if (definir != null) {
+            return ResponseEntity.ok(definir);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Definir> createDefinir(@RequestBody Definir Definir) {
-        Definir createdDefinir = DefinirService.createDefinir(Definir);
+    public ResponseEntity<Definir> createDefinir(@RequestBody Definir definir) {
+        Definir createdDefinir = definirService.createDefinir(definir);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDefinir);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Definir> updateDefinir(@PathVariable Integer id, @RequestBody Definir Definir) {
-        Definir updatedDefinir = DefinirService.updateDefinir(id, Definir);
+    public ResponseEntity<Definir> updateDefinir(@PathVariable Integer id, @RequestBody Definir definir) {
+        Definir updatedDefinir = definirService.updateDefinir(id, definir);
         if (updatedDefinir != null) {
             return ResponseEntity.ok(updatedDefinir);
         } else {
@@ -54,7 +54,7 @@ public class DefinirController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDefinir(@PathVariable Integer id) {
-        boolean deleted = DefinirService.deleteDefinir(id);
+        boolean deleted = definirService.deleteDefinir(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {
