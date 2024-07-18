@@ -25,12 +25,12 @@ public class ActiviteController {
     public ResponseEntity<List<ActiviteDTO>> getAllActivites() {
 
         List<Activite> activites = activiteService.getAllActivites();
-        List<ActiviteDTO> activitesDto =
+        List<ActiviteDTO> activitesDTO =
                 activites.stream()
                          .map(ActiviteMapper::toDTO)
                          .toList();
 
-        return new ResponseEntity<>(activitesDto, HttpStatus.OK);
+        return new ResponseEntity<>(activitesDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -38,24 +38,28 @@ public class ActiviteController {
 
         Activite activite = activiteService.getActiviteById(id);
 
-        if (activite != null) {
-            return new ResponseEntity<>(ActiviteMapper.toDTO(activite), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(ActiviteMapper.toDTO(activite), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Activite> createActivite(@RequestBody Activite activite) {
+    public ResponseEntity<ActiviteDTO> createActivite(@RequestBody ActiviteDTO activiteDTO) {
+
+        Activite activite = ActiviteMapper.toEntity(activiteDTO);
         Activite createdActivite = activiteService.createActivite(activite);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdActivite);
+        ActiviteDTO createdActiviteDTO = ActiviteMapper.toDTO(createdActivite);
+
+        return new ResponseEntity<>(createdActiviteDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Activite> updateActivite(@PathVariable Integer id, @RequestBody Activite activite) {
+    public ResponseEntity<ActiviteDTO> updateActivite(@PathVariable Integer id, @RequestBody ActiviteDTO activiteDTO) {
+
+        Activite activite = ActiviteMapper.toEntity(activiteDTO);
         Activite updatedActivite = activiteService.updateActivite(id, activite);
+
         if (updatedActivite != null) {
-            return ResponseEntity.ok(updatedActivite);
+            ActiviteDTO updatedActiviteDTO = ActiviteMapper.toDTO(updatedActivite);
+           return new ResponseEntity<>(updatedActiviteDTO, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
