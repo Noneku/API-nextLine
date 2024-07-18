@@ -1,12 +1,15 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.LienFormulaireDTO;
 import fr.ln.nextLine.Model.Entity.LienFormulaire;
+import fr.ln.nextLine.Model.Mapper.LienFormulaireMapper;
 import fr.ln.nextLine.Service.LienFormulaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,9 +24,14 @@ public class LienFormulaireController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LienFormulaire>> getAllLiensFormulaires() {
+    public ResponseEntity<List<LienFormulaireDTO>> getAllLiensFormulaires() {
         List<LienFormulaire> liensFormulaires = lienFormulaireService.getAllLiensFormulaires();
-        return ResponseEntity.ok(liensFormulaires);
+        List<LienFormulaireDTO> lienFormulaireDTOs =
+                liensFormulaires
+                                .stream()
+                                .map(LienFormulaireMapper::toDTO)
+                                .toList();
+        return new ResponseEntity<>(lienFormulaireDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

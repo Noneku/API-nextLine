@@ -11,16 +11,16 @@ public class ActiviteMapper {
         if (activite == null) {
             return null;
         }
-        ActiviteDTO activiteDto = new ActiviteDTO();
+        ActiviteDTO activiteDTO = new ActiviteDTO();
 
-        activiteDto.setId(activite.getId());
-        activiteDto.setAttestationReglementaire(activite.getAttestationReglementaire());
-        activiteDto.setNomAttestation(activite.getNomAttestation());
-        activiteDto.setVisiteMedicale(activite.getVisiteMedicale());
-        activiteDto.setTravauxDangereux(activite.getTravauxDangereux());
-        activiteDto.setDateDeclarationDerogee(activite.getDateDeclarationDerogee());
+        activiteDTO.setId(activite.getId());
+        activiteDTO.setAttestationReglementaire(activite.getAttestationReglementaire());
+        activiteDTO.setNomAttestation(activite.getNomAttestation());
+        activiteDTO.setVisiteMedicale(activite.getVisiteMedicale());
+        activiteDTO.setTravauxDangereux(activite.getTravauxDangereux());
+        activiteDTO.setDateDeclarationDerogee(activite.getDateDeclarationDerogee());
 
-        return activiteDto;
+        return activiteDTO;
     }
 
     public static Activite toEntity(ActiviteDTO activiteDto) {
