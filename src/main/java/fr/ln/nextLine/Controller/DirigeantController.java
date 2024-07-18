@@ -1,6 +1,10 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.DirigeantDTO;
+import fr.ln.nextLine.Model.Dto.LienFormulaireDTO;
 import fr.ln.nextLine.Model.Entity.Dirigeant;
+import fr.ln.nextLine.Model.Mapper.DirigeantMapper;
+import fr.ln.nextLine.Model.Mapper.LienFormulaireMapper;
 import fr.ln.nextLine.Service.DirigeantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +26,14 @@ public class DirigeantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Dirigeant>> getAllDirigeants() {
+    public ResponseEntity<List<DirigeantDTO>> getAllDirigeants() {
         List<Dirigeant> dirigeants = dirigeantService.getAllDirigeants();
-        return ResponseEntity.ok(dirigeants);
+        List<DirigeantDTO> DirigeantsDTOs =
+                dirigeants
+                        .stream()
+                        .map(DirigeantMapper::toDTO)
+                        .toList();
+        return new ResponseEntity<>(DirigeantsDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
