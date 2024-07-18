@@ -1,8 +1,9 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.ActiviteDTO;
 import fr.ln.nextLine.Model.Entity.Activite;
+import fr.ln.nextLine.Model.Mapper.ActiviteMapper;
 import fr.ln.nextLine.Service.ActiviteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,38 +16,50 @@ public class ActiviteController {
 
     private final ActiviteService activiteService;
 
-    @Autowired
     public ActiviteController(ActiviteService activiteService) {
         this.activiteService = activiteService;
     }
 
+
     @GetMapping
-    public ResponseEntity<List<Activite>> getAllActivites() {
+    public ResponseEntity<List<ActiviteDTO>> getAllActivites() {
+
         List<Activite> activites = activiteService.getAllActivites();
-        return ResponseEntity.ok(activites);
+        List<ActiviteDTO> activitesDTO =
+                activites.stream()
+                         .map(ActiviteMapper::toDTO)
+                         .toList();
+
+        return new ResponseEntity<>(activitesDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Activite> getActiviteById(@PathVariable Integer id) {
+    public ResponseEntity<ActiviteDTO> getActiviteById(@PathVariable Integer id) {
+
         Activite activite = activiteService.getActiviteById(id);
-        if (activite != null) {
-            return ResponseEntity.ok(activite);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(ActiviteMapper.toDTO(activite), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Activite> createActivite(@RequestBody Activite activite) {
+    public ResponseEntity<ActiviteDTO> createActivite(@RequestBody ActiviteDTO activiteDTO) {
+
+        Activite activite = ActiviteMapper.toEntity(activiteDTO);
         Activite createdActivite = activiteService.createActivite(activite);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdActivite);
+        ActiviteDTO createdActiviteDTO = ActiviteMapper.toDTO(createdActivite);
+
+        return new ResponseEntity<>(createdActiviteDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Activite> updateActivite(@PathVariable Integer id, @RequestBody Activite activite) {
+    public ResponseEntity<ActiviteDTO> updateActivite(@PathVariable Integer id, @RequestBody ActiviteDTO activiteDTO) {
+
+        Activite activite = ActiviteMapper.toEntity(activiteDTO);
         Activite updatedActivite = activiteService.updateActivite(id, activite);
+
         if (updatedActivite != null) {
-            return ResponseEntity.ok(updatedActivite);
+            ActiviteDTO updatedActiviteDTO = ActiviteMapper.toDTO(updatedActivite);
+           return new ResponseEntity<>(updatedActiviteDTO, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
