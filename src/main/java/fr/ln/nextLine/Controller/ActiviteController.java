@@ -1,8 +1,9 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.ActiviteDTO;
 import fr.ln.nextLine.Model.Entity.Activite;
+import fr.ln.nextLine.Model.Mapper.ActiviteMapper;
 import fr.ln.nextLine.Service.ActiviteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,24 +16,32 @@ public class ActiviteController {
 
     private final ActiviteService activiteService;
 
-    @Autowired
     public ActiviteController(ActiviteService activiteService) {
         this.activiteService = activiteService;
     }
 
+
     @GetMapping
-    public ResponseEntity<List<Activite>> getAllActivites() {
+    public ResponseEntity<List<ActiviteDTO>> getAllActivites() {
+
         List<Activite> activites = activiteService.getAllActivites();
-        return ResponseEntity.ok(activites);
+        List<ActiviteDTO> activitesDto =
+                activites.stream()
+                         .map(ActiviteMapper::toDTO)
+                         .toList();
+
+        return new ResponseEntity<>(activitesDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Activite> getActiviteById(@PathVariable Integer id) {
+    public ResponseEntity<ActiviteDTO> getActiviteById(@PathVariable Integer id) {
+
         Activite activite = activiteService.getActiviteById(id);
+
         if (activite != null) {
-            return ResponseEntity.ok(activite);
+            return new ResponseEntity<>(ActiviteMapper.toDTO(activite), HttpStatus.OK);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
