@@ -8,7 +8,7 @@ public class LienFormulaireMapper {
     private LienFormulaireMapper () {}
 
     public static LienFormulaireDTO toDTO(LienFormulaire lienFormulaire) {
-        
+
         if (lienFormulaire == null) {
             return null;
         }

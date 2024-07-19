@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.RoleDTO;
 import fr.ln.nextLine.Model.Entity.Role;
+import fr.ln.nextLine.Model.Mapper.RoleMapper;
 import fr.ln.nextLine.Service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,35 +23,47 @@ public class RoleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRoles() {
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
+
         List<Role> roles = roleService.getAllRoles();
-        return ResponseEntity.ok(roles);
+        List<RoleDTO> roleDTOS = roles
+                .stream()
+                .map(RoleMapper::toDTO)
+                .toList();
+
+        return new ResponseEntity<>(roleDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Role> getRoleById(@PathVariable Integer id) {
+    public ResponseEntity<RoleDTO> getRoleById(@PathVariable Integer id) {
+
         Role role = roleService.getRoleById(id);
-        if (role != null) {
-            return ResponseEntity.ok(role);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(RoleMapper.toDTO(role), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Role> createRole(@RequestBody Role role) {
+    public ResponseEntity<RoleDTO> createRole(@RequestBody RoleDTO roleDTO) {
+
+        Role role = RoleMapper.toEntity(roleDTO);
         Role createdRole = roleService.createRole(role);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdRole);
+        RoleDTO createdRoleDTO = RoleMapper.toDTO(createdRole);
+
+        return new ResponseEntity<>(createdRoleDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable Integer id, @RequestBody Role role) {
-        Role updatedRole = roleService.updateRole(id, role);
-        if (updatedRole != null) {
-            return ResponseEntity.ok(updatedRole);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<RoleDTO> updateRole(@PathVariable Integer id, @RequestBody RoleDTO roleDTO) {
+
+            Role role = RoleMapper.toEntity(roleDTO);
+            Role updatedRole = roleService.updateRole(id, role);
+
+            if (updatedRole != null) {
+                RoleDTO updatedRoleDTO = RoleMapper.toDTO(updatedRole);
+                return new ResponseEntity<>(updatedRoleDTO, HttpStatus.OK);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
     }
 
     @DeleteMapping("/{id}")

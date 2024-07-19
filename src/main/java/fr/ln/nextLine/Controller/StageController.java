@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.StageDTO;
 import fr.ln.nextLine.Model.Entity.Stage;
+import fr.ln.nextLine.Model.Mapper.StageMapper;
 import fr.ln.nextLine.Service.StageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,32 +23,44 @@ public class StageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Stage>> getAllStages() {
+    public ResponseEntity<List<StageDTO>> getAllStages() {
+
         List<Stage> stages = stageService.getAllStages();
-        return ResponseEntity.ok(stages);
+        List<StageDTO> stagesDTO = stages
+                .stream()
+                .map(StageMapper::toDTO)
+                .toList();
+
+        return new ResponseEntity<>(stagesDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Stage> getStageById(@PathVariable Integer id) {
+    public ResponseEntity<StageDTO> getStageById(@PathVariable Integer id) {
+
         Stage stage = stageService.getStageById(id);
-        if (stage != null) {
-            return ResponseEntity.ok(stage);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(StageMapper.toDTO(stage), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Stage> createStage(@RequestBody Stage stage) {
+    public ResponseEntity<StageDTO> createStage(@RequestBody StageDTO stageDTO) {
+
+        Stage stage = StageMapper.toEntity(stageDTO);
         Stage createdStage = stageService.createStage(stage);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdStage);
+        StageDTO createdStageDTO = StageMapper.toDTO(createdStage);
+
+        return new ResponseEntity<>(createdStageDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Stage> updateStage(@PathVariable Integer id, @RequestBody Stage stage) {
+    public ResponseEntity<StageDTO> updateStage(@PathVariable Integer id, @RequestBody StageDTO stageDTO) {
+
+        Stage stage = StageMapper.toEntity(stageDTO);
         Stage updatedStage = stageService.updateStage(id, stage);
+
         if (updatedStage != null) {
-            return ResponseEntity.ok(updatedStage);
+            StageDTO updatedStageDTO = StageMapper.toDTO(updatedStage);
+            return new ResponseEntity<>(updatedStageDTO, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.TuteurDTO;
 import fr.ln.nextLine.Model.Entity.Tuteur;
+import fr.ln.nextLine.Model.Mapper.TuteurMapper;
 import fr.ln.nextLine.Service.TuteurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,32 +23,44 @@ public class TuteurController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Tuteur>> getAllTuteurs() {
+    public ResponseEntity<List<TuteurDTO>> getAllTuteurs() {
+
         List<Tuteur> tuteurs = tuteurService.getAllTuteurs();
-        return ResponseEntity.ok(tuteurs);
+        List<TuteurDTO> tuteurDTOS = tuteurs
+                .stream()
+                .map(TuteurMapper::toDTO)
+                .toList();
+
+        return new ResponseEntity<>(tuteurDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tuteur> getTuteurById(@PathVariable Integer id) {
+    public ResponseEntity<TuteurDTO> getTuteurById(@PathVariable Integer id) {
+
         Tuteur tuteur = tuteurService.getTuteurById(id);
-        if (tuteur != null) {
-            return ResponseEntity.ok(tuteur);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(TuteurMapper.toDTO(tuteur), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Tuteur> createTuteur(@RequestBody Tuteur tuteur) {
+    public ResponseEntity<TuteurDTO> createTuteur(@RequestBody TuteurDTO tuteurDTO) {
+
+        Tuteur tuteur = TuteurMapper.toEntity(tuteurDTO);
         Tuteur createdTuteur = tuteurService.createTuteur(tuteur);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTuteur);
+        TuteurDTO createdTuteurDTO = TuteurMapper.toDTO(createdTuteur);
+
+        return new ResponseEntity<>(createdTuteurDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tuteur> updateTuteur(@PathVariable Integer id, @RequestBody Tuteur tuteur) {
+    public ResponseEntity<TuteurDTO> updateTuteur(@PathVariable Integer id, @RequestBody TuteurDTO tuteurDTO) {
+
+        Tuteur tuteur = TuteurMapper.toEntity(tuteurDTO);
         Tuteur updatedTuteur = tuteurService.updateTuteur(id, tuteur);
+
         if (updatedTuteur != null) {
-            return ResponseEntity.ok(updatedTuteur);
+            TuteurDTO updatedTuteurDTO = TuteurMapper.toDTO(updatedTuteur);
+            return new ResponseEntity<>(updatedTuteurDTO, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }

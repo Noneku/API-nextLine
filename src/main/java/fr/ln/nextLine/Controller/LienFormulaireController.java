@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,36 +24,43 @@ public class LienFormulaireController {
 
     @GetMapping
     public ResponseEntity<List<LienFormulaireDTO>> getAllLiensFormulaires() {
+
         List<LienFormulaire> liensFormulaires = lienFormulaireService.getAllLiensFormulaires();
-        List<LienFormulaireDTO> lienFormulaireDTOs =
+        List<LienFormulaireDTO> lienFormulairesDTO =
                 liensFormulaires
                                 .stream()
                                 .map(LienFormulaireMapper::toDTO)
                                 .toList();
-        return new ResponseEntity<>(lienFormulaireDTOs, HttpStatus.OK);
+        return new ResponseEntity<>(lienFormulairesDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LienFormulaire> getLienFormulaireById(@PathVariable Integer id) {
+    public ResponseEntity<LienFormulaireDTO> getLienFormulaireById(@PathVariable Integer id) {
+
         LienFormulaire lienFormulaire = lienFormulaireService.getLienFormulaireById(id);
-        if (lienFormulaire != null) {
-            return ResponseEntity.ok(lienFormulaire);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(LienFormulaireMapper.toDTO(lienFormulaire), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<LienFormulaire> createLienFormulaire(@RequestBody LienFormulaire lienFormulaire) {
+    public ResponseEntity<LienFormulaireDTO> createLienFormulaire(@RequestBody LienFormulaireDTO lienFormulaireDTO) {
+
+        LienFormulaire lienFormulaire = LienFormulaireMapper.toEntity(lienFormulaireDTO);
         LienFormulaire createdLienFormulaire = lienFormulaireService.createLienFormulaire(lienFormulaire);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdLienFormulaire);
+        LienFormulaireDTO createdLienFormulaireDTO = LienFormulaireMapper.toDTO(createdLienFormulaire);
+
+        return new ResponseEntity<>(createdLienFormulaireDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LienFormulaire> updateLienFormulaire(@PathVariable Integer id, @RequestBody LienFormulaire lienFormulaire) {
+    public ResponseEntity<LienFormulaireDTO> updateLienFormulaire(@PathVariable Integer id, @RequestBody LienFormulaireDTO lienFormulaireDTO) {
+
+        LienFormulaire lienFormulaire = LienFormulaireMapper.toEntity(lienFormulaireDTO);
         LienFormulaire updatedLienFormulaire = lienFormulaireService.updateLienFormulaire(id, lienFormulaire);
-        if (updatedLienFormulaire != null) {
-            return ResponseEntity.ok(updatedLienFormulaire);
+
+        if (updatedLienFormulaire == null) {
+            LienFormulaireDTO updatedLienFormulaireDTO = LienFormulaireMapper.toDTO(lienFormulaire);
+            return new ResponseEntity<>(updatedLienFormulaireDTO, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
