@@ -2,10 +2,10 @@ package fr.ln.nextLine.Model.Mapper;
 
 import fr.ln.nextLine.Model.Dto.ActiviteDTO;
 import fr.ln.nextLine.Model.Entity.Activite;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class ActiviteMapper {
-
-    private ActiviteMapper () {}
 
     public static ActiviteDTO toDTO(Activite activite) {
         if (activite == null) {

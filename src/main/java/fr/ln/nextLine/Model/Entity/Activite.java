@@ -1,9 +1,6 @@
 package fr.ln.nextLine.Model.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -16,6 +13,7 @@ import java.time.LocalDate;
 @Table(name = "activites", schema = "public")
 public class Activite {
     @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY) //Indique que l'ID est incrémenté de manière automatique
     @ColumnDefault("nextval('activites_id_activite_seq'::regclass)")
     @Column(name = "id_activite", nullable = false)
     private Integer id;
