@@ -1,12 +1,15 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.JourDTO;
 import fr.ln.nextLine.Model.Entity.Jour;
+import fr.ln.nextLine.Model.Mapper.JourMapper;
 import fr.ln.nextLine.Service.JourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,32 +24,37 @@ public class JourController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Jour>> getAllJours() {
+    public ResponseEntity<List<JourDTO>> getAllJours() {
         List<Jour> jours = jourService.getAllJours();
-        return ResponseEntity.ok(jours);
+        List<JourDTO> jourDTOs =
+                jours
+                        .stream()
+                        .map(JourMapper::toDTO)
+                        .toList();
+        return ResponseEntity.ok(jourDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Jour> getJourById(@PathVariable Integer id) {
+    public ResponseEntity<JourDTO> getJourById(@PathVariable Integer id) {
         Jour jour = jourService.getJourById(id);
         if (jour != null) {
-            return ResponseEntity.ok(jour);
+            return ResponseEntity.ok(JourMapper.toDTO(jour));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Jour> createJour(@RequestBody Jour jour) {
+    public ResponseEntity<JourDTO> createJour(@RequestBody Jour jour) {
         Jour createdJour = jourService.createJour(jour);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdJour);
+        return ResponseEntity.status(HttpStatus.CREATED).body(JourMapper.toDTO(createdJour));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Jour> updateJour(@PathVariable Integer id, @RequestBody Jour jour) {
+    public ResponseEntity<JourDTO> updateJour(@PathVariable Integer id, @RequestBody Jour jour) {
         Jour updatedJour = jourService.updateJour(id, jour);
         if (updatedJour != null) {
-            return ResponseEntity.ok(updatedJour);
+            return ResponseEntity.ok(JourMapper.toDTO(updatedJour));
         } else {
             return ResponseEntity.notFound().build();
         }

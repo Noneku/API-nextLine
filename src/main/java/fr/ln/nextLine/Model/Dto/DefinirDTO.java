@@ -1,22 +1,21 @@
 package fr.ln.nextLine.Model.Dto;
 
-import fr.ln.nextLine.Model.Entity.Stage;
+import fr.ln.nextLine.Model.Entity.TypeTravauxDangereux;
+import fr.ln.nextLine.Model.Entity.Activite;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class DocumentDTO {
+public class DefinirDTO {
 
     private Integer id;
-    private String nomPdf;
-    private LocalDate dateGenerationDocument;
-    private Stage idStage;
+    private TypeTravauxDangereux idTypeTravaux;
+    private Activite idActivite;
 
 }
+

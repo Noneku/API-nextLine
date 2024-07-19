@@ -18,6 +18,8 @@ public class DirigeantMapper {
         dirigeantDTO.setNomDirigeant(dirigeant.getNomDirigeant());
         dirigeantDTO.setPrenomDirigeant(dirigeant.getPrenomDirigeant());
         dirigeantDTO.setEmailDirigeant(dirigeant.getEmailDirigeant());
+
+        //Foreign key
         dirigeantDTO.setIdFonction(dirigeant.getIdFonction());
 
         return dirigeantDTO;
@@ -34,7 +36,8 @@ public class DirigeantMapper {
         dirigeant.setNomDirigeant(dirigeantDTO.getNomDirigeant());
         dirigeant.setPrenomDirigeant(dirigeantDTO.getPrenomDirigeant());
         dirigeant.setEmailDirigeant(dirigeantDTO.getEmailDirigeant());
-        // Assumons ici que vous avez une méthode pour récupérer la Fonction par ID
+
+        //Foreign key
         dirigeant.setIdFonction(dirigeantDTO.getIdFonction());
 
         return dirigeant;

@@ -47,7 +47,8 @@ public class DirigeantController {
     @PostMapping("/add")
     public ResponseEntity<DirigeantDTO> createDirigeant(@RequestBody Dirigeant dirigeant) {
         Dirigeant createdDirigeant = dirigeantService.createDirigeant(dirigeant);
-        return ResponseEntity.status(HttpStatus.CREATED).body(DirigeantMapper.toDTO(createdDirigeant));
+
+        return new ResponseEntity<>(DirigeantMapper.toDTO(createdDirigeant), HttpStatus.CREATED);
     }
 
     @PutMapping("update/{id}")

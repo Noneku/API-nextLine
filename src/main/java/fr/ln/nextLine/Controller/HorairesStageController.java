@@ -1,12 +1,15 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.HorairesStageDTO;
 import fr.ln.nextLine.Model.Entity.HorairesStage;
+import fr.ln.nextLine.Model.Mapper.HorairesStageMapper;
 import fr.ln.nextLine.Service.HorairesStageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,32 +24,38 @@ public class HorairesStageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<HorairesStage>> getAllHorairesStages() {
+    public ResponseEntity<List<HorairesStageDTO>> getAllHorairesStages() {
         List<HorairesStage> horairesStages = horairesStageService.getAllHorairesStages();
-        return ResponseEntity.ok(horairesStages);
+        List<HorairesStageDTO> horairesStageDTOs =
+                horairesStages
+                        .stream()
+                        .map(HorairesStageMapper::toDTO)
+                        .toList();
+        return ResponseEntity.ok(horairesStageDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HorairesStage> getHorairesStageById(@PathVariable Integer id) {
+    public ResponseEntity<HorairesStageDTO> getHorairesStageById(@PathVariable Integer id) {
         HorairesStage horairesStage = horairesStageService.getHorairesStageById(id);
         if (horairesStage != null) {
-            return ResponseEntity.ok(horairesStage);
+            return ResponseEntity.ok(HorairesStageMapper.toDTO(horairesStage));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<HorairesStage> createHorairesStage(@RequestBody HorairesStage horairesStage) {
+    public ResponseEntity<HorairesStageDTO> createHorairesStage(@RequestBody HorairesStage horairesStage) {
         HorairesStage createdHorairesStage = horairesStageService.createHorairesStage(horairesStage);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdHorairesStage);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(HorairesStageMapper.toDTO(createdHorairesStage));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HorairesStage> updateHorairesStage(@PathVariable Integer id, @RequestBody HorairesStage horairesStage) {
+    public ResponseEntity<HorairesStageDTO> updateHorairesStage(@PathVariable Integer id, @RequestBody HorairesStage horairesStage) {
         HorairesStage updatedHorairesStage = horairesStageService.updateHorairesStage(id, horairesStage);
         if (updatedHorairesStage != null) {
-            return ResponseEntity.ok(updatedHorairesStage);
+            return ResponseEntity.ok(HorairesStageMapper.toDTO(updatedHorairesStage));
         } else {
             return ResponseEntity.notFound().build();
         }

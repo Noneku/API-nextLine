@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.FrequenceDTO;
 import fr.ln.nextLine.Model.Entity.Frequence;
+import fr.ln.nextLine.Model.Mapper.FrequenceMapper;
 import fr.ln.nextLine.Service.FrequenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,32 +23,37 @@ public class FrequenceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Frequence>> getAllFrequences() {
+    public ResponseEntity<List<FrequenceDTO>> getAllFrequences() {
         List<Frequence> frequences = frequenceService.getAllFrequences();
-        return ResponseEntity.ok(frequences);
+        List<FrequenceDTO> frequenceDTOs =
+                    frequences
+                            .stream()
+                            .map(FrequenceMapper::toDTO)
+                            .toList();
+        return ResponseEntity.ok(frequenceDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Frequence> getFrequenceById(@PathVariable Integer id) {
+    public ResponseEntity<FrequenceDTO> getFrequenceById(@PathVariable Integer id) {
         Frequence frequence = frequenceService.getFrequenceById(id);
         if (frequence != null) {
-            return ResponseEntity.ok(frequence);
+            return ResponseEntity.ok(FrequenceMapper.toDTO(frequence));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Frequence> createFrequence(@RequestBody Frequence frequence) {
+    public ResponseEntity<FrequenceDTO> createFrequence(@RequestBody Frequence frequence) {
         Frequence createdFrequence = frequenceService.createFrequence(frequence);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdFrequence);
+        return ResponseEntity.status(HttpStatus.CREATED).body(FrequenceMapper.toDTO(createdFrequence));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Frequence> updateFrequence(@PathVariable Integer id, @RequestBody Frequence frequence) {
+    public ResponseEntity<FrequenceDTO> updateFrequence(@PathVariable Integer id, @RequestBody Frequence frequence) {
         Frequence updatedFrequence = frequenceService.updateFrequence(id, frequence);
         if (updatedFrequence != null) {
-            return ResponseEntity.ok(updatedFrequence);
+            return ResponseEntity.ok(FrequenceMapper.toDTO(updatedFrequence));
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -1,5 +1,7 @@
 package fr.ln.nextLine.Model.Dto;
 
+import fr.ln.nextLine.Model.Entity.Jour;
+import fr.ln.nextLine.Model.Entity.Stage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +20,7 @@ public class HorairesStageDTO {
     private OffsetTime heureDebutPauseDej;
     private OffsetTime heureFinPauseDej;
     private OffsetTime heureFin;
-    private Integer idStage;
-    private Integer idJour;
+    private Stage idStage;
+    private Jour idJour;
 
 }

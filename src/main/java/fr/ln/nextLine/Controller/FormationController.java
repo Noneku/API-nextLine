@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.FormationDTO;
 import fr.ln.nextLine.Model.Entity.Formation;
+import fr.ln.nextLine.Model.Mapper.FormationMapper;
 import fr.ln.nextLine.Service.FormationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,32 +23,37 @@ public class FormationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Formation>> getAllFormations() {
+    public ResponseEntity<List<FormationDTO>> getAllFormations() {
         List<Formation> formations = formationService.getAllFormations();
-        return ResponseEntity.ok(formations);
+        List<FormationDTO> formationsDTOs =
+                    formations
+                            .stream()
+                            .map(FormationMapper::toDTO)
+                            .toList();
+        return ResponseEntity.ok(formationsDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Formation> getFormationById(@PathVariable Integer id) {
+    public ResponseEntity<FormationDTO> getFormationById(@PathVariable Integer id) {
         Formation formation = formationService.getFormationById(id);
         if (formation != null) {
-            return ResponseEntity.ok(formation);
+            return ResponseEntity.ok(FormationMapper.toDTO(formation));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Formation> createFormation(@RequestBody Formation formation) {
+    public ResponseEntity<FormationDTO> createFormation(@RequestBody Formation formation) {
         Formation createdFormation = formationService.createFormation(formation);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdFormation);
+        return ResponseEntity.status(HttpStatus.CREATED).body(FormationMapper.toDTO(createdFormation));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Formation> updateFormation(@PathVariable Integer id, @RequestBody Formation formation) {
+    public ResponseEntity<FormationDTO> updateFormation(@PathVariable Integer id, @RequestBody Formation formation) {
         Formation updatedFormation = formationService.updateFormation(id, formation);
         if (updatedFormation != null) {
-            return ResponseEntity.ok(updatedFormation);
+            return ResponseEntity.ok(FormationMapper.toDTO(updatedFormation));
         } else {
             return ResponseEntity.notFound().build();
         }

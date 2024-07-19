@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.DefinirDTO;
 import fr.ln.nextLine.Model.Entity.Definir;
+import fr.ln.nextLine.Model.Mapper.DefinirMapper;
 import fr.ln.nextLine.Service.DefinirService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,32 +23,37 @@ public class DefinirController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Definir>> getAllDefinirs() {
+    public ResponseEntity<List<DefinirDTO>> getAllDefinirs() {
         List<Definir> definirs = definirService.getAllDefinirs();
-        return ResponseEntity.ok(definirs);
+        List<DefinirDTO> definirDTOs =
+                definirs
+                        .stream()
+                        .map(DefinirMapper::toDTO)
+                        .toList();
+        return ResponseEntity.ok(definirDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Definir> getDefinirById(@PathVariable Integer id) {
+    public ResponseEntity<DefinirDTO> getDefinirById(@PathVariable Integer id) {
         Definir definir = definirService.getDefinirById(id);
         if (definir != null) {
-            return ResponseEntity.ok(definir);
+            return ResponseEntity.ok(DefinirMapper.toDTO(definir));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Definir> createDefinir(@RequestBody Definir definir) {
+    public ResponseEntity<DefinirDTO> createDefinir(@RequestBody Definir definir) {
         Definir createdDefinir = definirService.createDefinir(definir);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdDefinir);
+        return ResponseEntity.status(HttpStatus.CREATED).body(DefinirMapper.toDTO(createdDefinir));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Definir> updateDefinir(@PathVariable Integer id, @RequestBody Definir definir) {
+    public ResponseEntity<DefinirDTO> updateDefinir(@PathVariable Integer id, @RequestBody Definir definir) {
         Definir updatedDefinir = definirService.updateDefinir(id, definir);
         if (updatedDefinir != null) {
-            return ResponseEntity.ok(updatedDefinir);
+            return ResponseEntity.ok(DefinirMapper.toDTO(updatedDefinir));
         } else {
             return ResponseEntity.notFound().build();
         }
