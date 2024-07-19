@@ -3,6 +3,7 @@ package fr.ln.nextLine.Controller;
 import fr.ln.nextLine.Model.Dto.DirigeantDTO;
 import fr.ln.nextLine.Model.Dto.LienFormulaireDTO;
 import fr.ln.nextLine.Model.Entity.Dirigeant;
+import fr.ln.nextLine.Model.Mapper.ActiviteMapper;
 import fr.ln.nextLine.Model.Mapper.DirigeantMapper;
 import fr.ln.nextLine.Model.Mapper.LienFormulaireMapper;
 import fr.ln.nextLine.Service.DirigeantService;
@@ -37,26 +38,23 @@ public class DirigeantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Dirigeant> getDirigeantById(@PathVariable Integer id) {
+    public ResponseEntity<DirigeantDTO> getDirigeantById(@PathVariable Integer id) {
         Dirigeant dirigeant = dirigeantService.getDirigeantById(id);
-        if (dirigeant != null) {
-            return ResponseEntity.ok(dirigeant);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(DirigeantMapper.toDTO(dirigeant), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Dirigeant> createDirigeant(@RequestBody Dirigeant dirigeant) {
+    public ResponseEntity<DirigeantDTO> createDirigeant(@RequestBody Dirigeant dirigeant) {
         Dirigeant createdDirigeant = dirigeantService.createDirigeant(dirigeant);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdDirigeant);
+        return ResponseEntity.status(HttpStatus.CREATED).body(DirigeantMapper.toDTO(createdDirigeant));
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<Dirigeant> updateDirigeant(@PathVariable Integer id, @RequestBody Dirigeant dirigeant) {
+    public ResponseEntity<DirigeantDTO> updateDirigeant(@PathVariable Integer id, @RequestBody Dirigeant dirigeant) {
         Dirigeant updatedDirigeant = dirigeantService.updateDirigeant(id, dirigeant);
         if (updatedDirigeant != null) {
-            return ResponseEntity.ok(updatedDirigeant);
+            return ResponseEntity.ok(DirigeantMapper.toDTO(updatedDirigeant));
         } else {
             return ResponseEntity.notFound().build();
         }
