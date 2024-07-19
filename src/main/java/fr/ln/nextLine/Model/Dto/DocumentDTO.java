@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Model.Dto;
 
-import fr.ln.nextLine.Model.Entity.Utilisateur;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +11,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LienFormulaireDTO {
+public class DocumentDTO {
 
     private Integer id;
-    private String tokenLien;
-    private LocalDate dateGeneration;
-    private Boolean statut;
-    private Utilisateur idUtilisateur;
+    private String nomPdf;
+    private LocalDate dateGenerationDocument;
+    private Integer idStage;
 
 }
