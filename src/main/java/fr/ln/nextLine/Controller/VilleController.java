@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.VilleDTO;
 import fr.ln.nextLine.Model.Entity.Ville;
+import fr.ln.nextLine.Model.Mapper.VilleMapper;
 import fr.ln.nextLine.Service.VilleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,32 +23,44 @@ public class VilleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Ville>> getAllVilles() {
+    public ResponseEntity<List<VilleDTO>> getAllVilles() {
+
         List<Ville> villes = villeService.getAllVilles();
-        return ResponseEntity.ok(villes);
+        List<VilleDTO> villesDTO = villes
+                .stream()
+                .map(VilleMapper::toDTO)
+                .toList();
+
+        return new ResponseEntity<>(villesDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ville> getVilleById(@PathVariable Integer id) {
+    public ResponseEntity<VilleDTO> getVilleById(@PathVariable Integer id) {
+
         Ville ville = villeService.getVilleById(id);
-        if (ville != null) {
-            return ResponseEntity.ok(ville);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(VilleMapper.toDTO(ville), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Ville> createVille(@RequestBody Ville ville) {
+    public ResponseEntity<VilleDTO> createVille(@RequestBody VilleDTO villeDTO) {
+
+        Ville ville = VilleMapper.toEntity(villeDTO);
         Ville createdVille = villeService.createVille(ville);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdVille);
+        VilleDTO createdVilleDTO = VilleMapper.toDTO(createdVille);
+
+        return new ResponseEntity<>(createdVilleDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ville> updateVille(@PathVariable Integer id, @RequestBody Ville ville) {
+    public ResponseEntity<VilleDTO> updateVille(@PathVariable Integer id, @RequestBody VilleDTO villeDTO) {
+
+        Ville ville = VilleMapper.toEntity(villeDTO);
         Ville updatedVille = villeService.updateVille(id, ville);
+
         if (updatedVille != null) {
-            return ResponseEntity.ok(updatedVille);
+            VilleDTO updatedVilleDTO = VilleMapper.toDTO(updatedVille);
+            return new ResponseEntity<>(updatedVilleDTO, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }

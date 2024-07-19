@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
+import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
 import fr.ln.nextLine.Service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,32 +23,44 @@ public class UtilisateurController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Utilisateur>> getAllUtilisateurs() {
+    public ResponseEntity<List<UtilisateurDTO>> getAllUtilisateurs() {
+
         List<Utilisateur> utilisateurs = utilisateurService.getAllUtilisateurs();
-        return ResponseEntity.ok(utilisateurs);
+        List<UtilisateurDTO> utilisateurDTO = utilisateurs
+                .stream()
+                .map(UtilisateurMapper::toDTO)
+                .toList();
+
+        return new ResponseEntity<>(utilisateurDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Utilisateur> getUtilisateurById(@PathVariable Integer id) {
+    public ResponseEntity<UtilisateurDTO> getUtilisateurById(@PathVariable Integer id) {
+
         Utilisateur utilisateur = utilisateurService.getUtilisateurById(id);
-        if (utilisateur != null) {
-            return ResponseEntity.ok(utilisateur);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(UtilisateurMapper.toDTO(utilisateur), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Utilisateur> createUtilisateur(@RequestBody Utilisateur utilisateur) {
+    public ResponseEntity<UtilisateurDTO> createUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
+
+        Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
         Utilisateur createdUtilisateur = utilisateurService.createUtilisateur(utilisateur);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUtilisateur);
+        UtilisateurDTO createdUtilisateurDTO = UtilisateurMapper.toDTO(createdUtilisateur);
+
+        return new ResponseEntity<>(createdUtilisateurDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Utilisateur> updateUtilisateur(@PathVariable Integer id, @RequestBody Utilisateur utilisateur) {
+    public ResponseEntity<UtilisateurDTO> updateUtilisateur(@PathVariable Integer id, @RequestBody UtilisateurDTO utilisateurDTO) {
+
+        Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
         Utilisateur updatedUtilisateur = utilisateurService.updateUtilisateur(id, utilisateur);
+
         if (updatedUtilisateur != null) {
-            return ResponseEntity.ok(updatedUtilisateur);
+            UtilisateurDTO updatedUtilisateurDTO = UtilisateurMapper.toDTO(updatedUtilisateur);
+            return new ResponseEntity<>(updatedUtilisateurDTO, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
