@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.ParticiperDTO;
 import fr.ln.nextLine.Model.Entity.Participer;
+import fr.ln.nextLine.Model.Mapper.ParticiperMapper;
 import fr.ln.nextLine.Service.ParticiperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +23,15 @@ public class ParticiperController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Participer>> getAllParticipers() {
-        List<Participer> participer = participerService.getAllParticiper();
-        return ResponseEntity.ok(participer);
+    public ResponseEntity<List<ParticiperDTO>> getAllParticipers() {
+
+        List<Participer> participers = participerService.getAllParticiper();
+        List<ParticiperDTO> participerDTOS =
+                participers.stream()
+                        .map(ParticiperMapper::toDTO)
+                        .toList();
+
+        return new ResponseEntity<>(participerDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

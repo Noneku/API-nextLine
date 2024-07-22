@@ -2,7 +2,9 @@ package fr.ln.nextLine.Model.Mapper;
 
 import fr.ln.nextLine.Model.Dto.VilleDTO;
 import fr.ln.nextLine.Model.Entity.Ville;
+import org.springframework.stereotype.Component;
 
+@Component
 public class VilleMapper {
 
     private VilleMapper () {}
