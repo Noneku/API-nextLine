@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.LocauxDTO;
 import fr.ln.nextLine.Model.Entity.Locaux;
+import fr.ln.nextLine.Model.Mapper.LocauxMapper;
 import fr.ln.nextLine.Service.LocauxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,32 +23,44 @@ public class LocauxController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Locaux>> getAllLocaux() {
+    public ResponseEntity<List<LocauxDTO>> getAllLocaux() {
+
         List<Locaux> locaux = locauxService.getAllLocaux();
-        return ResponseEntity.ok(locaux);
+        List<LocauxDTO> locauxDTO = locaux
+                .stream()
+                .map(LocauxMapper::toDTO)
+                .toList();
+
+        return new ResponseEntity<>(locauxDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Locaux> getLocalById(@PathVariable Integer id) {
+    public ResponseEntity<LocauxDTO> getLocalById(@PathVariable Integer id) {
+
         Locaux locaux = locauxService.getLocalById(id);
-        if (locaux != null) {
-            return ResponseEntity.ok(locaux);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(LocauxMapper.toDTO(locaux), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Locaux> createLocal(@RequestBody Locaux locaux) {
+    public ResponseEntity<LocauxDTO> createLocal(@RequestBody LocauxDTO locauxDTO) {
+
+        Locaux locaux = LocauxMapper.toEntity(locauxDTO);
         Locaux createdLocal = locauxService.createLocal(locaux);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdLocal);
+        LocauxDTO createdLocauxDTO = LocauxMapper.toDTO(createdLocal);
+
+        return new ResponseEntity<>(createdLocauxDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Locaux> updateLocal(@PathVariable Integer id, @RequestBody Locaux locaux) {
+    public ResponseEntity<LocauxDTO> updateLocal(@PathVariable Integer id, @RequestBody LocauxDTO locauxDTO) {
+
+        Locaux locaux = LocauxMapper.toEntity(locauxDTO);
         Locaux updatedLocal = locauxService.updateLocal(id, locaux);
+
         if (updatedLocal != null) {
-            return ResponseEntity.ok(updatedLocal);
+            LocauxDTO updatedLocauxDTO = LocauxMapper.toDTO(updatedLocal);
+            return new ResponseEntity<>(updatedLocauxDTO, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }

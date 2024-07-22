@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.SessionDTO;
 import fr.ln.nextLine.Model.Entity.Session;
+import fr.ln.nextLine.Model.Mapper.SessionMapper;
 import fr.ln.nextLine.Service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,32 +23,44 @@ public class SessionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Session>> getAllSessions() {
+    public ResponseEntity<List<SessionDTO>> getAllSessions() {
+
         List<Session> sessions = sessionService.getAllSessions();
-        return ResponseEntity.ok(sessions);
+        List<SessionDTO> sessionDTOS = sessions
+                .stream()
+                .map(SessionMapper::toDTO)
+                .toList();
+
+        return new ResponseEntity<>(sessionDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Session> getSessionById(@PathVariable Integer id) {
+    public ResponseEntity<SessionDTO> getSessionById(@PathVariable Integer id) {
+
         Session session = sessionService.getSessionById(id);
-        if (session != null) {
-            return ResponseEntity.ok(session);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return new ResponseEntity<>(SessionMapper.toDTO(session), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Session> createSession(@RequestBody Session session) {
+    public ResponseEntity<SessionDTO> createSession(@RequestBody SessionDTO sessionDTO) {
+
+        Session session = SessionMapper.toEntity(sessionDTO);
         Session createdSession = sessionService.createSession(session);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSession);
+        SessionDTO createdSessionDTO = SessionMapper.toDTO(createdSession);
+
+        return new ResponseEntity<>(createdSessionDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Session> updateSession(@PathVariable Integer id, @RequestBody Session session) {
+    public ResponseEntity<SessionDTO> updateSession(@PathVariable Integer id, @RequestBody SessionDTO sessionDTO) {
+
+        Session session = SessionMapper.toEntity(sessionDTO);
         Session updatedSession = sessionService.updateSession(id, session);
+
         if (updatedSession != null) {
-            return ResponseEntity.ok(updatedSession);
+            SessionDTO updatedSessionDTO = SessionMapper.toDTO(updatedSession);
+            return new ResponseEntity<>(updatedSessionDTO, HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }
