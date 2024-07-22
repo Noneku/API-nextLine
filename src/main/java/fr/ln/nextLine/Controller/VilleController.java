@@ -14,7 +14,6 @@ public class VilleController {
 
     private final VilleService villeService;
 
-    @Autowired
     public VilleController(VilleService villeService) {
 
         this.villeService = villeService;

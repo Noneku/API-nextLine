@@ -24,7 +24,6 @@ public class VilleServiceImpl implements VilleService {
         this.villeRepository = villeRepository;
     }
 
-
     @Override
     public ResponseEntity<List<VilleDTO>> getAll() {
 
