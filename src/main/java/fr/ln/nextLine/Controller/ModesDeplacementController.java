@@ -1,11 +1,8 @@
 package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.ModesDeplacementDTO;
-import fr.ln.nextLine.Model.Entity.ModesDeplacement;
-import fr.ln.nextLine.Model.Mapper.ModesDeplacementMapper;
 import fr.ln.nextLine.Service.ModesDeplacementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,60 +16,38 @@ public class ModesDeplacementController {
 
     @Autowired
     public ModesDeplacementController(ModesDeplacementService modesDeplacementService) {
+
         this.modesDeplacementService = modesDeplacementService;
     }
 
     @GetMapping
     public ResponseEntity<List<ModesDeplacementDTO>> getAllModesDeplacement() {
 
-        List<ModesDeplacement> modesDeplacements = modesDeplacementService.getAllModesDeplacements();
-        List<ModesDeplacementDTO> modesDeplacementDTO = modesDeplacements
-                .stream()
-                .map(ModesDeplacementMapper::toDTO)
-                .toList();
-
-        return new ResponseEntity<>(modesDeplacementDTO, HttpStatus.OK);
+        return modesDeplacementService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ModesDeplacementDTO> getModeDeplacementById(@PathVariable Integer id) {
+    public ResponseEntity<ModesDeplacementDTO> getModesDeplacementById(@PathVariable Integer id) {
 
-        ModesDeplacement modesDeplacement = modesDeplacementService.getModeDeplacementById(id);
-
-        return new ResponseEntity<>(ModesDeplacementMapper.toDTO(modesDeplacement), HttpStatus.OK);
+        return modesDeplacementService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<ModesDeplacementDTO> createModeDeplacement(@RequestBody ModesDeplacementDTO modesDeplacementDTO) {
+    public ResponseEntity<ModesDeplacementDTO> createModesDeplacement(@RequestBody ModesDeplacementDTO modesDeplacementDTO) {
 
-        ModesDeplacement modesDeplacement = ModesDeplacementMapper.toEntity(modesDeplacementDTO);
-        ModesDeplacement createdModeDeplacement = modesDeplacementService.createModeDeplacement(modesDeplacement);
-        ModesDeplacementDTO createdModesDeplacementDTO = ModesDeplacementMapper.toDTO(createdModeDeplacement);
-
-        return new ResponseEntity<>(createdModesDeplacementDTO, HttpStatus.CREATED);
+        return modesDeplacementService.create(modesDeplacementDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ModesDeplacementDTO> updateModeDeplacement(@PathVariable Integer id, @RequestBody ModesDeplacementDTO modesDeplacementDTO) {
+    public ResponseEntity<ModesDeplacementDTO> updateModesDeplacement(@PathVariable Integer id, @RequestBody ModesDeplacementDTO modesDeplacementDTO) {
 
-        ModesDeplacement modesDeplacement = ModesDeplacementMapper.toEntity(modesDeplacementDTO);
-        ModesDeplacement updatedModesDeplacement = modesDeplacementService.updateModeDeplacement(id, modesDeplacement);
-
-        if (updatedModesDeplacement != null) {
-            ModesDeplacementDTO updatedModesDeplacementDTO = ModesDeplacementMapper.toDTO(updatedModesDeplacement);
-            return new ResponseEntity<>(updatedModesDeplacementDTO, HttpStatus.OK);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return modesDeplacementService.update(id, modesDeplacementDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteModeDeplacement(@PathVariable Integer id) {
-        boolean deleted = modesDeplacementService.deleteModeDeplacement(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> deleteModesDeplacement(@PathVariable Integer id) {
+
+        return modesDeplacementService.delete(id);
+
     }
 }

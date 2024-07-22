@@ -1,7 +1,7 @@
 package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.VilleDTO;
-import fr.ln.nextLine.Service.VilleCrudService;
+import fr.ln.nextLine.Service.VilleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +12,10 @@ import java.util.List;
 @RequestMapping("/villes")
 public class VilleController {
 
-    private final VilleCrudService villeService;
+    private final VilleService villeService;
 
     @Autowired
-    public VilleController(VilleCrudService villeService) {
+    public VilleController(VilleService villeService) {
 
         this.villeService = villeService;
     }

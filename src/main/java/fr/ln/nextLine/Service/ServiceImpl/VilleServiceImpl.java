@@ -4,7 +4,7 @@ import fr.ln.nextLine.Model.Dto.VilleDTO;
 import fr.ln.nextLine.Model.Entity.Ville;
 import fr.ln.nextLine.Model.Mapper.VilleMapper;
 import fr.ln.nextLine.Model.Repository.VilleRepository;
-import fr.ln.nextLine.Service.VilleCrudService;
+import fr.ln.nextLine.Service.VilleService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class VilleCrudServiceImpl implements VilleCrudService {
+public class VilleServiceImpl implements VilleService {
 
     private final VilleRepository villeRepository;
 
-    public VilleCrudServiceImpl(VilleRepository villeRepository) {
+    public VilleServiceImpl(VilleRepository villeRepository) {
 
         this.villeRepository = villeRepository;
     }
