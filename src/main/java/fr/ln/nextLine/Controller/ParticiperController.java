@@ -1,11 +1,8 @@
 package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.ParticiperDTO;
-import fr.ln.nextLine.Model.Entity.Participer;
-import fr.ln.nextLine.Model.Mapper.ParticiperMapper;
 import fr.ln.nextLine.Service.ParticiperService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,54 +16,38 @@ public class ParticiperController {
 
     @Autowired
     public ParticiperController(ParticiperService participerService) {
+
         this.participerService = participerService;
     }
 
     @GetMapping
-    public ResponseEntity<List<ParticiperDTO>> getAllParticipers() {
+    public ResponseEntity<List<ParticiperDTO>> getAllParticiper() {
 
-        List<Participer> participers = participerService.getAllParticiper();
-        List<ParticiperDTO> participerDTOS =
-                participers.stream()
-                        .map(ParticiperMapper::toDTO)
-                        .toList();
-
-        return new ResponseEntity<>(participerDTOS, HttpStatus.OK);
+        return participerService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Participer> getParticiperById(@PathVariable Integer id) {
-        Participer participer = participerService.getParticiperById(id);
-        if (participer != null) {
-            return ResponseEntity.ok(participer);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ParticiperDTO> getParticiperById(@PathVariable Integer id) {
+
+        return participerService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Participer> createParticiper(@RequestBody Participer participer) {
-        Participer createdParticiper = participerService.createParticiper(participer);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdParticiper);
+    public ResponseEntity<ParticiperDTO> createParticiper(@RequestBody ParticiperDTO participerDTO) {
+
+        return participerService.create(participerDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Participer> updateParticiper(@PathVariable Integer id, @RequestBody Participer participer) {
-        Participer updatedParticiper = participerService.updateParticiper(id, participer);
-        if (updatedParticiper != null) {
-            return ResponseEntity.ok(updatedParticiper);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ParticiperDTO> updateParticiper(@PathVariable Integer id, @RequestBody ParticiperDTO participerDTO) {
+
+        return participerService.update(id, participerDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteParticiper(@PathVariable Integer id) {
-        boolean deleted = participerService.deleteParticiper(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return participerService.delete(id);
+
     }
 }
