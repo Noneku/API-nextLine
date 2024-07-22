@@ -35,7 +35,7 @@ public class LienFormulaireMapper {
         lienFormulaire.setTokenLien(lienFormulaireDTO.getTokenLien());
         lienFormulaire.setDateGeneration(lienFormulaireDTO.getDateGeneration());
         lienFormulaire.setStatut(lienFormulaireDTO.getStatut());
-        lienFormulaire.setIdUtilisateur(lienFormulaireDTO.getIdUtilisateur());
+        lienFormulaire.setIdUtilisateur(lienFormulaire.getIdUtilisateur());
 
         return lienFormulaire;
     }

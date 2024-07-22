@@ -3,6 +3,7 @@ package fr.ln.nextLine.Controller;
 import fr.ln.nextLine.Model.Dto.AssuranceDTO;
 import fr.ln.nextLine.Model.Entity.Assurance;
 import fr.ln.nextLine.Model.Mapper.AssuranceMapper;
+import fr.ln.nextLine.Service.ActiviteService;
 import fr.ln.nextLine.Service.AssuranceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,51 +26,26 @@ public class AssuranceController {
 
     @GetMapping
     public ResponseEntity<List<AssuranceDTO>> getAllAssurances() {
-        List<Assurance> assurances = assuranceService.getAllAssurances();
-        List<AssuranceDTO> assuranceDTOs =
-                assurances
-                        .stream()
-                        .map(AssuranceMapper::toDTO)
-                        .toList();
-        return new ResponseEntity<>(assuranceDTOs, HttpStatus.OK);
+        return assuranceService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AssuranceDTO> getAssuranceById(@PathVariable Integer id) {
-        Assurance assurance = assuranceService.getAssuranceById(id);
-
-        if (assurance != null) {
-            return new ResponseEntity<>(AssuranceMapper.toDTO(assurance), HttpStatus.OK);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return assuranceService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<AssuranceDTO> createAssurance(@RequestBody Assurance assurance) {
-        Assurance createdAssurance = assuranceService.createAssurance(assurance);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(AssuranceMapper.toDTO(createdAssurance));
+    public ResponseEntity<AssuranceDTO> createAssurance(@RequestBody AssuranceDTO assuranceDTO) {
+        return assuranceService.create(assuranceDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AssuranceDTO> updateAssurance(@PathVariable Integer id, @RequestBody Assurance assurance) {
-        Assurance updatedAssurance = assuranceService.updateAssurance(id, assurance);
-
-        if (updatedAssurance != null) {
-            return ResponseEntity.ok(AssuranceMapper.toDTO(updatedAssurance));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<AssuranceDTO> updateAssurance(@PathVariable Integer id, @RequestBody AssuranceDTO assuranceDTO) {
+        return assuranceService.update(id, assuranceDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAssurance(@PathVariable Integer id) {
-        boolean deleted = assuranceService.deleteAssurance(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return assuranceService.delete(id);
     }
 }

@@ -24,48 +24,27 @@ public class DefinirController {
 
     @GetMapping
     public ResponseEntity<List<DefinirDTO>> getAllDefinirs() {
-        List<Definir> definirs = definirService.getAllDefinirs();
-        List<DefinirDTO> definirDTOs =
-                definirs
-                        .stream()
-                        .map(DefinirMapper::toDTO)
-                        .toList();
-        return ResponseEntity.ok(definirDTOs);
+        return definirService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DefinirDTO> getDefinirById(@PathVariable Integer id) {
-        Definir definir = definirService.getDefinirById(id);
-        if (definir != null) {
-            return ResponseEntity.ok(DefinirMapper.toDTO(definir));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return definirService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<DefinirDTO> createDefinir(@RequestBody Definir definir) {
-        Definir createdDefinir = definirService.createDefinir(definir);
-        return ResponseEntity.status(HttpStatus.CREATED).body(DefinirMapper.toDTO(createdDefinir));
+    public ResponseEntity<DefinirDTO> createDefinir(@RequestBody DefinirDTO definirDTO) {
+        return definirService.create(definirDTO);
     }
 
+    //Méthode non util
     @PutMapping("/{id}")
-    public ResponseEntity<DefinirDTO> updateDefinir(@PathVariable Integer id, @RequestBody Definir definir) {
-        Definir updatedDefinir = definirService.updateDefinir(id, definir);
-        if (updatedDefinir != null) {
-            return ResponseEntity.ok(DefinirMapper.toDTO(updatedDefinir));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<DefinirDTO> updateDefinir(@PathVariable Integer id, @RequestBody DefinirDTO definirDTO) {
+        return definirService.update(id, definirDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDefinir(@PathVariable Integer id) {
-        boolean deleted = definirService.deleteDefinir(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return definirService.delete(id);
     }
 }

@@ -1,13 +1,7 @@
 package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.ActiviteDTO;
-import fr.ln.nextLine.Model.Entity.Activite;
-import fr.ln.nextLine.Model.Mapper.ActiviteMapper;
 import fr.ln.nextLine.Service.ActiviteService;
-import fr.ln.nextLine.Service.Impl.ActiviteServiceImpl;
-import org.hibernate.service.spi.InjectService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
