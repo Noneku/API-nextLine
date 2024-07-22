@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public interface VilleService extends GeneriqueService<VilleDTO> {
+public interface VilleCrudService extends GeneriqueCrudService<VilleDTO> {
 
 }

@@ -4,6 +4,9 @@ import fr.ln.nextLine.Model.Dto.ActiviteDTO;
 import fr.ln.nextLine.Model.Entity.Activite;
 import fr.ln.nextLine.Model.Mapper.ActiviteMapper;
 import fr.ln.nextLine.Service.ActiviteService;
+import fr.ln.nextLine.Service.Impl.ActiviteServiceImpl;
+import org.hibernate.service.spi.InjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,37 +23,24 @@ public class ActiviteController {
         this.activiteService = activiteService;
     }
 
-
     @GetMapping
     public ResponseEntity<List<ActiviteDTO>> getAllActivites() {
-
-        List<Activite> activites = activiteService.getAllActivites();
-        List<ActiviteDTO> activitesDTO =
-                activites.stream()
-                         .map(ActiviteMapper::toDTO)
-                         .toList();
-
-        return new ResponseEntity<>(activitesDTO, HttpStatus.OK);
+        return activiteService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ActiviteDTO> getActiviteById(@PathVariable Integer id) {
+    public ResponseEntity<ActiviteDTO> getActiviteById(@PathVariable Integer id){
 
-        Activite activite = activiteService.getActiviteById(id);
-
-        return new ResponseEntity<>(ActiviteMapper.toDTO(activite), HttpStatus.OK);
+        return activiteService.getById(id);
     }
 
-    @PostMapping
+
+    @PostMapping("/create")
     public ResponseEntity<ActiviteDTO> createActivite(@RequestBody ActiviteDTO activiteDTO) {
-
-        Activite activite = ActiviteMapper.toEntity(activiteDTO);
-        Activite createdActivite = activiteService.createActivite(activite);
-        ActiviteDTO createdActiviteDTO = ActiviteMapper.toDTO(createdActivite);
-
-        return new ResponseEntity<>(createdActiviteDTO, HttpStatus.CREATED);
+        return activiteService.create(activiteDTO);
     }
 
+    /*
     @PutMapping("/{id}")
     public ResponseEntity<ActiviteDTO> updateActivite(@PathVariable Integer id, @RequestBody ActiviteDTO activiteDTO) {
 
@@ -64,14 +54,9 @@ public class ActiviteController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @DeleteMapping("/{id}")
+       */
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteActivite(@PathVariable Integer id) {
-        boolean deleted = activiteService.deleteActivite(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return activiteService.delete(id);
     }
 }

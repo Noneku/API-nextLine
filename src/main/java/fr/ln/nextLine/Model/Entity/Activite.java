@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Table(name = "activites", schema = "public")
 public class Activite {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY) //Indique que l'ID est incrémenté de manière automatique
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Indique que l'ID est incrémenté de manière automatique
     @ColumnDefault("nextval('activites_id_activite_seq'::regclass)")
     @Column(name = "id_activite", nullable = false)
     private Integer id;

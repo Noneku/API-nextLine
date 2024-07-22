@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface GeneriqueService <T> {
+public interface GeneriqueCrudService<T> {
 
     ResponseEntity<List<T>> getAll();
     ResponseEntity<T> getById(Integer id);
