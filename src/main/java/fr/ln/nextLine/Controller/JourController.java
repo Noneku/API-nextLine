@@ -1,15 +1,10 @@
 package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.JourDTO;
-import fr.ln.nextLine.Model.Entity.Jour;
-import fr.ln.nextLine.Model.Mapper.JourMapper;
 import fr.ln.nextLine.Service.JourService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,55 +13,39 @@ public class JourController {
 
     private final JourService jourService;
 
-    @Autowired
     public JourController(JourService jourService) {
+
         this.jourService = jourService;
     }
 
     @GetMapping
     public ResponseEntity<List<JourDTO>> getAllJours() {
-        List<Jour> jours = jourService.getAllJours();
-        List<JourDTO> jourDTOs =
-                jours
-                        .stream()
-                        .map(JourMapper::toDTO)
-                        .toList();
-        return ResponseEntity.ok(jourDTOs);
+
+        return jourService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<JourDTO> getJourById(@PathVariable Integer id) {
-        Jour jour = jourService.getJourById(id);
-        if (jour != null) {
-            return ResponseEntity.ok(JourMapper.toDTO(jour));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return jourService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<JourDTO> createJour(@RequestBody Jour jour) {
-        Jour createdJour = jourService.createJour(jour);
-        return ResponseEntity.status(HttpStatus.CREATED).body(JourMapper.toDTO(createdJour));
+    public ResponseEntity<JourDTO> createJour(@RequestBody JourDTO jourDTO) {
+
+        return jourService.create(jourDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<JourDTO> updateJour(@PathVariable Integer id, @RequestBody Jour jour) {
-        Jour updatedJour = jourService.updateJour(id, jour);
-        if (updatedJour != null) {
-            return ResponseEntity.ok(JourMapper.toDTO(updatedJour));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<JourDTO> updateJour(@PathVariable Integer id, @RequestBody JourDTO jourDTO) {
+
+        return jourService.update(id, jourDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteJour(@PathVariable Integer id) {
-        boolean deleted = jourService.deleteJour(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return jourService.delete(id);
+
     }
 }
