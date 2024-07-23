@@ -49,23 +49,31 @@ public class ActiviteServiceImpl implements ActiviteService {
 
 
     @Override
-    public ResponseEntity<ActiviteDTO> update(Integer id, ActiviteDTO entity) {
+    public ResponseEntity<ActiviteDTO> create(ActiviteDTO activiteDTO) {
 
-        Optional<Activite> Activite = activiteRepository.findById(id);
-
-        return Activite.map(
-                        value -> new ResponseEntity<>(ActiviteMapper.toDTO(value), HttpStatus.FOUND))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @Override
-    public ResponseEntity<ActiviteDTO> create(ActiviteDTO ActiviteDTO) {
-
-        Activite Activite = ActiviteMapper.toEntity(ActiviteDTO);
-        Activite createdActivite = activiteRepository.save(Activite);
+        Activite activite = ActiviteMapper.toEntity(activiteDTO);
+        Activite createdActivite = activiteRepository.save(activite);
         ActiviteDTO createdActiviteDTO = ActiviteMapper.toDTO(createdActivite);
 
         return new ResponseEntity<>(createdActiviteDTO, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<ActiviteDTO> update(Integer id, ActiviteDTO activiteDTO) {
+
+        if (activiteRepository.existsById(id)) {
+
+            Activite activite = ActiviteMapper.toEntity(activiteDTO);
+            activite.setId(id);
+            Activite updatedActivite = activiteRepository.save(activite);
+            ActiviteDTO updatedActiviteDTO = ActiviteMapper.toDTO(updatedActivite);
+
+            return new ResponseEntity<>(updatedActiviteDTO, HttpStatus.OK);
+
+        } else {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override

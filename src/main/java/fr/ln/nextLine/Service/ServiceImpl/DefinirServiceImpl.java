@@ -5,12 +5,16 @@ import fr.ln.nextLine.Model.Entity.Definir;
 import fr.ln.nextLine.Model.Mapper.DefinirMapper;
 import fr.ln.nextLine.Model.Repository.DefinirRepository;
 import fr.ln.nextLine.Service.DefinirService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@Transactional
 public class DefinirServiceImpl implements DefinirService {
 
     private final DefinirRepository definirRepository;

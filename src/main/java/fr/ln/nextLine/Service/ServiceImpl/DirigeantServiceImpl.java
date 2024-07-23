@@ -5,12 +5,16 @@ import fr.ln.nextLine.Model.Entity.Dirigeant;
 import fr.ln.nextLine.Model.Mapper.DirigeantMapper;
 import fr.ln.nextLine.Model.Repository.DirigeantRepository;
 import fr.ln.nextLine.Service.DirigeantService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@Transactional
 public class DirigeantServiceImpl implements DirigeantService {
 
     DirigeantRepository dirigeantRepository;

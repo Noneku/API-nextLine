@@ -2,7 +2,6 @@ package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.VilleDTO;
 import fr.ln.nextLine.Service.VilleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

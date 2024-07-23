@@ -14,11 +14,13 @@ public class ActiviteController {
     private final ActiviteService activiteService;
 
     public ActiviteController(ActiviteService activiteService) {
+
         this.activiteService = activiteService;
     }
 
     @GetMapping
     public ResponseEntity<List<ActiviteDTO>> getAllActivites() {
+
         return activiteService.getAll();
     }
 
@@ -28,9 +30,9 @@ public class ActiviteController {
         return activiteService.getById(id);
     }
 
-
     @PostMapping("/create")
     public ResponseEntity<ActiviteDTO> createActivite(@RequestBody ActiviteDTO activiteDTO) {
+
         return activiteService.create(activiteDTO);
     }
 
@@ -51,6 +53,7 @@ public class ActiviteController {
        */
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteActivite(@PathVariable Integer id) {
+
         return activiteService.delete(id);
     }
 }
