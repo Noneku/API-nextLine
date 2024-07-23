@@ -1,16 +1,11 @@
 package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.AssuranceDTO;
-import fr.ln.nextLine.Model.Entity.Assurance;
-import fr.ln.nextLine.Model.Mapper.AssuranceMapper;
-import fr.ln.nextLine.Service.ActiviteService;
 import fr.ln.nextLine.Service.AssuranceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
