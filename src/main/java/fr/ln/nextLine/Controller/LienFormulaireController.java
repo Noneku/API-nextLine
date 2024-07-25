@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/liens-formulaires")
@@ -52,8 +53,11 @@ public class LienFormulaireController {
     }
 
     @PostMapping("/generate")
-    public ResponseEntity<String> generateLienFormulaire(@RequestBody Integer id_utilisateur) {
+    public ResponseEntity<String> generateLienFormulaire(@RequestBody Map<String, String> request) {
 
-        return lienFormulaireService.generateAndSendLink(id_utilisateur);
+        Integer idUtilisateur = Integer.parseInt(request.get("id_utilisateur"));
+        String emailEntreprise = request.get("email_entreprise");
+
+        return lienFormulaireService.generateAndSendLink(idUtilisateur, emailEntreprise);
     }
 }

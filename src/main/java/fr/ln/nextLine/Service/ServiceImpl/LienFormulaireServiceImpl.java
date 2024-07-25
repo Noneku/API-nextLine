@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -107,7 +109,7 @@ public class LienFormulaireServiceImpl implements LienFormulaireService {
         }
     }
 
-    public ResponseEntity<String> generateAndSendLink (Integer id_utilisateur) {
+    public ResponseEntity<String> generateAndSendLink (Integer id_utilisateur, String emailEntreprise) {
 
         Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findById(id_utilisateur);
 
@@ -129,9 +131,20 @@ public class LienFormulaireServiceImpl implements LienFormulaireService {
         lienFormulaireRepository.save(lienFormulaire);
 
         String emailContent = "Veuillez compléter le formulaire à l'adresse suivante : " + "http://localhost:8081/formulaire?token=" + token;
-        emailSenderService.sendEmail("leila.mouaci@gmail.com", "Complétez le formulaire", emailContent);
+        emailSenderService.sendEmail(emailEntreprise, "Complétez le formulaire", emailContent);
 
         return ResponseEntity.ok("Le lien a bien été envoyé");
+    }
+
+
+    public boolean isTokenValid(LienFormulaireDTO lienFormulaireDTO) {
+
+        LienFormulaire lienFormulaire = LienFormulaireMapper.toEntity(lienFormulaireDTO);
+
+        LocalDateTime dateGeneration = lienFormulaire.getDateGeneration().atStartOfDay(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime now = LocalDateTime.now();
+
+        return !dateGeneration.plusHours(24).isBefore(now) && !lienFormulaire.getStatut();
     }
 }
 

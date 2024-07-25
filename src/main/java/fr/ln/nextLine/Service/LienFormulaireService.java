@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface LienFormulaireService extends GeneriqueCrudService <LienFormulaireDTO> {
 
-    public ResponseEntity<String> generateAndSendLink (Integer id_utilisateur);
+    ResponseEntity<String> generateAndSendLink (Integer id_utilisateur, String emailEntreprise);
+
+    public boolean isTokenValid(LienFormulaireDTO lienFormulaireDTO);
 
 }
