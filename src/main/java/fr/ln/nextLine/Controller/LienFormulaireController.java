@@ -1,9 +1,8 @@
 package fr.ln.nextLine.Controller;
 
-import fr.ln.nextLine.Model.Entity.LienFormulaire;
+import fr.ln.nextLine.Model.Dto.LienFormulaireDTO;
 import fr.ln.nextLine.Service.LienFormulaireService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,48 +16,38 @@ public class LienFormulaireController {
 
     @Autowired
     public LienFormulaireController(LienFormulaireService lienFormulaireService) {
+
         this.lienFormulaireService = lienFormulaireService;
     }
 
     @GetMapping
-    public ResponseEntity<List<LienFormulaire>> getAllLiensFormulaires() {
-        List<LienFormulaire> liensFormulaires = lienFormulaireService.getAllLiensFormulaires();
-        return ResponseEntity.ok(liensFormulaires);
+    public ResponseEntity<List<LienFormulaireDTO>> getAllLiensFormulaires() {
+
+        return lienFormulaireService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LienFormulaire> getLienFormulaireById(@PathVariable Integer id) {
-        LienFormulaire lienFormulaire = lienFormulaireService.getLienFormulaireById(id);
-        if (lienFormulaire != null) {
-            return ResponseEntity.ok(lienFormulaire);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<LienFormulaireDTO> getLienFormulaireById(@PathVariable Integer id) {
+
+        return lienFormulaireService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<LienFormulaire> createLienFormulaire(@RequestBody LienFormulaire lienFormulaire) {
-        LienFormulaire createdLienFormulaire = lienFormulaireService.createLienFormulaire(lienFormulaire);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdLienFormulaire);
+    public ResponseEntity<LienFormulaireDTO> createLienFormulaire(@RequestBody LienFormulaireDTO lienFormulaireDTO) {
+
+        return lienFormulaireService.create(lienFormulaireDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LienFormulaire> updateLienFormulaire(@PathVariable Integer id, @RequestBody LienFormulaire lienFormulaire) {
-        LienFormulaire updatedLienFormulaire = lienFormulaireService.updateLienFormulaire(id, lienFormulaire);
-        if (updatedLienFormulaire != null) {
-            return ResponseEntity.ok(updatedLienFormulaire);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<LienFormulaireDTO> updateLienFormulaire(@PathVariable Integer id, @RequestBody LienFormulaireDTO lienFormulaireDTO) {
+
+        return lienFormulaireService.update(id, lienFormulaireDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLienFormulaire(@PathVariable Integer id) {
-        boolean deleted = lienFormulaireService.deleteLienFormulaire(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return lienFormulaireService.delete(id);
+
     }
 }

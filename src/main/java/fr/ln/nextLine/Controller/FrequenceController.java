@@ -1,9 +1,7 @@
 package fr.ln.nextLine.Controller;
 
-import fr.ln.nextLine.Model.Entity.Frequence;
+import fr.ln.nextLine.Model.Dto.FrequenceDTO;
 import fr.ln.nextLine.Service.FrequenceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,50 +13,39 @@ public class FrequenceController {
 
     private final FrequenceService frequenceService;
 
-    @Autowired
     public FrequenceController(FrequenceService frequenceService) {
+
         this.frequenceService = frequenceService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Frequence>> getAllFrequences() {
-        List<Frequence> frequences = frequenceService.getAllFrequences();
-        return ResponseEntity.ok(frequences);
+    public ResponseEntity<List<FrequenceDTO>> getAllFrequences() {
+
+        return frequenceService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Frequence> getFrequenceById(@PathVariable Integer id) {
-        Frequence frequence = frequenceService.getFrequenceById(id);
-        if (frequence != null) {
-            return ResponseEntity.ok(frequence);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<FrequenceDTO> getFrequenceById(@PathVariable Integer id) {
+
+        return frequenceService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Frequence> createFrequence(@RequestBody Frequence frequence) {
-        Frequence createdFrequence = frequenceService.createFrequence(frequence);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdFrequence);
+    public ResponseEntity<FrequenceDTO> createFrequence(@RequestBody FrequenceDTO frequenceDTO) {
+
+        return frequenceService.create(frequenceDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Frequence> updateFrequence(@PathVariable Integer id, @RequestBody Frequence frequence) {
-        Frequence updatedFrequence = frequenceService.updateFrequence(id, frequence);
-        if (updatedFrequence != null) {
-            return ResponseEntity.ok(updatedFrequence);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<FrequenceDTO> updateFrequence(@PathVariable Integer id, @RequestBody FrequenceDTO frequenceDTO) {
+
+        return frequenceService.update(id, frequenceDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFrequence(@PathVariable Integer id) {
-        boolean deleted = frequenceService.deleteFrequence(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return frequenceService.delete(id);
+
     }
 }

@@ -1,9 +1,8 @@
 package fr.ln.nextLine.Controller;
 
-import fr.ln.nextLine.Model.Entity.Role;
+import fr.ln.nextLine.Model.Dto.RoleDTO;
 import fr.ln.nextLine.Service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,48 +16,38 @@ public class RoleController {
 
     @Autowired
     public RoleController(RoleService roleService) {
+
         this.roleService = roleService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRoles() {
-        List<Role> roles = roleService.getAllRoles();
-        return ResponseEntity.ok(roles);
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
+
+        return roleService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Role> getRoleById(@PathVariable Integer id) {
-        Role role = roleService.getRoleById(id);
-        if (role != null) {
-            return ResponseEntity.ok(role);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<RoleDTO> getRoleById(@PathVariable Integer id) {
+
+        return roleService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Role> createRole(@RequestBody Role role) {
-        Role createdRole = roleService.createRole(role);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdRole);
+    public ResponseEntity<RoleDTO> createRole (@RequestBody RoleDTO roleDTO) {
+
+        return roleService.create(roleDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable Integer id, @RequestBody Role role) {
-        Role updatedRole = roleService.updateRole(id, role);
-        if (updatedRole != null) {
-            return ResponseEntity.ok(updatedRole);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<RoleDTO> updateRole(@PathVariable Integer id, @RequestBody RoleDTO roleDTO) {
+
+        return roleService.update(id, roleDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRole(@PathVariable Integer id) {
-        boolean deleted = roleService.deleteRole(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return roleService.delete(id);
+
     }
 }

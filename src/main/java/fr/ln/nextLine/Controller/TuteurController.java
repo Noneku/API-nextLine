@@ -1,9 +1,8 @@
 package fr.ln.nextLine.Controller;
 
-import fr.ln.nextLine.Model.Entity.Tuteur;
+import fr.ln.nextLine.Model.Dto.TuteurDTO;
 import fr.ln.nextLine.Service.TuteurService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,48 +16,38 @@ public class TuteurController {
 
     @Autowired
     public TuteurController(TuteurService tuteurService) {
+
         this.tuteurService = tuteurService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Tuteur>> getAllTuteurs() {
-        List<Tuteur> tuteurs = tuteurService.getAllTuteurs();
-        return ResponseEntity.ok(tuteurs);
+    public ResponseEntity<List<TuteurDTO>> getAllTuteurs() {
+
+        return tuteurService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tuteur> getTuteurById(@PathVariable Integer id) {
-        Tuteur tuteur = tuteurService.getTuteurById(id);
-        if (tuteur != null) {
-            return ResponseEntity.ok(tuteur);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<TuteurDTO> getTuteurById(@PathVariable Integer id) {
+
+        return tuteurService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Tuteur> createTuteur(@RequestBody Tuteur tuteur) {
-        Tuteur createdTuteur = tuteurService.createTuteur(tuteur);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTuteur);
+    public ResponseEntity<TuteurDTO> createTuteur(@RequestBody TuteurDTO tuteurDTO) {
+
+        return tuteurService.create(tuteurDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tuteur> updateTuteur(@PathVariable Integer id, @RequestBody Tuteur tuteur) {
-        Tuteur updatedTuteur = tuteurService.updateTuteur(id, tuteur);
-        if (updatedTuteur != null) {
-            return ResponseEntity.ok(updatedTuteur);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<TuteurDTO> updateTuteur(@PathVariable Integer id, @RequestBody TuteurDTO tuteurDTO) {
+
+        return tuteurService.update(id, tuteurDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTuteur(@PathVariable Integer id) {
-        boolean deleted = tuteurService.deleteTuteur(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return tuteurService.delete(id);
+
     }
 }

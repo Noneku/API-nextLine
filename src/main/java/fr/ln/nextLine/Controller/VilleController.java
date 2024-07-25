@@ -1,9 +1,7 @@
 package fr.ln.nextLine.Controller;
 
-import fr.ln.nextLine.Model.Entity.Ville;
+import fr.ln.nextLine.Model.Dto.VilleDTO;
 import fr.ln.nextLine.Service.VilleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,50 +13,39 @@ public class VilleController {
 
     private final VilleService villeService;
 
-    @Autowired
     public VilleController(VilleService villeService) {
+
         this.villeService = villeService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Ville>> getAllVilles() {
-        List<Ville> villes = villeService.getAllVilles();
-        return ResponseEntity.ok(villes);
+    public ResponseEntity<List<VilleDTO>> getAllVilles() {
+
+        return villeService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ville> getVilleById(@PathVariable Integer id) {
-        Ville ville = villeService.getVilleById(id);
-        if (ville != null) {
-            return ResponseEntity.ok(ville);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<VilleDTO> getVilleById(@PathVariable Integer id) {
+
+        return villeService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Ville> createVille(@RequestBody Ville ville) {
-        Ville createdVille = villeService.createVille(ville);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdVille);
+    public ResponseEntity<VilleDTO> createVille(@RequestBody VilleDTO villeDTO) {
+
+        return villeService.create(villeDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ville> updateVille(@PathVariable Integer id, @RequestBody Ville ville) {
-        Ville updatedVille = villeService.updateVille(id, ville);
-        if (updatedVille != null) {
-            return ResponseEntity.ok(updatedVille);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<VilleDTO> updateVille(@PathVariable Integer id, @RequestBody VilleDTO villeDTO) {
+
+        return villeService.update(id, villeDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVille(@PathVariable Integer id) {
-        boolean deleted = villeService.deleteVille(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return villeService.delete(id);
+
     }
 }
