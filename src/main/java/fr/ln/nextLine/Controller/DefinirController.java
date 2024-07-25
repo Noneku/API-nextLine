@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Controller;
 
+import fr.ln.nextLine.Model.Dto.DefinirDTO;
 import fr.ln.nextLine.Model.Entity.Definir;
+import fr.ln.nextLine.Model.Mapper.DefinirMapper;
 import fr.ln.nextLine.Service.DefinirService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,44 +23,28 @@ public class DefinirController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Definir>> getAllDefinirs() {
-        List<Definir> definirs = definirService.getAllDefinirs();
-        return ResponseEntity.ok(definirs);
+    public ResponseEntity<List<DefinirDTO>> getAllDefinirs() {
+        return definirService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Definir> getDefinirById(@PathVariable Integer id) {
-        Definir definir = definirService.getDefinirById(id);
-        if (definir != null) {
-            return ResponseEntity.ok(definir);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<DefinirDTO> getDefinirById(@PathVariable Integer id) {
+        return definirService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Definir> createDefinir(@RequestBody Definir definir) {
-        Definir createdDefinir = definirService.createDefinir(definir);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdDefinir);
+    public ResponseEntity<DefinirDTO> createDefinir(@RequestBody DefinirDTO definirDTO) {
+        return definirService.create(definirDTO);
     }
 
+    //Méthode non util
     @PutMapping("/{id}")
-    public ResponseEntity<Definir> updateDefinir(@PathVariable Integer id, @RequestBody Definir definir) {
-        Definir updatedDefinir = definirService.updateDefinir(id, definir);
-        if (updatedDefinir != null) {
-            return ResponseEntity.ok(updatedDefinir);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<DefinirDTO> updateDefinir(@PathVariable Integer id, @RequestBody DefinirDTO definirDTO) {
+        return definirService.update(id, definirDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDefinir(@PathVariable Integer id) {
-        boolean deleted = definirService.deleteDefinir(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return definirService.delete(id);
     }
 }

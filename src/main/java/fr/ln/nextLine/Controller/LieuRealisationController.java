@@ -1,9 +1,8 @@
 package fr.ln.nextLine.Controller;
 
-import fr.ln.nextLine.Model.Entity.LieuRealisation;
+import fr.ln.nextLine.Model.Dto.LieuRealisationDTO;
 import fr.ln.nextLine.Service.LieuRealisationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,48 +16,38 @@ public class LieuRealisationController {
 
     @Autowired
     public LieuRealisationController(LieuRealisationService lieuRealisationService) {
+
         this.lieuRealisationService = lieuRealisationService;
     }
 
     @GetMapping
-    public ResponseEntity<List<LieuRealisation>> getAllLieuxRealisation() {
-        List<LieuRealisation> lieuxRealisation = lieuRealisationService.getAllLieuxRealisations();
-        return ResponseEntity.ok(lieuxRealisation);
+    public ResponseEntity<List<LieuRealisationDTO>> getAllLieuxRealisation() {
+
+        return lieuRealisationService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LieuRealisation> getLieuRealisationById(@PathVariable Integer id) {
-        LieuRealisation lieuRealisation = lieuRealisationService.getLieuRealisationById(id);
-        if (lieuRealisation != null) {
-            return ResponseEntity.ok(lieuRealisation);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<LieuRealisationDTO> getLieuRealisationById(@PathVariable Integer id) {
+
+        return lieuRealisationService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<LieuRealisation> createLieuRealisation(@RequestBody LieuRealisation lieuRealisation) {
-        LieuRealisation createdLieuRealisation = lieuRealisationService.createLieuRealisation(lieuRealisation);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdLieuRealisation);
+    public ResponseEntity<LieuRealisationDTO> createLieuRealisation(@RequestBody LieuRealisationDTO lieuRealisationDTO) {
+
+        return lieuRealisationService.create(lieuRealisationDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LieuRealisation> updateLieuRealisation(@PathVariable Integer id, @RequestBody LieuRealisation lieuRealisation) {
-        LieuRealisation updatedLieuRealisation = lieuRealisationService.updateLieuRealisation(id, lieuRealisation);
-        if (updatedLieuRealisation != null) {
-            return ResponseEntity.ok(updatedLieuRealisation);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<LieuRealisationDTO> updateLieuRealisation(@PathVariable Integer id, @RequestBody LieuRealisationDTO lieuRealisationDTO) {
+
+        return lieuRealisationService.update(id, lieuRealisationDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLieuRealisation(@PathVariable Integer id) {
-        boolean deleted = lieuRealisationService.deleteLieuRealisation(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> deleteVille(@PathVariable Integer id) {
+
+        return lieuRealisationService.delete(id);
+
     }
 }
