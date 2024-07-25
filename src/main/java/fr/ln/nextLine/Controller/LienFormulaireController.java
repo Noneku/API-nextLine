@@ -50,4 +50,10 @@ public class LienFormulaireController {
         return lienFormulaireService.delete(id);
 
     }
+
+    @PostMapping("/generate")
+    public ResponseEntity<String> generateLienFormulaire(@RequestBody Integer id_utilisateur) {
+
+        return lienFormulaireService.generateAndSendLink(id_utilisateur);
+    }
 }

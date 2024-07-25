@@ -2,26 +2,38 @@ package fr.ln.nextLine.Service.ServiceImpl;
 
 import fr.ln.nextLine.Model.Dto.LienFormulaireDTO;
 import fr.ln.nextLine.Model.Entity.LienFormulaire;
+import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.LienFormulaireMapper;
 import fr.ln.nextLine.Model.Repository.LienFormulaireRepository;
+import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
+import fr.ln.nextLine.Service.EmailSenderService;
 import fr.ln.nextLine.Service.LienFormulaireService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
 public class LienFormulaireServiceImpl implements LienFormulaireService {
 
     private final LienFormulaireRepository lienFormulaireRepository;
+    private final UtilisateurRepository utilisateurRepository;
+    private final EmailSenderService emailSenderService;
 
-    public LienFormulaireServiceImpl(LienFormulaireRepository lienFormulaireRepository) {
+    public LienFormulaireServiceImpl(
+            LienFormulaireRepository lienFormulaireRepository,
+            UtilisateurRepository utilisateurRepository,
+            EmailSenderService emailSenderService) {
 
         this.lienFormulaireRepository = lienFormulaireRepository;
+        this.utilisateurRepository = utilisateurRepository;
+        this.emailSenderService = emailSenderService;
     }
 
 
@@ -94,4 +106,32 @@ public class LienFormulaireServiceImpl implements LienFormulaireService {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+    public ResponseEntity<String> generateAndSendLink (Integer id_utilisateur) {
+
+        Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findById(id_utilisateur);
+
+        if (!optionalUtilisateur.isPresent()) {
+
+            throw new RuntimeException("Pas d'utilisateur trouvé avec l'id " + id_utilisateur);
+        }
+
+        Utilisateur stagiaire = optionalUtilisateur.get();
+
+        String token = UUID.randomUUID().toString();
+
+        LienFormulaire lienFormulaire = new LienFormulaire();
+        lienFormulaire.setTokenLien(token);
+        lienFormulaire.setDateGeneration(LocalDate.now());
+        lienFormulaire.setStatut(false);
+        lienFormulaire.setIdUtilisateur(stagiaire);
+
+        lienFormulaireRepository.save(lienFormulaire);
+
+        String emailContent = "Veuillez compléter le formulaire à l'adresse suivante : " + "http://localhost:8081/formulaire?token=" + token;
+        emailSenderService.sendEmail("leila.mouaci@gmail.com", "Complétez le formulaire", emailContent);
+
+        return ResponseEntity.ok("Le lien a bien été envoyé");
+    }
 }
+

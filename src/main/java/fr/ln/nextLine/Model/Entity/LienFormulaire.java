@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Table(name = "lien_formulaire", schema = "public")
 public class LienFormulaire {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('lien_formulaire_id_lien_seq'::regclass)")
     @Column(name = "id_lien", nullable = false)
     private Integer id;
