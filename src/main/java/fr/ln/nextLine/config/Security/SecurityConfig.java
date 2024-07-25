@@ -22,6 +22,7 @@ public class SecurityConfig {
     private final UtilisateurServiceImpl utilisateurServiceImpl;
     private CustomAuthenticationSuccessHandler successHandler;
 
+    // Injection des dépendances par le constructeur
     public SecurityConfig(UtilisateurServiceImpl utilisateurServiceImpl, CustomAuthenticationSuccessHandler successHandler) {
         this.utilisateurServiceImpl = utilisateurServiceImpl;
         this.successHandler = successHandler;
@@ -29,20 +30,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Définir les autorisations pour les requêtes HTTP
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated()
                 )
+                // Configurer l'authentification basée sur les formulaires
                 .formLogin(form -> form
                         .loginProcessingUrl("/login") // URL de traitement de l'authentification
                         .successHandler(successHandler) // Configure le gestionnaire de succès
                         .failureUrl("/login?error")
                 )
+                // Configurer la gestion des sessions
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Utilisation de JWT nécessite des sessions stateless
                 );
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -58,8 +63,9 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        //return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        // Utiliser NoOpPasswordEncoder pour les mots de passe en clair (uniquement pour le développement/test)
         return NoOpPasswordEncoder.getInstance();
+        //return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
 }
