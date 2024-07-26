@@ -38,7 +38,9 @@ public class FormulaireServiceImpl implements FormulaireService {
 
     @Override
     public boolean isTokenValid(String token) {
+
         Optional<LienFormulaire> optionalLienFormulaire = lienFormulaireRepository.findByTokenLien(token);
+
         if (!optionalLienFormulaire.isPresent()) {
             return false;
         }
@@ -46,6 +48,7 @@ public class FormulaireServiceImpl implements FormulaireService {
         LienFormulaire lienFormulaire = optionalLienFormulaire.get();
         LocalDateTime dateGeneration = lienFormulaire.getDateGeneration().atStartOfDay(ZoneId.systemDefault()).toLocalDateTime();
         LocalDateTime now = LocalDateTime.now();
+
         return !dateGeneration.plusHours(24).isBefore(now) && !lienFormulaire.getStatut();
     }
 }
