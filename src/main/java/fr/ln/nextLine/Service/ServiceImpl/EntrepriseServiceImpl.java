@@ -93,4 +93,10 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+
+    public boolean isEntrepriseRepertoriee(String siret) {
+
+        return true;
+    }
 }

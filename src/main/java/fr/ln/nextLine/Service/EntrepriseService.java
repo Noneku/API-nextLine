@@ -6,4 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface EntrepriseService extends GeneriqueCrudService <EntrepriseDTO> {
 
+    boolean isEntrepriseRepertoriee(String siret);
+
 }
