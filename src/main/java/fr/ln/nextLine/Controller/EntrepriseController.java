@@ -3,6 +3,7 @@ package fr.ln.nextLine.Controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
 import fr.ln.nextLine.Service.EntrepriseService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,9 +52,16 @@ public class EntrepriseController {
     }
 
     @GetMapping("/verifier/{siret}")
-    public EntrepriseDTO verifierEntreprise(@PathVariable String siret) {
+    public ResponseEntity<EntrepriseDTO> verifierEntreprise(@PathVariable String siret) {
 
-        return entrepriseService.verifierEntreprise(siret);
+        EntrepriseDTO entrepriseDTO = entrepriseService.verifierEntreprise(siret);
+        return new ResponseEntity<>(entrepriseDTO, HttpStatus.OK);
 
+    }
+
+    @PostMapping("/save-entreprise")
+    public ResponseEntity<EntrepriseDTO> saveEntreprise(@RequestBody EntrepriseDTO entrepriseDTO) {
+
+        return entrepriseService.saveEntreprise(entrepriseDTO);
     }
 }

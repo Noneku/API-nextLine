@@ -147,7 +147,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 
 
     @Override
-    public Entreprise saveEntreprise(EntrepriseDTO entrepriseDTO) {
+    public ResponseEntity<EntrepriseDTO> saveEntreprise(EntrepriseDTO entrepriseDTO) {
 
         Entreprise entreprise = new Entreprise();
         entreprise.setNumeroSiret(entrepriseDTO.getNumeroSiret());
@@ -155,7 +155,14 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         entreprise.setAdresseEntreprise(entrepriseDTO.getAdresseEntreprise());
         entreprise.setTelephoneEntreprise(entrepriseDTO.getTelephoneEntreprise());
         entreprise.setEmailEntreprise(entrepriseDTO.getEmailEntreprise());
+        entreprise.setIdVille(entrepriseDTO.getIdVille());
+        entreprise.setIdFormeJuridique(entrepriseDTO.getIdFormeJuridique());
+        entreprise.setIdDirigeant(entrepriseDTO.getIdDirigeant());
+        entreprise.setIdAssurance(entrepriseDTO.getIdAssurance());
 
-        return entrepriseRepository.save(entreprise);
+        Entreprise createdEntreprise = entrepriseRepository.save(entreprise);
+        EntrepriseDTO createdEntrepriseDTO = EntrepriseMapper.toDTO(createdEntreprise);
+
+        return new ResponseEntity<>(createdEntrepriseDTO, HttpStatus.CREATED);
     }
 }
