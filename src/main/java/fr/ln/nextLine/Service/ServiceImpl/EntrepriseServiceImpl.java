@@ -1,9 +1,14 @@
 package fr.ln.nextLine.Service.ServiceImpl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
+import fr.ln.nextLine.Model.Dto.VilleDTO;
 import fr.ln.nextLine.Model.Entity.Entreprise;
+import fr.ln.nextLine.Model.Entity.Ville;
 import fr.ln.nextLine.Model.Mapper.EntrepriseMapper;
 import fr.ln.nextLine.Model.Repository.EntrepriseRepository;
+import fr.ln.nextLine.Service.ApiSirenService;
 import fr.ln.nextLine.Service.EntrepriseService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -18,10 +23,17 @@ import java.util.Optional;
 public class EntrepriseServiceImpl implements EntrepriseService {
 
     private final EntrepriseRepository entrepriseRepository;
+    private final ApiSirenService apiSirenService;
+    private ObjectMapper objectMapper;
 
-    public EntrepriseServiceImpl(EntrepriseRepository entrepriseRepository) {
+    public EntrepriseServiceImpl(
+            EntrepriseRepository entrepriseRepository,
+            ApiSirenService apiSirenService,
+            ObjectMapper objectMapper) {
 
         this.entrepriseRepository = entrepriseRepository;
+        this.apiSirenService = apiSirenService;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -95,8 +107,55 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     }
 
 
-    public boolean isEntrepriseRepertoriee(String siret) {
+    public EntrepriseDTO verifierEntreprise(String siret) {
 
-        return true;
+        String jsonData = apiSirenService.verifierEntreprise(siret);
+        return recupererEntreprise(jsonData, siret);
+    }
+
+
+    @Override
+    public EntrepriseDTO recupererEntreprise(String jsonData, String siret) {
+
+        try {
+            JsonNode root = objectMapper.readTree(jsonData);
+
+            EntrepriseDTO entrepriseDTO = new EntrepriseDTO();
+            Ville ville = new Ville();
+
+            entrepriseDTO.setNumeroSiret(siret);
+            entrepriseDTO.setRaisonSociale(root.path("etablissement").path("unite_legale").path("denomination").asText());
+            entrepriseDTO.setAdresseEntreprise(root.path("etablissement").path("numero_voie").asText()
+                    + " " + root.path("etablissement").path("type_voie").asText()
+                    + " " + root.path("etablissement").path("libelle_voie").asText());
+
+            ville.setNomVille(root.path("etablissement").path("libelle_commune").asText());
+            ville.setCodePostal(root.path("etablissement").path("code_postal").asText());
+            ville.setCodeInsee(root.path("etablissement").path("code_commune").asText());
+
+            entrepriseDTO.setIdVille(ville);
+
+            return entrepriseDTO;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+
+    @Override
+    public Entreprise saveEntreprise(EntrepriseDTO entrepriseDTO) {
+
+        Entreprise entreprise = new Entreprise();
+        entreprise.setNumeroSiret(entrepriseDTO.getNumeroSiret());
+        entreprise.setRaisonSociale(entrepriseDTO.getRaisonSociale());
+        entreprise.setAdresseEntreprise(entrepriseDTO.getAdresseEntreprise());
+        entreprise.setTelephoneEntreprise(entrepriseDTO.getTelephoneEntreprise());
+        entreprise.setEmailEntreprise(entrepriseDTO.getEmailEntreprise());
+
+        return entrepriseRepository.save(entreprise);
     }
 }
