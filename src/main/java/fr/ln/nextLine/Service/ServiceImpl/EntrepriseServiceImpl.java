@@ -2,8 +2,7 @@ package fr.ln.nextLine.Service.ServiceImpl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
-import fr.ln.nextLine.Model.Dto.VilleDTO;
+import fr.ln.nextLine.Model.Dto.*;
 import fr.ln.nextLine.Model.Entity.*;
 import fr.ln.nextLine.Model.Mapper.*;
 import fr.ln.nextLine.Model.Repository.*;
@@ -140,6 +139,8 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             entrepriseDTO.setAdresseEntreprise(root.path("etablissement").path("numero_voie").asText()
                     + " " + root.path("etablissement").path("type_voie").asText()
                     + " " + root.path("etablissement").path("libelle_voie").asText());
+            entrepriseDTO.setTelephoneEntreprise("0320887766");
+            entrepriseDTO.setEmailEntreprise("entreprise@mail.com");
 
             villeDTO.setNomVille(root.path("etablissement").path("libelle_commune").asText());
             villeDTO.setCodePostal(root.path("etablissement").path("code_postal").asText());
@@ -152,6 +153,18 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             );
 
             entrepriseDTO.setIdVille(createdVilleDTO);
+
+            FormeJuridique defaultFormeJuridique = formeJuridiqueRepository.getById(1);
+            FormeJuridiqueDTO defaultFormeJuridiqueDTO = FormeJuridiqueMapper.toDTO(defaultFormeJuridique);
+            entrepriseDTO.setIdFormeJuridique(defaultFormeJuridiqueDTO);
+
+            Dirigeant defaultDirigeant = dirigeantRepository.getById(1);
+            DirigeantDTO defaultDirigeantDTO = DirigeantMapper.toDTO(defaultDirigeant);
+            entrepriseDTO.setIdDirigeant(defaultDirigeantDTO);
+
+            Assurance defaultAssurance = assuranceRepository.getById(1);
+            AssuranceDTO defaultAssuranceDTO = AssuranceMapper.toDTO(defaultAssurance);
+            entrepriseDTO.setIdAssurance(defaultAssuranceDTO);
 
             return entrepriseDTO;
 
@@ -175,7 +188,18 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             entreprise.setAdresseEntreprise(entrepriseDTO.getAdresseEntreprise());
             entreprise.setTelephoneEntreprise(entrepriseDTO.getTelephoneEntreprise());
             entreprise.setEmailEntreprise(entrepriseDTO.getEmailEntreprise());
-            entreprise.setIdVille(entreprise.getIdVille());
+
+            Ville ville = VilleMapper.toEntity(entrepriseDTO.getIdVille());
+            entreprise.setIdVille(ville);
+
+            FormeJuridique formeJuridique = FormeJuridiqueMapper.toEntity(entrepriseDTO.getIdFormeJuridique());
+            entreprise.setIdFormeJuridique(formeJuridique);
+
+            Dirigeant dirigeant = DirigeantMapper.toEntity(entrepriseDTO.getIdDirigeant());
+            entreprise.setIdDirigeant(dirigeant);
+
+            Assurance assurance = AssuranceMapper.toEntity(entrepriseDTO.getIdAssurance());
+            entreprise.setIdAssurance(assurance);
 
             Entreprise createdEntreprise = entrepriseRepository.save(entreprise);
             EntrepriseDTO createdEntrepriseDTO = EntrepriseMapper.toDTO(createdEntreprise);
