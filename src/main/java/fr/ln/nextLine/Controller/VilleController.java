@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/villes")
+@RequestMapping("/api-nextline/villes")
 public class VilleController {
 
     private final VilleService villeService;
@@ -46,6 +46,19 @@ public class VilleController {
     public ResponseEntity<Void> deleteVille(@PathVariable Integer id) {
 
         return villeService.delete(id);
+    }
 
+    @GetMapping("/find")
+    public ResponseEntity<VilleDTO> getByCodePostalAndCodeInsee(@RequestParam String codePostal, @RequestParam String codeInsee) {
+
+        return villeService.findByCodePostalAndCodeInsee(codePostal, codeInsee);
+
+        // pour accéder à cet endpoint : GET /find?codePostal={codePostal}&codeInsee={codeInsee}
+    }
+
+    @PostMapping("/find-or-create")
+    public VilleDTO findOrCreateVille(@RequestParam String codePostal, @RequestParam String codeInsee, @RequestParam String nomVille) {
+
+        return villeService.findOrCreateVille(codePostal, codeInsee, nomVille);
     }
 }

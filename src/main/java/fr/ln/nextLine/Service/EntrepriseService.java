@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface EntrepriseService extends GeneriqueCrudService <EntrepriseDTO> {
 
-    public EntrepriseDTO verifierEntreprise(String siret);
-    public ResponseEntity<EntrepriseDTO> saveEntreprise(EntrepriseDTO entrepriseDTO);
-    public EntrepriseDTO recupererEntreprise(String jsonData, String siret);
+    EntrepriseDTO verifierEntreprise(String siret);
+    ResponseEntity<EntrepriseDTO> saveEntreprise(EntrepriseDTO entrepriseDTO);
+    EntrepriseDTO recupererEntreprise(String jsonData, String siret);
 
 }

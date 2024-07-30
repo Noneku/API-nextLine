@@ -21,9 +21,9 @@ public class EntrepriseDTO {
     private String numeroSiret;
     private String telephoneEntreprise;
     private String emailEntreprise;
-    private Ville idVille;
-    private FormeJuridique idFormeJuridique;
-    private Dirigeant idDirigeant;
-    private Assurance idAssurance;
+    private VilleDTO idVille;
+    private FormeJuridiqueDTO idFormeJuridique;
+    private DirigeantDTO idDirigeant;
+    private AssuranceDTO idAssurance;
 
 }

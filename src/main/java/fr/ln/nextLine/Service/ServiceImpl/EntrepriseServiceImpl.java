@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
 import fr.ln.nextLine.Model.Dto.VilleDTO;
-import fr.ln.nextLine.Model.Entity.Entreprise;
-import fr.ln.nextLine.Model.Entity.Ville;
-import fr.ln.nextLine.Model.Mapper.EntrepriseMapper;
-import fr.ln.nextLine.Model.Repository.EntrepriseRepository;
+import fr.ln.nextLine.Model.Entity.*;
+import fr.ln.nextLine.Model.Mapper.*;
+import fr.ln.nextLine.Model.Repository.*;
 import fr.ln.nextLine.Service.ApiSirenService;
 import fr.ln.nextLine.Service.EntrepriseService;
+import fr.ln.nextLine.Service.VilleService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +24,28 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 
     private final EntrepriseRepository entrepriseRepository;
     private final ApiSirenService apiSirenService;
+    private final VilleService villeService;
+    private final FormeJuridiqueRepository formeJuridiqueRepository;
+    private final DirigeantRepository dirigeantRepository;
+    private final AssuranceRepository assuranceRepository;
     private ObjectMapper objectMapper;
 
     public EntrepriseServiceImpl(
             EntrepriseRepository entrepriseRepository,
             ApiSirenService apiSirenService,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            FormeJuridiqueRepository formeJuridiqueRepository,
+            DirigeantRepository dirigeantRepository,
+            AssuranceRepository assuranceRepository,
+            VilleService villeService) {
 
         this.entrepriseRepository = entrepriseRepository;
         this.apiSirenService = apiSirenService;
         this.objectMapper = objectMapper;
+        this.villeService = villeService;
+        this.formeJuridiqueRepository = formeJuridiqueRepository;
+        this.dirigeantRepository = dirigeantRepository;
+        this.assuranceRepository = assuranceRepository;
     }
 
     @Override
@@ -121,7 +133,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             JsonNode root = objectMapper.readTree(jsonData);
 
             EntrepriseDTO entrepriseDTO = new EntrepriseDTO();
-            Ville ville = new Ville();
+            VilleDTO villeDTO = new VilleDTO();
 
             entrepriseDTO.setNumeroSiret(siret);
             entrepriseDTO.setRaisonSociale(root.path("etablissement").path("unite_legale").path("denomination").asText());
@@ -129,11 +141,17 @@ public class EntrepriseServiceImpl implements EntrepriseService {
                     + " " + root.path("etablissement").path("type_voie").asText()
                     + " " + root.path("etablissement").path("libelle_voie").asText());
 
-            ville.setNomVille(root.path("etablissement").path("libelle_commune").asText());
-            ville.setCodePostal(root.path("etablissement").path("code_postal").asText());
-            ville.setCodeInsee(root.path("etablissement").path("code_commune").asText());
+            villeDTO.setNomVille(root.path("etablissement").path("libelle_commune").asText());
+            villeDTO.setCodePostal(root.path("etablissement").path("code_postal").asText());
+            villeDTO.setCodeInsee(root.path("etablissement").path("code_commune").asText());
 
-            entrepriseDTO.setIdVille(ville);
+            VilleDTO createdVilleDTO = villeService.findOrCreateVille(
+                    villeDTO.getCodePostal(),
+                    villeDTO.getCodeInsee(),
+                    villeDTO.getNomVille()
+            );
+
+            entrepriseDTO.setIdVille(createdVilleDTO);
 
             return entrepriseDTO;
 
@@ -149,20 +167,26 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     @Override
     public ResponseEntity<EntrepriseDTO> saveEntreprise(EntrepriseDTO entrepriseDTO) {
 
-        Entreprise entreprise = new Entreprise();
-        entreprise.setNumeroSiret(entrepriseDTO.getNumeroSiret());
-        entreprise.setRaisonSociale(entrepriseDTO.getRaisonSociale());
-        entreprise.setAdresseEntreprise(entrepriseDTO.getAdresseEntreprise());
-        entreprise.setTelephoneEntreprise(entrepriseDTO.getTelephoneEntreprise());
-        entreprise.setEmailEntreprise(entrepriseDTO.getEmailEntreprise());
-        entreprise.setIdVille(entrepriseDTO.getIdVille());
-        entreprise.setIdFormeJuridique(entrepriseDTO.getIdFormeJuridique());
-        entreprise.setIdDirigeant(entrepriseDTO.getIdDirigeant());
-        entreprise.setIdAssurance(entrepriseDTO.getIdAssurance());
+        try {
 
-        Entreprise createdEntreprise = entrepriseRepository.save(entreprise);
-        EntrepriseDTO createdEntrepriseDTO = EntrepriseMapper.toDTO(createdEntreprise);
+            Entreprise entreprise = new Entreprise();
+            entreprise.setNumeroSiret(entrepriseDTO.getNumeroSiret());
+            entreprise.setRaisonSociale(entrepriseDTO.getRaisonSociale());
+            entreprise.setAdresseEntreprise(entrepriseDTO.getAdresseEntreprise());
+            entreprise.setTelephoneEntreprise(entrepriseDTO.getTelephoneEntreprise());
+            entreprise.setEmailEntreprise(entrepriseDTO.getEmailEntreprise());
+            entreprise.setIdVille(entreprise.getIdVille());
 
-        return new ResponseEntity<>(createdEntrepriseDTO, HttpStatus.CREATED);
+            Entreprise createdEntreprise = entrepriseRepository.save(entreprise);
+            EntrepriseDTO createdEntrepriseDTO = EntrepriseMapper.toDTO(createdEntreprise);
+
+            return new ResponseEntity<>(createdEntrepriseDTO, HttpStatus.CREATED);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
