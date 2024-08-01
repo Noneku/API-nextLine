@@ -126,7 +126,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     }
 
 
-    // méthode qui récupère les données depuis l'api siren à partir du numero siret de l'entreprise saisie pour créer un objet entrepriseDTO
+    // méthode qui récupère les données depuis l'api siren à partir du numero siret de l'entreprise saisi pour créer un objet entrepriseDTO
     @Override
     public EntrepriseDTO recupererEntreprise(String jsonData, String siret) {
 
@@ -167,6 +167,9 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             // methode a creer permettant de verifier la saisie de l'entreprise concernant la forme juridique :
             // affichage sous forme de liste de celles déja présentes en bdd, connectée à un bouton "verifier" qui permettra de persister une nouvelle forme juridique
             // si elle n'est pas déjà présente en bdd ou d'affecter une déjà présente à l'objet entrepriseDTO
+
+            // même fonctionnement pour assurance
+            // pas nécessaire pour le dirigeant car généralement unique à chaque entreprise
 
             FormeJuridique defaultFormeJuridique = formeJuridiqueRepository.getById(1);
             FormeJuridiqueDTO defaultFormeJuridiqueDTO = FormeJuridiqueMapper.toDTO(defaultFormeJuridique);

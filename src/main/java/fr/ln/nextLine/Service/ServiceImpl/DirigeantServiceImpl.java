@@ -1,11 +1,8 @@
 package fr.ln.nextLine.Service.ServiceImpl;
 
 import fr.ln.nextLine.Model.Dto.DirigeantDTO;
-import fr.ln.nextLine.Model.Dto.FormeJuridiqueDTO;
 import fr.ln.nextLine.Model.Entity.Dirigeant;
-import fr.ln.nextLine.Model.Entity.FormeJuridique;
 import fr.ln.nextLine.Model.Mapper.DirigeantMapper;
-import fr.ln.nextLine.Model.Mapper.FormeJuridiqueMapper;
 import fr.ln.nextLine.Model.Repository.DirigeantRepository;
 import fr.ln.nextLine.Service.DirigeantService;
 import jakarta.transaction.Transactional;

@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
 import fr.ln.nextLine.Service.EntrepriseService;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,6 @@
 package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.AssuranceDTO;
-import fr.ln.nextLine.Model.Dto.FormeJuridiqueDTO;
 import fr.ln.nextLine.Service.AssuranceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
