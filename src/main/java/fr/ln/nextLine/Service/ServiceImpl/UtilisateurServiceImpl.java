@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -99,10 +101,22 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Optional<Utilisateur> utilisateurFoundByLogin = utilisateurRepository.findByutilisateurLogin(login);
 
+        // Crée un logger pour cette classe
+        Logger logger = LoggerFactory.getLogger(getClass());
+
         if (utilisateurFoundByLogin.isPresent()) {
-            return new CustomUserDetails(utilisateurFoundByLogin.get());
+            Utilisateur utilisateur = utilisateurFoundByLogin.get();
+
+            // Log les détails de l'utilisateur
+            logger.info("Utilisateur trouvé : Login = {}", utilisateur.getUtilisateurLogin());
+            logger.info("Mot de passe : {}", utilisateur.getMdpUtilisateur()); // Attention : Ne pas loguer le mot de passe en production !
+
+            return new CustomUserDetails(utilisateur);
         } else {
+            logger.warn("Utilisateur non trouvé : {}", login);
             throw new UsernameNotFoundException("Invalid username or password.");
         }
     }
+
 }
+

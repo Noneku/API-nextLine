@@ -1,5 +1,9 @@
 package fr.ln.nextLine.config.Security.ControllerSecurity;
 
+import fr.ln.nextLine.config.Security.JwtUtil;
+import fr.ln.nextLine.config.Security.LoginRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,16 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController {
 
-    private final AuthenticationManager authenticationManager;
 
-    public LoginController(AuthenticationManager authenticationManager) {
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    public LoginController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        Logger logger = LoggerFactory.getLogger(getClass());
+
+        logger.info("Authenticating user: {}", loginRequest);
+
         try {
-            // Crée une demande d'authentification
+            // Crée une demande d'authentification avec login et password
             Authentication authenticationRequest =
                     new UsernamePasswordAuthenticationToken(loginRequest.login(), loginRequest.password());
 
@@ -30,10 +41,13 @@ public class LoginController {
             Authentication authenticationResponse =
                     this.authenticationManager.authenticate(authenticationRequest);
 
-            // Gère la réussite de l'authentification
-            // Pour l'instant, retourne un message de succès
-            // Plus tard, tu ajouteras ici la génération du JWT
-            return ResponseEntity.ok("Authentication successful");
+            // Génère le JWT après une authentification réussie
+            String jwtToken = jwtUtil.generateToken(loginRequest.login());
+            logger.info("Token generated: {}", jwtToken);
+
+
+            // Retourne le JWT dans la réponse
+            return ResponseEntity.ok(jwtToken);
 
         } catch (BadCredentialsException e) {
             // Gère l'échec de l'authentification
@@ -43,10 +57,4 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }
-
-    public record LoginRequest(String login, String password) {
-
-    }
-
 }
-

@@ -1,7 +1,6 @@
 package fr.ln.nextLine.config.Security;
 
-import fr.ln.nextLine.Service.ServiceImpl.UtilisateurServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import fr.ln.nextLine.config.Security.Filter.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,19 +14,21 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UtilisateurServiceImpl utilisateurServiceImpl;
     private CustomAuthenticationSuccessHandler successHandler;
+    private JwtRequestFilter jwtRequestFilter;
 
     // Injection des dépendances par le constructeur
-    public SecurityConfig(UtilisateurServiceImpl utilisateurServiceImpl, CustomAuthenticationSuccessHandler successHandler) {
-        this.utilisateurServiceImpl = utilisateurServiceImpl;
+    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler, JwtRequestFilter jwtRequestFilter) {
         this.successHandler = successHandler;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -37,16 +38,12 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated()
                 )
-                // Configurer l'authentification basée sur les formulaires
-                .formLogin(form -> form
-                        .loginProcessingUrl("/login") // URL de traitement de l'authentification
-                        .successHandler(successHandler) // Configure le gestionnaire de succès
-                        .failureUrl("/login?error")
-                )
+
                 // Configurer la gestion des sessions
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Utilisation de JWT nécessite des sessions stateless
-                );
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Utilisation de JWT nécessite des sessions stateless
+                )
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
