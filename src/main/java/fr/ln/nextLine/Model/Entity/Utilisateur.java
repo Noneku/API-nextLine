@@ -19,6 +19,7 @@ public class Utilisateur {
     @Id
     @ColumnDefault("nextval('utilisateur_id_utilisateur_seq'::regclass)")
     @Column(name = "id_utilisateur", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "nom_utilisateur", nullable = false, length = 50)

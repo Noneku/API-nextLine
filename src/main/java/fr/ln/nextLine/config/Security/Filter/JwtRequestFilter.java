@@ -18,20 +18,23 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(@org.jetbrains.annotations.NotNull HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         final String authorizationHeader = request.getHeader("Authorization");
         String username = null;
         String jwtToken = null;
 
+        // Vérifie si l'en-tête Authorization est présent et commence par "Bearer "
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwtToken = authorizationHeader.substring(7);
             username = jwtUtil.getUsernameFromToken(jwtToken);
@@ -39,6 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             System.out.println("Nom d'utilisateur extrait : " + username);
         }
 
+        // Vérifie si le nom d'utilisateur est non nul et s'il n'y a pas déjà une authentification dans le contexte de sécurité
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtUtil.validateToken(jwtToken)) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -50,7 +54,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 System.out.println("Token invalide");
             }
         }
-
+        // Passe la requête et la réponse au prochain filtre dans la chaîne de filtres
         filterChain.doFilter(request, response);
     }
 }

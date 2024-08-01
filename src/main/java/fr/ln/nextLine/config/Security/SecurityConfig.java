@@ -20,12 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private CustomAuthenticationSuccessHandler successHandler;
-    private JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    // Injection des dépendances par le constructeur
-    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler, JwtRequestFilter jwtRequestFilter) {
-        this.successHandler = successHandler;
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
@@ -41,15 +38,16 @@ public class SecurityConfig {
 
                 // Configurer la gestion des sessions
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Utilisation de JWT nécessite des sessions stateless
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Session Stateless est utilisé pour les Tokens JWT (Bearer)
                 )
+                //Mise en place d'un filtre personnalisé JWT
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
 
-    @Bean
+    @Bean //Gère le processus d'authentification des utilisateurs.
     public AuthenticationManager authenticationManager(
             UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder) {

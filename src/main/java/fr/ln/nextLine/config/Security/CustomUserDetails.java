@@ -7,6 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+/*
+    La classe CustomUserDetails encapsule les informations spécifiques à l'utilisateur (ici, l'objet Utilisateur)
+    pour fournir ces informations à Spring Security de manière structurée.
+ */
 public class CustomUserDetails implements UserDetails {
 
     private final Utilisateur utilisateur;

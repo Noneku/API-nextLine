@@ -56,6 +56,7 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
     public ResponseEntity<UtilisateurDTO> create(UtilisateurDTO utilisateurDTO) {
 
         Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
+
         Utilisateur createdUtilisateur = utilisateurRepository.save(utilisateur);
         UtilisateurDTO createdUtilisateurDTO = UtilisateurMapper.toDTO(createdUtilisateur);
 

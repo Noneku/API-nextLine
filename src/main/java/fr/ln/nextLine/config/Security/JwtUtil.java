@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 @Component
 public class JwtUtil {
 
-
     @Value("${jwt.secret}")
     private String secretKeyBase64;
 
@@ -31,20 +30,17 @@ public class JwtUtil {
     }
 
     public String generateToken(String username) {
-        Logger logger = LoggerFactory.getLogger(getClass());
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
                 .signWith(getSecretKey(), SignatureAlgorithm.HS256)
                 .compact();
-        logger.info("Generated JWT token: {}", token);
-
-        return token;
     }
 
     public boolean validateToken(String token) {
+
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(getSecretKey())

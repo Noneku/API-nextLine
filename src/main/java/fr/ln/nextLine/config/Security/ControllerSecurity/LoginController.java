@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class LoginController {
 
@@ -27,34 +30,31 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        Logger logger = LoggerFactory.getLogger(getClass());
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest loginRequest) {
 
-        logger.info("Authenticating user: {}", loginRequest);
+        Map<String, Object> response = new HashMap<>();
 
         try {
-            // Crée une demande d'authentification avec login et password
-            Authentication authenticationRequest =
-                    new UsernamePasswordAuthenticationToken(loginRequest.login(), loginRequest.password());
-
-            // Authentifie l'utilisateur
-            Authentication authenticationResponse =
-                    this.authenticationManager.authenticate(authenticationRequest);
-
-            // Génère le JWT après une authentification réussie
+            // Authentification et génération du token
+            Authentication authenticationRequest = new UsernamePasswordAuthenticationToken(loginRequest.login(), loginRequest.password());
+            Authentication authenticationResponse = this.authenticationManager.authenticate(authenticationRequest);
             String jwtToken = jwtUtil.generateToken(loginRequest.login());
-            logger.info("Token generated: {}", jwtToken);
 
+            // Structurer la réponse en JSON
+            response.put("status", "Success !");
+            response.put("message", "Authentication successful !");
+            response.put("token", jwtToken);
 
-            // Retourne le JWT dans la réponse
-            return ResponseEntity.ok(jwtToken);
+            return ResponseEntity.ok(response);
 
         } catch (BadCredentialsException e) {
-            // Gère l'échec de l'authentification
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            response.put("status", "error");
+            response.put("message", "Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         } catch (Exception e) {
-            // Gère les autres exceptions
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+            response.put("status", "error");
+            response.put("message", "An error occurred");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }
