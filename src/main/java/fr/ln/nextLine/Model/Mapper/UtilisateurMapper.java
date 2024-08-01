@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Model.Mapper;
 
+import fr.ln.nextLine.Model.Dto.RoleDTO;
 import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
+import fr.ln.nextLine.Model.Entity.Role;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
 
 public class UtilisateurMapper {
@@ -12,6 +14,8 @@ public class UtilisateurMapper {
         if (utilisateur == null) {
             return null;
         }
+
+        RoleDTO roleDTO = RoleMapper.toDTO(utilisateur.getIdRole());
 
         UtilisateurDTO utilisateurDTO = new UtilisateurDTO();
 
@@ -26,7 +30,7 @@ public class UtilisateurMapper {
         utilisateurDTO.setNumeroSecuStagiaire(utilisateur.getNumeroSecuStagiaire());
         utilisateurDTO.setNumeroBeneficiaireStagiaire(utilisateur.getNumeroBeneficiaireStagiaire());
         utilisateurDTO.setDateNaissance(utilisateur.getDateNaissance());
-        utilisateurDTO.setIdRole(utilisateur.getIdRole());
+        utilisateurDTO.setIdRole(roleDTO);
 
         return utilisateurDTO;
     }
@@ -36,6 +40,8 @@ public class UtilisateurMapper {
         if (utilisateurDTO == null) {
             return null;
         }
+
+        Role role = RoleMapper.toEntity(utilisateurDTO.getIdRole());
 
         Utilisateur utilisateur = new Utilisateur();
 
@@ -50,7 +56,7 @@ public class UtilisateurMapper {
         utilisateur.setNumeroSecuStagiaire(utilisateurDTO.getNumeroSecuStagiaire());
         utilisateur.setNumeroBeneficiaireStagiaire(utilisateurDTO.getNumeroBeneficiaireStagiaire());
         utilisateur.setDateNaissance(utilisateurDTO.getDateNaissance());
-        utilisateur.setIdRole(utilisateurDTO.getIdRole());
+        utilisateur.setIdRole(role);
 
         return utilisateur;
     }

@@ -1,6 +1,10 @@
 package fr.ln.nextLine.Model.Mapper;
 
+import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
+import fr.ln.nextLine.Model.Dto.FonctionDTO;
 import fr.ln.nextLine.Model.Dto.TuteurDTO;
+import fr.ln.nextLine.Model.Entity.Entreprise;
+import fr.ln.nextLine.Model.Entity.Fonction;
 import fr.ln.nextLine.Model.Entity.Tuteur;
 
 public class TuteurMapper {
@@ -13,6 +17,9 @@ public class TuteurMapper {
             return null;
         }
 
+        EntrepriseDTO entrepriseDTO = EntrepriseMapper.toDTO(tuteur.getIdEntreprise());
+        FonctionDTO fonctionDTO = FonctionMapper.toDTO(tuteur.getIdFonction());
+
         TuteurDTO tuteurDTO = new TuteurDTO();
 
         tuteurDTO.setId(tuteur.getId());
@@ -20,8 +27,8 @@ public class TuteurMapper {
         tuteurDTO.setPrenomTuteur(tuteur.getPrenomTuteur());
         tuteurDTO.setEmailTuteur(tuteur.getEmailTuteur());
         tuteurDTO.setTelTuteur(tuteur.getTelTuteur());
-        tuteurDTO.setIdEntreprise(tuteur.getIdEntreprise());
-        tuteurDTO.setIdFonction(tuteur.getIdFonction());
+        tuteurDTO.setIdEntreprise(entrepriseDTO);
+        tuteurDTO.setIdFonction(fonctionDTO);
 
         return tuteurDTO;
     }
@@ -32,6 +39,9 @@ public class TuteurMapper {
             return null;
         }
 
+        Entreprise entreprise = EntrepriseMapper.toEntity(tuteurDTO.getIdEntreprise());
+        Fonction fonction = FonctionMapper.toEntity(tuteurDTO.getIdFonction());
+
         Tuteur tuteur = new Tuteur();
 
         tuteur.setId(tuteurDTO.getId());
@@ -39,8 +49,8 @@ public class TuteurMapper {
         tuteur.setPrenomTuteur(tuteurDTO.getPrenomTuteur());
         tuteur.setEmailTuteur(tuteurDTO.getEmailTuteur());
         tuteur.setTelTuteur(tuteurDTO.getTelTuteur());
-        tuteur.setIdEntreprise(tuteurDTO.getIdEntreprise());
-        tuteur.setIdFonction(tuteurDTO.getIdFonction());
+        tuteur.setIdEntreprise(entreprise);
+        tuteur.setIdFonction(fonction);
 
         return tuteur;
     }

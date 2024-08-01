@@ -1,7 +1,11 @@
 package fr.ln.nextLine.Model.Mapper;
 
 import fr.ln.nextLine.Model.Dto.HorairesStageDTO;
+import fr.ln.nextLine.Model.Dto.JourDTO;
+import fr.ln.nextLine.Model.Dto.StageDTO;
 import fr.ln.nextLine.Model.Entity.HorairesStage;
+import fr.ln.nextLine.Model.Entity.Jour;
+import fr.ln.nextLine.Model.Entity.Stage;
 
 public class HorairesStageMapper {
 
@@ -13,13 +17,16 @@ public class HorairesStageMapper {
         }
         HorairesStageDTO horairesStageDTO = new HorairesStageDTO();
 
+        StageDTO stageDTO = StageMapper.toDTO(horairesStage.getIdStage());
+        JourDTO jourDTO = JourMapper.toDTO(horairesStage.getIdJour());
+
         horairesStageDTO.setId(horairesStage.getId());
         horairesStageDTO.setHeureDebut(horairesStage.getHeureDebut());
         horairesStageDTO.setHeureDebutPauseDej(horairesStage.getHeureDebutPauseDej());
         horairesStageDTO.setHeureFinPauseDej(horairesStage.getHeureFinPauseDej());
         horairesStageDTO.setHeureFin(horairesStage.getHeureFin());
-        horairesStageDTO.setIdStage(horairesStage.getIdStage());
-        horairesStageDTO.setIdJour(horairesStage.getIdJour());
+        horairesStageDTO.setIdStage(stageDTO);
+        horairesStageDTO.setIdJour(jourDTO);
 
         return horairesStageDTO;
     }
@@ -28,6 +35,10 @@ public class HorairesStageMapper {
         if (horairesStageDTO == null) {
             return null;
         }
+
+        Stage stage = StageMapper.toEntity(horairesStageDTO.getIdStage());
+        Jour jour = JourMapper.toEntity(horairesStageDTO.getIdJour());
+
         HorairesStage horairesStage = new HorairesStage();
 
         horairesStage.setId(horairesStageDTO.getId());
@@ -35,8 +46,8 @@ public class HorairesStageMapper {
         horairesStage.setHeureDebutPauseDej(horairesStageDTO.getHeureDebutPauseDej());
         horairesStage.setHeureFinPauseDej(horairesStageDTO.getHeureFinPauseDej());
         horairesStage.setHeureFin(horairesStageDTO.getHeureFin());
-        horairesStage.setIdStage(horairesStageDTO.getIdStage());
-        horairesStage.setIdJour(horairesStageDTO.getIdJour());
+        horairesStage.setIdStage(stage);
+        horairesStage.setIdJour(jour);
 
         return horairesStage;
     }

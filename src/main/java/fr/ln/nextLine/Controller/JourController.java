@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/jours")
+@RequestMapping("/api-nextline/jours")
 public class JourController {
 
     private final JourService jourService;
@@ -30,7 +30,7 @@ public class JourController {
         return jourService.getById(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<JourDTO> createJour(@RequestBody JourDTO jourDTO) {
 
         return jourService.create(jourDTO);

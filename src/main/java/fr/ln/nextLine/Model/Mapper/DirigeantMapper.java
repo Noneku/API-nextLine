@@ -1,6 +1,7 @@
 package fr.ln.nextLine.Model.Mapper;
 
 import fr.ln.nextLine.Model.Dto.DirigeantDTO;
+import fr.ln.nextLine.Model.Dto.FonctionDTO;
 import fr.ln.nextLine.Model.Entity.Dirigeant;
 import fr.ln.nextLine.Model.Entity.Fonction;
 
@@ -12,6 +13,8 @@ public class DirigeantMapper {
         if (dirigeant == null) {
             return null;
         }
+        FonctionDTO fonctionDTO = FonctionMapper.toDTO(dirigeant.getIdFonction());
+
         DirigeantDTO dirigeantDTO = new DirigeantDTO();
 
         dirigeantDTO.setId(dirigeant.getId());
@@ -20,7 +23,7 @@ public class DirigeantMapper {
         dirigeantDTO.setEmailDirigeant(dirigeant.getEmailDirigeant());
 
         //Foreign key
-        dirigeantDTO.setIdFonction(dirigeant.getIdFonction());
+        dirigeantDTO.setIdFonction(fonctionDTO);
 
         return dirigeantDTO;
     }
@@ -30,6 +33,8 @@ public class DirigeantMapper {
             return null;
         }
 
+        Fonction fonction = FonctionMapper.toEntity(dirigeantDTO.getIdFonction());
+
         Dirigeant dirigeant = new Dirigeant();
 
         dirigeant.setId(dirigeantDTO.getId());
@@ -38,7 +43,7 @@ public class DirigeantMapper {
         dirigeant.setEmailDirigeant(dirigeantDTO.getEmailDirigeant());
 
         //Foreign key
-        dirigeant.setIdFonction(dirigeantDTO.getIdFonction());
+        dirigeant.setIdFonction(fonction);
 
         return dirigeant;
     }

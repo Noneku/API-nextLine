@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Model.Dto;
 
-import fr.ln.nextLine.Model.Entity.Utilisateur;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,6 @@ public class LienFormulaireDTO {
     private String tokenLien;
     private LocalDate dateGeneration;
     private Boolean statut;
-    private Utilisateur idUtilisateur;
+    private UtilisateurDTO idUtilisateur;
 
 }
