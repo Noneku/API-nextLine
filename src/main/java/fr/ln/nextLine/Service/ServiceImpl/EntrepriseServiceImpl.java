@@ -162,6 +162,12 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             entrepriseDTO.setIdVille(createdVilleDTO);
 
             // récupération des tables etrangeres liées à entreprise déjà présentes en bdd afin de les affecter a mon nouvel objet pour pouvoir par la suite persister en bdd
+
+            // forme juridique a modifier ensuite pour set les valeurs saisies dans le formulaire :
+            // methode a creer permettant de verifier la saisie de l'entreprise concernant la forme juridique :
+            // affichage sous forme de liste de celles déja présentes en bdd, connectée à un bouton "verifier" qui permettra de persister une nouvelle forme juridique
+            // si elle n'est pas déjà présente en bdd ou d'affecter une déjà présente à l'objet entrepriseDTO
+
             FormeJuridique defaultFormeJuridique = formeJuridiqueRepository.getById(1);
             FormeJuridiqueDTO defaultFormeJuridiqueDTO = FormeJuridiqueMapper.toDTO(defaultFormeJuridique);
             entrepriseDTO.setIdFormeJuridique(defaultFormeJuridiqueDTO);

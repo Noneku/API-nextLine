@@ -17,6 +17,7 @@ import java.util.List;
 @Table(name = "utilisateur", schema = "public")
 public class Utilisateur {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('utilisateur_id_utilisateur_seq'::regclass)")
     @Column(name = "id_utilisateur", nullable = false)
     private Integer id;

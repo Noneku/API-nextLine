@@ -48,6 +48,7 @@ public class VilleController {
         return villeService.delete(id);
     }
 
+    // appel de la méthode pour chercher une ville a partir du CP et du Code insee
     @GetMapping("/find")
     public ResponseEntity<VilleDTO> getByCodePostalAndCodeInsee(@RequestParam String codePostal, @RequestParam String codeInsee) {
 
@@ -56,6 +57,7 @@ public class VilleController {
         // pour accéder à cet endpoint : GET /find?codePostal={codePostal}&codeInsee={codeInsee}
     }
 
+    // appel de la méthode pour chercher ou persister une ville
     @PostMapping("/find-or-create")
     public VilleDTO findOrCreateVille(@RequestParam String codePostal, @RequestParam String codeInsee, @RequestParam String nomVille) {
 

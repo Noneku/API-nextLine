@@ -16,6 +16,7 @@ public class Dirigeant {
 
     @Id
     @ColumnDefault("nextval('dirigeant_id_dirigeant_seq'::regclass)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_dirigeant", nullable = false)
     private Integer id;
 

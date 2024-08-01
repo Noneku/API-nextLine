@@ -1,8 +1,11 @@
 package fr.ln.nextLine.Service.ServiceImpl;
 
 import fr.ln.nextLine.Model.Dto.FormeJuridiqueDTO;
+import fr.ln.nextLine.Model.Dto.VilleDTO;
 import fr.ln.nextLine.Model.Entity.FormeJuridique;
+import fr.ln.nextLine.Model.Entity.Ville;
 import fr.ln.nextLine.Model.Mapper.FormeJuridiqueMapper;
+import fr.ln.nextLine.Model.Mapper.VilleMapper;
 import fr.ln.nextLine.Model.Repository.FormeJuridiqueRepository;
 import fr.ln.nextLine.Service.FormeJuridiqueService;
 import jakarta.transaction.Transactional;
@@ -92,5 +95,31 @@ public class FormeJuridiqueServiceImpl implements FormeJuridiqueService {
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+    }
+
+
+    // méthode permettant de vérifier si une forme juridique est présente en bdd / si oui, la récupère, si non, la persiste
+    public FormeJuridiqueDTO findOrCreateFormeJuridique(String nom_forme_juridique) {
+
+        Optional<FormeJuridique> optionalFormeJuridique = formeJuridiqueRepository.findByNomFormeJuridique(nom_forme_juridique);
+
+        FormeJuridique formeJuridique;
+
+        // si la forme juridique est présente en bdd, récupération des informations de la forme juridique
+        if (optionalFormeJuridique.isPresent()) {
+
+            formeJuridique = optionalFormeJuridique.get();
+
+            // si la forme juridique n'est pas présente en bdd, persistance d'un nouvel objet forme juridique en bdd
+        } else {
+
+            formeJuridique = new FormeJuridique();
+            formeJuridique.setNomFormeJuridique(nom_forme_juridique);
+
+            formeJuridique = formeJuridiqueRepository.save(formeJuridique);
+        }
+
+        // retour de la forme juridique selon les données fournies en paramètre
+        return FormeJuridiqueMapper.toDTO(formeJuridique);
     }
 }
