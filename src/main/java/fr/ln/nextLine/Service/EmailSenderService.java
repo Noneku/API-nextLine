@@ -16,6 +16,7 @@ public class EmailSenderService {
     @Autowired
     private HandlerMapping resourceHandlerMapping;
 
+    // service permettant l'envoi d'un email depuis l'adresse mail créé pour l'application
     public void sendEmail(String to, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("nextline.app.service@gmail.com");

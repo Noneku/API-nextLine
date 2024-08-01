@@ -118,6 +118,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     }
 
 
+    // méthode permettant de faire un appel au service apiSirenService pour interroger l'api et recupérer les informations de l'entreprise à partir du numéro siret saisi
     public EntrepriseDTO verifierEntreprise(String siret) {
 
         String jsonData = apiSirenService.verifierEntreprise(siret);
@@ -125,6 +126,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     }
 
 
+    // méthode qui récupère les données depuis l'api siren à partir du numero siret de l'entreprise saisie pour créer un objet entrepriseDTO
     @Override
     public EntrepriseDTO recupererEntreprise(String jsonData, String siret) {
 
@@ -139,13 +141,18 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             entrepriseDTO.setAdresseEntreprise(root.path("etablissement").path("numero_voie").asText()
                     + " " + root.path("etablissement").path("type_voie").asText()
                     + " " + root.path("etablissement").path("libelle_voie").asText());
+
+            // valeurs par defaut en attendant de pouvoir connecter le front pour récupérer les données saisies par l'entreprise depuis un formulaire
             entrepriseDTO.setTelephoneEntreprise("0320887766");
             entrepriseDTO.setEmailEntreprise("entreprise@mail.com");
 
+
+            // récupération des informations concernant la ville depuis le retour de l'api siren
             villeDTO.setNomVille(root.path("etablissement").path("libelle_commune").asText());
             villeDTO.setCodePostal(root.path("etablissement").path("code_postal").asText());
             villeDTO.setCodeInsee(root.path("etablissement").path("code_commune").asText());
 
+            // appel de la méthode permettant de vérifier si la ville est déjà existante en bdd ou s'il faut la persister
             VilleDTO createdVilleDTO = villeService.findOrCreateVille(
                     villeDTO.getCodePostal(),
                     villeDTO.getCodeInsee(),
@@ -154,6 +161,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 
             entrepriseDTO.setIdVille(createdVilleDTO);
 
+            // récupération des tables etrangeres liées à entreprise déjà présentes en bdd afin de les affecter a mon nouvel objet pour pouvoir par la suite persister en bdd
             FormeJuridique defaultFormeJuridique = formeJuridiqueRepository.getById(1);
             FormeJuridiqueDTO defaultFormeJuridiqueDTO = FormeJuridiqueMapper.toDTO(defaultFormeJuridique);
             entrepriseDTO.setIdFormeJuridique(defaultFormeJuridiqueDTO);
@@ -166,6 +174,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             AssuranceDTO defaultAssuranceDTO = AssuranceMapper.toDTO(defaultAssurance);
             entrepriseDTO.setIdAssurance(defaultAssuranceDTO);
 
+            // retour de l'objet entrepriseDTO construit à partir des différentes données
             return entrepriseDTO;
 
         } catch (Exception e) {
@@ -177,6 +186,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     }
 
 
+    // méthode permettant d'enregistrer l'entreprise en bdd à partir de l'objet entrepriseDTO récupéré précédemment
     @Override
     public ResponseEntity<EntrepriseDTO> saveEntreprise(EntrepriseDTO entrepriseDTO) {
 
