@@ -1,7 +1,6 @@
 package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.FormeJuridiqueDTO;
-import fr.ln.nextLine.Model.Dto.VilleDTO;
 import fr.ln.nextLine.Service.FormeJuridiqueService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
