@@ -6,7 +6,7 @@ import fr.ln.nextLine.Model.Dto.*;
 import fr.ln.nextLine.Model.Entity.*;
 import fr.ln.nextLine.Model.Mapper.*;
 import fr.ln.nextLine.Model.Repository.*;
-import fr.ln.nextLine.Service.ApiSirenService;
+import fr.ln.nextLine.Service.ServiceExt.ApiSirenService;
 import fr.ln.nextLine.Service.EntrepriseService;
 import fr.ln.nextLine.Service.VilleService;
 import jakarta.transaction.Transactional;
@@ -27,7 +27,15 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     private final FormeJuridiqueRepository formeJuridiqueRepository;
     private final DirigeantRepository dirigeantRepository;
     private final AssuranceRepository assuranceRepository;
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
+
+
+    // Constantes pour attribuer des valeurs par défaut temporaires
+    private static final String DEFAULT_TELEPHONE = "0320887766";
+    private static final String DEFAULT_EMAIL = "entreprise@mail.com";
+    private static final int DEFAULT_FORME_JURIDIQUE_ID = 3;
+    private static final int DEFAULT_DIRIGEANT_ID = 1;
+    private static final int DEFAULT_ASSURANCE_ID = 1;
 
     public EntrepriseServiceImpl(
             EntrepriseRepository entrepriseRepository,
@@ -73,7 +81,22 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     }
 
     @Override
+    public ResponseEntity<EntrepriseDTO> getByNumeroSiret (String numeroSiret) {
+
+        Optional<Entreprise> entreprise = entrepriseRepository.findByNumeroSiret(numeroSiret);
+
+        return entreprise.map(
+                value -> new ResponseEntity<>(EntrepriseMapper.toDTO(value), HttpStatus.FOUND))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public ResponseEntity<EntrepriseDTO> create(EntrepriseDTO entrepriseDTO) {
+
+        if (entrepriseRepository.findByNumeroSiret(entrepriseDTO.getNumeroSiret()).isPresent()) {
+
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
 
         Entreprise entreprise = EntrepriseMapper.toEntity(entrepriseDTO);
         Entreprise createdEntreprise = entrepriseRepository.save(entreprise);
@@ -119,117 +142,90 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 
 
     // méthode permettant de faire un appel au service apiSirenService pour interroger l'api et recupérer les informations de l'entreprise à partir du numéro siret saisi
-    public EntrepriseDTO verifierEntreprise(String siret) {
+    public EntrepriseDTO checkEntreprise(String siret) {
 
         String jsonData = apiSirenService.verifierEntreprise(siret);
-        return recupererEntreprise(jsonData, siret);
+        return getEntreprise(jsonData, siret);
     }
 
 
     // méthode qui récupère les données depuis l'api siren à partir du numero siret de l'entreprise saisi pour créer un objet entrepriseDTO
     @Override
-    public EntrepriseDTO recupererEntreprise(String jsonData, String siret) {
-
+    public EntrepriseDTO getEntreprise(String jsonData, String siret) {
         try {
             JsonNode root = objectMapper.readTree(jsonData);
 
             EntrepriseDTO entrepriseDTO = new EntrepriseDTO();
-            VilleDTO villeDTO = new VilleDTO();
 
-            entrepriseDTO.setNumeroSiret(siret);
-            entrepriseDTO.setRaisonSociale(root.path("etablissement").path("unite_legale").path("denomination").asText());
-            entrepriseDTO.setAdresseEntreprise(root.path("etablissement").path("numero_voie").asText()
-                    + " " + root.path("etablissement").path("type_voie").asText()
-                    + " " + root.path("etablissement").path("libelle_voie").asText());
+            VilleDTO villeDTO = extractVilleDTO(root);
 
-            // valeurs par defaut en attendant de pouvoir connecter le front pour récupérer les données saisies par l'entreprise depuis un formulaire
-            entrepriseDTO.setTelephoneEntreprise("0320887766");
-            entrepriseDTO.setEmailEntreprise("entreprise@mail.com");
-
-
-            // récupération des informations concernant la ville depuis le retour de l'api siren
-            villeDTO.setNomVille(root.path("etablissement").path("libelle_commune").asText());
-            villeDTO.setCodePostal(root.path("etablissement").path("code_postal").asText());
-            villeDTO.setCodeInsee(root.path("etablissement").path("code_commune").asText());
-
-            // appel de la méthode permettant de vérifier si la ville est déjà existante en bdd ou s'il faut la persister
             VilleDTO createdVilleDTO = villeService.findOrCreateVille(
                     villeDTO.getCodePostal(),
                     villeDTO.getCodeInsee(),
                     villeDTO.getNomVille()
             );
 
+            entrepriseDTO.setNumeroSiret(siret);
+            entrepriseDTO.setRaisonSociale(getJsonText(root, "etablissement", "unite_legale", "denomination"));
+            entrepriseDTO.setAdresseEntreprise(formatAddress(root));
+            entrepriseDTO.setTelephoneEntreprise(DEFAULT_TELEPHONE);
+            entrepriseDTO.setEmailEntreprise(DEFAULT_EMAIL);
             entrepriseDTO.setIdVille(createdVilleDTO);
 
-            // récupération des tables etrangeres liées à entreprise déjà présentes en bdd afin de les affecter a mon nouvel objet pour pouvoir par la suite persister en bdd
+            entrepriseDTO.setIdFormeJuridique(getDefaultFormeJuridiqueDTO());
+            entrepriseDTO.setIdDirigeant(getDefaultDirigeantDTO());
+            entrepriseDTO.setIdAssurance(getDefaultAssuranceDTO());
 
-            // forme juridique a modifier ensuite pour set les valeurs saisies dans le formulaire :
-            // methode a creer permettant de verifier la saisie de l'entreprise concernant la forme juridique :
-            // affichage sous forme de liste de celles déja présentes en bdd, connectée à un bouton "verifier" qui permettra de persister une nouvelle forme juridique
-            // si elle n'est pas déjà présente en bdd ou d'affecter une déjà présente à l'objet entrepriseDTO
-
-            // même fonctionnement pour assurance
-            // pas nécessaire pour le dirigeant car généralement unique à chaque entreprise
-
-            FormeJuridique defaultFormeJuridique = formeJuridiqueRepository.getById(1);
-            FormeJuridiqueDTO defaultFormeJuridiqueDTO = FormeJuridiqueMapper.toDTO(defaultFormeJuridique);
-            entrepriseDTO.setIdFormeJuridique(defaultFormeJuridiqueDTO);
-
-            Dirigeant defaultDirigeant = dirigeantRepository.getById(1);
-            DirigeantDTO defaultDirigeantDTO = DirigeantMapper.toDTO(defaultDirigeant);
-            entrepriseDTO.setIdDirigeant(defaultDirigeantDTO);
-
-            Assurance defaultAssurance = assuranceRepository.getById(1);
-            AssuranceDTO defaultAssuranceDTO = AssuranceMapper.toDTO(defaultAssurance);
-            entrepriseDTO.setIdAssurance(defaultAssuranceDTO);
-
-            // retour de l'objet entrepriseDTO construit à partir des différentes données
             return entrepriseDTO;
 
         } catch (Exception e) {
-
             e.printStackTrace();
-
             return null;
         }
     }
 
+    // méthode pour extraire les données de la ville à partir du retour JSON de l'api
+    // et hydrater l'objet VilleDTO à partir des données récupérées
+    private VilleDTO extractVilleDTO(JsonNode root) {
+        VilleDTO villeDTO = new VilleDTO();
+        villeDTO.setNomVille(getJsonText(root, "etablissement", "libelle_commune"));
+        villeDTO.setCodePostal(getJsonText(root, "etablissement", "code_postal"));
+        villeDTO.setCodeInsee(getJsonText(root, "etablissement", "code_commune"));
 
-    // méthode permettant d'enregistrer l'entreprise en bdd à partir de l'objet entrepriseDTO récupéré précédemment
-    @Override
-    public ResponseEntity<EntrepriseDTO> saveEntreprise(EntrepriseDTO entrepriseDTO) {
+        return villeDTO;
+    }
 
-        try {
-
-            Entreprise entreprise = new Entreprise();
-            entreprise.setNumeroSiret(entrepriseDTO.getNumeroSiret());
-            entreprise.setRaisonSociale(entrepriseDTO.getRaisonSociale());
-            entreprise.setAdresseEntreprise(entrepriseDTO.getAdresseEntreprise());
-            entreprise.setTelephoneEntreprise(entrepriseDTO.getTelephoneEntreprise());
-            entreprise.setEmailEntreprise(entrepriseDTO.getEmailEntreprise());
-
-            Ville ville = VilleMapper.toEntity(entrepriseDTO.getIdVille());
-            entreprise.setIdVille(ville);
-
-            FormeJuridique formeJuridique = FormeJuridiqueMapper.toEntity(entrepriseDTO.getIdFormeJuridique());
-            entreprise.setIdFormeJuridique(formeJuridique);
-
-            Dirigeant dirigeant = DirigeantMapper.toEntity(entrepriseDTO.getIdDirigeant());
-            entreprise.setIdDirigeant(dirigeant);
-
-            Assurance assurance = AssuranceMapper.toEntity(entrepriseDTO.getIdAssurance());
-            entreprise.setIdAssurance(assurance);
-
-            Entreprise createdEntreprise = entrepriseRepository.save(entreprise);
-            EntrepriseDTO createdEntrepriseDTO = EntrepriseMapper.toDTO(createdEntreprise);
-
-            return new ResponseEntity<>(createdEntrepriseDTO, HttpStatus.CREATED);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    // méthode pour factoriser les chemins de la structure JSON
+    private String getJsonText(JsonNode root, String... fields) {
+        JsonNode node = root;
+        for (String field : fields) {
+            node = node.path(field);
         }
+        return node.asText();
+    }
+
+    // méthode pour factoriser le chemin pour accéder à l'adresse depuis la structure JSON
+    private String formatAddress(JsonNode root) {
+        return String.format("%s %s %s",
+                getJsonText(root, "etablissement", "numero_voie"),
+                getJsonText(root, "etablissement", "type_voie"),
+                getJsonText(root, "etablissement", "libelle_voie")
+        ).trim();
+    }
+
+    // méthodes pour attribuer des valeurs par défaut aux tables étrangères dans l'attente de récupérer les données saisies par l'entreprise depuis un formulaire
+    private FormeJuridiqueDTO getDefaultFormeJuridiqueDTO() {
+        FormeJuridique defaultFormeJuridique = formeJuridiqueRepository.getById(DEFAULT_FORME_JURIDIQUE_ID);
+        return FormeJuridiqueMapper.toDTO(defaultFormeJuridique);
+    }
+
+    private DirigeantDTO getDefaultDirigeantDTO() {
+        Dirigeant defaultDirigeant = dirigeantRepository.getById(DEFAULT_DIRIGEANT_ID);
+        return DirigeantMapper.toDTO(defaultDirigeant);
+    }
+
+    private AssuranceDTO getDefaultAssuranceDTO() {
+        Assurance defaultAssurance = assuranceRepository.getById(DEFAULT_ASSURANCE_ID);
+        return AssuranceMapper.toDTO(defaultAssurance);
     }
 }

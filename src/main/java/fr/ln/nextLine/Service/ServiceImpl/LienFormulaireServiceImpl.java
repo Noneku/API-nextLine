@@ -6,7 +6,7 @@ import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.LienFormulaireMapper;
 import fr.ln.nextLine.Model.Repository.LienFormulaireRepository;
 import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
-import fr.ln.nextLine.Service.EmailSenderService;
+import fr.ln.nextLine.Service.ServiceExt.EmailSenderService;
 import fr.ln.nextLine.Service.LienFormulaireService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;

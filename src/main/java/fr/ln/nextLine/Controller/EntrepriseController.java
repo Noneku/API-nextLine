@@ -31,7 +31,13 @@ public class EntrepriseController {
         return entrepriseService.getById(id);
     }
 
-    @PostMapping
+    @GetMapping("/siret/{numeroSiret}")
+    public ResponseEntity<EntrepriseDTO> getEntrepriseByNumeroSiret(@PathVariable String numeroSiret) {
+
+        return entrepriseService.getByNumeroSiret(numeroSiret);
+    }
+
+    @PostMapping("/save-entreprise")
     public ResponseEntity<EntrepriseDTO> createEntreprise(@RequestBody EntrepriseDTO entrepriseDTO) {
 
         return entrepriseService.create(entrepriseDTO);
@@ -51,16 +57,10 @@ public class EntrepriseController {
     }
 
     @GetMapping("/verifier/{siret}")
-    public ResponseEntity<EntrepriseDTO> verifierEntreprise(@PathVariable String siret) {
+    public ResponseEntity<EntrepriseDTO> checkEntreprise(@PathVariable String siret) {
 
-        EntrepriseDTO entrepriseDTO = entrepriseService.verifierEntreprise(siret);
+        EntrepriseDTO entrepriseDTO = entrepriseService.checkEntreprise(siret);
         return new ResponseEntity<>(entrepriseDTO, HttpStatus.OK);
 
-    }
-
-    @PostMapping("/save-entreprise")
-    public ResponseEntity<EntrepriseDTO> saveEntreprise(@RequestBody EntrepriseDTO entrepriseDTO) {
-
-        return entrepriseService.saveEntreprise(entrepriseDTO);
     }
 }

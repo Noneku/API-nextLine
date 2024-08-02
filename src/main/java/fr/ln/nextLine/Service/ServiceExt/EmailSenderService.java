@@ -1,4 +1,4 @@
-package fr.ln.nextLine.Service;
+package fr.ln.nextLine.Service.ServiceExt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

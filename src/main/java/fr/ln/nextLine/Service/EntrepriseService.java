@@ -6,11 +6,13 @@ import fr.ln.nextLine.Model.Entity.Entreprise;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public interface EntrepriseService extends GeneriqueCrudService <EntrepriseDTO> {
 
-    EntrepriseDTO verifierEntreprise(String siret);
-    ResponseEntity<EntrepriseDTO> saveEntreprise(EntrepriseDTO entrepriseDTO);
-    EntrepriseDTO recupererEntreprise(String jsonData, String siret);
+    EntrepriseDTO checkEntreprise(String siret);
+    EntrepriseDTO getEntreprise(String jsonData, String siret);
+    ResponseEntity<EntrepriseDTO> getByNumeroSiret (String numeroSiret);
 
 }
