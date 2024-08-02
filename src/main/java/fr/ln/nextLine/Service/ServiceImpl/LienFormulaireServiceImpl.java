@@ -109,34 +109,56 @@ public class LienFormulaireServiceImpl implements LienFormulaireService {
         }
     }
 
-    public ResponseEntity<String> generateAndSendLink (Integer id_utilisateur, String emailEntreprise) {
+    // méthode permettant de générer et envoyer un lien à une entreprise pour remplir un formulaire
+    public ResponseEntity<String> generateAndSendLink(Integer idUtilisateur, String emailEntreprise) {
 
-        Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findById(id_utilisateur);
+        // a corriger ensuite une fois les sessions et la connexion effectuée
+        Utilisateur utilisateur = getUtilisateurById(idUtilisateur);
 
-        if (!optionalUtilisateur.isPresent()) {
+        String token = generateToken();
 
-            throw new RuntimeException("Pas d'utilisateur trouvé avec l'id " + id_utilisateur);
-        }
-
-        Utilisateur stagiaire = optionalUtilisateur.get();
-
-        String token = UUID.randomUUID().toString();
-
-        LienFormulaire lienFormulaire = new LienFormulaire();
-        lienFormulaire.setTokenLien(token);
-        lienFormulaire.setDateGeneration(LocalDate.now());
-        lienFormulaire.setStatut(false);
-        lienFormulaire.setIdUtilisateur(stagiaire);
-
+        LienFormulaire lienFormulaire = createLienFormulaire(token, utilisateur);
         lienFormulaireRepository.save(lienFormulaire);
 
-        String emailContent = "Veuillez compléter le formulaire à l'adresse suivante : " + "http://localhost:8081/formulaire?token=" + token;
+        String emailContent = createEmailContent(token);
         emailSenderService.sendEmail(emailEntreprise, "Complétez le formulaire", emailContent);
 
         return ResponseEntity.ok("Le lien a bien été envoyé");
     }
 
+    // méthode pour récupérer l'utilisateur à partir de son id
+    private Utilisateur getUtilisateurById(Integer idUtilisateur) {
+        return utilisateurRepository.findById(idUtilisateur)
+                .orElseThrow(() -> new RuntimeException("Pas d'utilisateur trouvé avec l'id " + idUtilisateur));
+    }
 
+    // méthode pour générer un token
+    private String generateToken() {
+        return UUID.randomUUID().toString();
+    }
+
+    // méthode pour enregistrer le lien selon les paramètres attribués
+    private LienFormulaire createLienFormulaire(String token, Utilisateur utilisateur) {
+
+        LienFormulaire lienFormulaire = new LienFormulaire();
+
+        lienFormulaire.setTokenLien(token);
+        lienFormulaire.setDateGeneration(LocalDate.now());
+        lienFormulaire.setStatut(false);
+        lienFormulaire.setIdUtilisateur(utilisateur);
+
+        return lienFormulaire;
+    }
+
+    // méthode pour paramétrer le contenu du mail envoyé
+    private String createEmailContent(String token) {
+
+        return "Veuillez compléter le formulaire à l'adresse suivante : http://localhost:8081/formulaire?token=" + token;
+    }
+
+
+    // méthode qui vérifie la validité du token : si le lien est en statut "true" (formulaire complété) ou que le token a été généré il y a moins de
+    // 24h alors le token n'est plus valide
     public boolean isTokenValid(LienFormulaireDTO lienFormulaireDTO) {
 
         LienFormulaire lienFormulaire = LienFormulaireMapper.toEntity(lienFormulaireDTO);
