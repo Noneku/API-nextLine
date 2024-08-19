@@ -1,9 +1,5 @@
 package fr.ln.nextLine.Model.Dto;
 
-import fr.ln.nextLine.Model.Entity.Assurance;
-import fr.ln.nextLine.Model.Entity.Dirigeant;
-import fr.ln.nextLine.Model.Entity.FormeJuridique;
-import fr.ln.nextLine.Model.Entity.Ville;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +17,9 @@ public class EntrepriseDTO {
     private String numeroSiret;
     private String telephoneEntreprise;
     private String emailEntreprise;
-    private Ville idVille;
-    private FormeJuridique idFormeJuridique;
-    private Dirigeant idDirigeant;
-    private Assurance idAssurance;
+    private VilleDTO idVille;
+    private FormeJuridiqueDTO idFormeJuridique;
+    private DirigeantDTO idDirigeant;
+    private AssuranceDTO idAssurance;
 
 }

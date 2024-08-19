@@ -4,8 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +17,7 @@ import java.time.LocalDate;
 @Table(name = "utilisateur", schema = "public")
 public class Utilisateur {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('utilisateur_id_utilisateur_seq'::regclass)")
     @Column(name = "id_utilisateur", nullable = false)
     private Integer id;
@@ -50,5 +55,4 @@ public class Utilisateur {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_role", nullable = false)
     private Role idRole;
-
 }

@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Model.Dto;
 
-import fr.ln.nextLine.Model.Entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +16,6 @@ public class TuteurDTO {
     private String prenomTuteur;
     private String emailTuteur;
     private String telTuteur;
-    private Entreprise idEntreprise;
-    private Fonction idFonction;
+    private EntrepriseDTO idEntreprise;
+    private FonctionDTO idFonction;
 }

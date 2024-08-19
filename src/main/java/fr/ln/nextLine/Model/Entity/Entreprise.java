@@ -12,6 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 public class Entreprise {
     @Id
     @ColumnDefault("nextval('entreprise_id_entreprise_seq'::regclass)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_entreprise", nullable = false)
     private Integer id;
 

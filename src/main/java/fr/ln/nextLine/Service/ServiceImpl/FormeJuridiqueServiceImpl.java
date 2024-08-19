@@ -93,4 +93,30 @@ public class FormeJuridiqueServiceImpl implements FormeJuridiqueService {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+
+    // méthode permettant de vérifier si une forme juridique est présente en bdd / si oui, la récupère, si non, la persiste
+    public FormeJuridiqueDTO findOrCreateFormeJuridique(String nom_forme_juridique) {
+
+        Optional<FormeJuridique> optionalFormeJuridique = formeJuridiqueRepository.findByNomFormeJuridique(nom_forme_juridique);
+
+        FormeJuridique formeJuridique;
+
+        // si la forme juridique est présente en bdd, récupération des informations de la forme juridique
+        if (optionalFormeJuridique.isPresent()) {
+
+            formeJuridique = optionalFormeJuridique.get();
+
+            // si la forme juridique n'est pas présente en bdd, persistance d'un nouvel objet forme juridique en bdd
+        } else {
+
+            formeJuridique = new FormeJuridique();
+            formeJuridique.setNomFormeJuridique(nom_forme_juridique);
+
+            formeJuridique = formeJuridiqueRepository.save(formeJuridique);
+        }
+
+        // retour de la forme juridique selon les données fournies en paramètre
+        return FormeJuridiqueMapper.toDTO(formeJuridique);
+    }
 }

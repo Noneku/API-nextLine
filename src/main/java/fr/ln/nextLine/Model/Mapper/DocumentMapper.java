@@ -1,7 +1,9 @@
 package fr.ln.nextLine.Model.Mapper;
 
 import fr.ln.nextLine.Model.Dto.DocumentDTO;
+import fr.ln.nextLine.Model.Dto.StageDTO;
 import fr.ln.nextLine.Model.Entity.Document;
+import fr.ln.nextLine.Model.Entity.Stage;
 
 public class DocumentMapper {
 
@@ -11,12 +13,15 @@ public class DocumentMapper {
         if (document == null) {
             return null;
         }
+
+        StageDTO stageDTO = StageMapper.toDTO(document.getIdStage());
+
         DocumentDTO documentDTO = new DocumentDTO();
 
         documentDTO.setId(document.getId());
         documentDTO.setNomPdf(document.getNomPdf());
         documentDTO.setDateGenerationDocument(document.getDateGenerationDocument());
-        documentDTO.setIdStage(document.getIdStage());
+        documentDTO.setIdStage(stageDTO);
 
         return documentDTO;
     }
@@ -25,12 +30,15 @@ public class DocumentMapper {
         if (documentDTO == null) {
             return null;
         }
+
+        Stage stage = StageMapper.toEntity(documentDTO.getIdStage());
+
         Document document = new Document();
 
         document.setId(documentDTO.getId());
         document.setNomPdf(documentDTO.getNomPdf());
         document.setDateGenerationDocument(documentDTO.getDateGenerationDocument());
-        document.setIdStage(documentDTO.getIdStage());
+        document.setIdStage(stage);
 
         return document;
     }

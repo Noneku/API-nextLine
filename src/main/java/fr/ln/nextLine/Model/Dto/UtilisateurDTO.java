@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Model.Dto;
 
-import fr.ln.nextLine.Model.Entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +24,5 @@ public class UtilisateurDTO {
     private String numeroSecuStagiaire;
     private String numeroBeneficiaireStagiaire;
     private LocalDate dateNaissance;
-    private Role idRole;
+    private RoleDTO idRole;
 }

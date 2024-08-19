@@ -5,25 +5,25 @@ import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
 import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
 import fr.ln.nextLine.Service.UtilisateurService;
-import jakarta.transaction.Transactional;
+import fr.ln.nextLine.config.Security.CustomUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
-public class UtilisateurServiceImpl implements UtilisateurService {
+public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsService {
 
     private final UtilisateurRepository utilisateurRepository;
 
     public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository) {
-
         this.utilisateurRepository = utilisateurRepository;
     }
-
 
     @Override
     public ResponseEntity<List<UtilisateurDTO>> getAll() {
@@ -92,6 +92,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         } else {
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Optional<Utilisateur> utilisateurFoundByLogin = utilisateurRepository.findByutilisateurLogin(login);
+
+        if (utilisateurFoundByLogin.isPresent()) {
+            return new CustomUserDetails(utilisateurFoundByLogin.get());
+        } else {
+            throw new UsernameNotFoundException("Invalid username or password.");
         }
     }
 }

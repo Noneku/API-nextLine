@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Model.Dto;
 
-import fr.ln.nextLine.Model.Entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +17,10 @@ public class StageDTO {
     private LocalDate modifDateDebutStage;
     private String objectifStage;
     private LocalDate dateValidationStage;
-    private Tuteur idTuteur;
-    private Utilisateur idUtilisateur;
-    private Entreprise idEntreprise;
-    private Session idSession;
-    private LieuRealisation idLieuRealisation;
-    private Activite idActivite;
+    private TuteurDTO idTuteur;
+    private UtilisateurDTO idUtilisateur;
+    private EntrepriseDTO idEntreprise;
+    private SessionDTO idSession;
+    private LieuRealisationDTO idLieuRealisation;
+    private ActiviteDTO idActivite;
 }

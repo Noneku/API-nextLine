@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Model.Dto;
 
-import fr.ln.nextLine.Model.Entity.Fonction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,6 @@ public class DirigeantDTO {
     private String nomDirigeant;
     private String prenomDirigeant;
     private String emailDirigeant;
-    private Fonction idFonction;
+    private FonctionDTO idFonction;
 
 }

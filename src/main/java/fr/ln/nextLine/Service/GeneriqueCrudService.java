@@ -12,5 +12,4 @@ public interface GeneriqueCrudService<T> {
     ResponseEntity<T> update(Integer id, T entity);
     ResponseEntity<Void> delete(Integer id);
 
-
 }

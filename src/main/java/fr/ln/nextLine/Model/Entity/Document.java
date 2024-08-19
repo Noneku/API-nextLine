@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class Document {
     @Id
     @ColumnDefault("nextval('document_id_document_seq'::regclass)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_document", nullable = false)
     private Integer id;
 

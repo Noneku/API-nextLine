@@ -14,6 +14,7 @@ import java.time.OffsetTime;
 public class HorairesStage {
     @Id
     @ColumnDefault("nextval('horaires_stage_id_horaires_stage_seq'::regclass)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_horaires_stage", nullable = false)
     private Integer id;
 
