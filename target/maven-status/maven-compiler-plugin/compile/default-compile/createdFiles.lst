@@ -14,6 +14,7 @@ fr\ln\nextLine\Model\Entity\Document.class
 fr\ln\nextLine\Controller\ActiviteController.class
 fr\ln\nextLine\Model\Entity\Fonction.class
 fr\ln\nextLine\Service\FormationService.class
+fr\ln\nextLine\config\Security\ControllerSecurity\JwtUtil.class
 fr\ln\nextLine\Service\ServiceImpl\ParticiperServiceImpl.class
 fr\ln\nextLine\Model\Repository\TuteurRepository.class
 fr\ln\nextLine\Controller\HorairesStageController.class
@@ -65,6 +66,7 @@ fr\ln\nextLine\Service\EntrepriseService.class
 fr\ln\nextLine\Model\Dto\SessionDTO.class
 fr\ln\nextLine\Service\TuteurService.class
 fr\ln\nextLine\Model\Entity\DefinirId.class
+fr\ln\nextLine\config\Security\ControllerSecurity\LoginRequest.class
 fr\ln\nextLine\Model\Mapper\LienFormulaireMapper.class
 fr\ln\nextLine\config\Security\CustomUserDetails.class
 fr\ln\nextLine\Controller\StageController.class
@@ -105,6 +107,7 @@ fr\ln\nextLine\Model\Repository\FormeJuridiqueRepository.class
 fr\ln\nextLine\Model\Mapper\RoleMapper.class
 fr\ln\nextLine\Model\Mapper\TypeTravauxDangereuxMapper.class
 fr\ln\nextLine\Controller\TypeTravauxDangereuxController.class
+fr\ln\nextLine\config\Security\ControllerSecurity\JwtRequestFilter.class
 fr\ln\nextLine\Model\Dto\AssuranceDTO.class
 fr\ln\nextLine\Service\ServiceImpl\FormeJuridiqueServiceImpl.class
 fr\ln\nextLine\Model\Dto\EntrepriseDTO.class
@@ -148,7 +151,6 @@ fr\ln\nextLine\Service\SessionService.class
 fr\ln\nextLine\Model\Entity\TypeTravauxDangereux.class
 fr\ln\nextLine\Model\Entity\LienFormulaire.class
 fr\ln\nextLine\Model\Repository\LienFormulaireRepository.class
-fr\ln\nextLine\config\Security\ControllerSecurity\LoginController$LoginRequest.class
 fr\ln\nextLine\Model\Mapper\StageMapper.class
 fr\ln\nextLine\Model\Repository\ParticiperRepository.class
 fr\ln\nextLine\Model\Mapper\HorairesStageMapper.class

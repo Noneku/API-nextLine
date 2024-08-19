@@ -5,13 +5,15 @@ import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
 import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
 import fr.ln.nextLine.Service.UtilisateurService;
-import fr.ln.nextLine.config.Security.CustomUserDetails;
+import fr.ln.nextLine.config.Security.SessionUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +56,7 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
     public ResponseEntity<UtilisateurDTO> create(UtilisateurDTO utilisateurDTO) {
 
         Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
+
         Utilisateur createdUtilisateur = utilisateurRepository.save(utilisateur);
         UtilisateurDTO createdUtilisateurDTO = UtilisateurMapper.toDTO(createdUtilisateur);
 
@@ -66,7 +69,6 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
         if (utilisateurRepository.existsById(id)) {
 
             Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
-            utilisateur.setId(id);
             Utilisateur updatedUtilisateur = utilisateurRepository.save(utilisateur);
             UtilisateurDTO updatedUtilisateurDTO = UtilisateurMapper.toDTO(updatedUtilisateur);
 
@@ -99,10 +101,21 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Optional<Utilisateur> utilisateurFoundByLogin = utilisateurRepository.findByutilisateurLogin(login);
 
+        // Crée un logger pour cette classe
+        Logger logger = LoggerFactory.getLogger(getClass());
+
         if (utilisateurFoundByLogin.isPresent()) {
-            return new CustomUserDetails(utilisateurFoundByLogin.get());
+            Utilisateur utilisateur = utilisateurFoundByLogin.get();
+
+            // Log les détails de l'utilisateur
+            logger.info("Utilisateur trouvé : Login = {}", utilisateur.getUtilisateurLogin());
+            logger.info("Mot de passe : {}", utilisateur.getMdpUtilisateur()); // Attention : Ne pas loguer le mot de passe en production !
+
+            return new SessionUserDetails(utilisateur);
         } else {
+            logger.warn("Utilisateur non trouvé : {}", login);
             throw new UsernameNotFoundException("Invalid username or password.");
         }
     }
 }
+

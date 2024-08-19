@@ -24,5 +24,5 @@ public class UtilisateurDTO {
     private String numeroSecuStagiaire;
     private String numeroBeneficiaireStagiaire;
     private LocalDate dateNaissance;
-    private RoleDTO idRole;
+    private RoleDTO roleDTO;
 }

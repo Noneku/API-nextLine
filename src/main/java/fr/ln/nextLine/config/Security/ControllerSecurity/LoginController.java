@@ -1,5 +1,7 @@
 package fr.ln.nextLine.config.Security.ControllerSecurity;
 
+import fr.ln.nextLine.config.Security.JwtUtil;
+import fr.ln.nextLine.config.Security.LoginRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,43 +12,46 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public LoginController(AuthenticationManager authenticationManager) {
+    public LoginController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest loginRequest) {
+
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            // Crée une demande d'authentification
-            Authentication authenticationRequest =
-                    new UsernamePasswordAuthenticationToken(loginRequest.login(), loginRequest.password());
+            // Authentification et génération du token
+            Authentication authenticationRequest = new UsernamePasswordAuthenticationToken(loginRequest.login(), loginRequest.password());
+            Authentication authenticationResponse = this.authenticationManager.authenticate(authenticationRequest);
+            String jwtToken = jwtUtil.generateToken(loginRequest.login());
 
-            // Authentifie l'utilisateur
-            Authentication authenticationResponse =
-                    this.authenticationManager.authenticate(authenticationRequest);
+            // Structurer la réponse en JSON
+            response.put("status", "Success !");
+            response.put("message", "Authentication successful !");
+            response.put("token", jwtToken);
 
-            // Gère la réussite de l'authentification
-            // Pour l'instant, retourne un message de succès
-            // Plus tard, tu ajouteras ici la génération du JWT
-            return ResponseEntity.ok("Authentication successful");
+            return ResponseEntity.ok(response);
 
         } catch (BadCredentialsException e) {
-            // Gère l'échec de l'authentification
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            response.put("status", "error");
+            response.put("message", "Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         } catch (Exception e) {
-            // Gère les autres exceptions
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+            response.put("status", "error");
+            response.put("message", "An error occurred");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
-    public record LoginRequest(String login, String password) {
-
-    }
-
 }
-
