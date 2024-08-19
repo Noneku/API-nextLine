@@ -81,12 +81,12 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     }
 
     @Override
-    public ResponseEntity<EntrepriseDTO> getByNumeroSiret (String numeroSiret) {
+    public ResponseEntity<EntrepriseDTO> getByNumeroSiret(String numeroSiret) {
 
         Optional<Entreprise> entreprise = entrepriseRepository.findByNumeroSiret(numeroSiret);
 
         return entreprise.map(
-                value -> new ResponseEntity<>(EntrepriseMapper.toDTO(value), HttpStatus.FOUND))
+                        value -> new ResponseEntity<>(EntrepriseMapper.toDTO(value), HttpStatus.FOUND))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
