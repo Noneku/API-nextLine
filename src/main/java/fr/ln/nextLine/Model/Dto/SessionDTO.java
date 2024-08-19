@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Model.Dto;
 
-import fr.ln.nextLine.Model.Entity.Formation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +19,5 @@ public class SessionDTO {
     private String numeroOffre;
     private LocalDate dateDebutStage;
     private LocalDate dateFinStage;
-    private Formation idFormation;
+    private FormationDTO idFormation;
 }

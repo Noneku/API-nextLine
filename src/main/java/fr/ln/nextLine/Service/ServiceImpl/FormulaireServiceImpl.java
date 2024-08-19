@@ -21,6 +21,7 @@ public class FormulaireServiceImpl implements FormulaireService {
     private LienFormulaireRepository lienFormulaireRepository;
 
 
+    // méthode pour accéder au formulaire si l'accès à celui-ci est valide (verification du statut et du token du lien)
     @Override
     public ResponseEntity<String> afficherFormulaire(String token) {
         Optional<LienFormulaire> optionalLienFormulaire = lienFormulaireRepository.findByTokenLien(token);

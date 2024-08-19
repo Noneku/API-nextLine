@@ -93,4 +93,43 @@ public class VilleServiceImpl implements VilleService {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+
+    // methode permettant de rechercher la présence d'une ville en bdd à partir de la présence du code postal + du code insee de la ville
+    public ResponseEntity<VilleDTO> findByCodePostalAndCodeInsee(String codePostal, String codeInsee) {
+
+        Optional<Ville> ville = villeRepository.findByCodePostalAndCodeInsee(codePostal,codeInsee);
+
+        return ville.map(
+                        value -> new ResponseEntity<>(VilleMapper.toDTO(value), HttpStatus.FOUND))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+
+    // méthode permettant de verifier en bdd si les données de la ville passée en paramètre sont déjà présentes en bdd
+    public VilleDTO findOrCreateVille(String codePostal, String codeInsee, String nomVille) {
+
+        Optional<Ville> optionalVille = villeRepository.findByCodePostalAndCodeInsee(codePostal, codeInsee);
+
+        Ville ville;
+
+        // si la ville est présente en bdd, récupération des informations de la ville
+        if (optionalVille.isPresent()) {
+
+            ville = optionalVille.get();
+
+            // si la ville n'est pas présente en bdd, persistance d'un nouvel objet ville en bdd
+        } else {
+
+            ville = new Ville();
+            ville.setCodePostal(codePostal);
+            ville.setCodeInsee(codeInsee);
+            ville.setNomVille(nomVille);
+
+            ville = villeRepository.save(ville);
+        }
+
+        // retour de la ville selon les données fournies en paramètre
+        return VilleMapper.toDTO(ville);
+    }
 }

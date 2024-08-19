@@ -16,31 +16,45 @@ public class AssuranceController {
 
     @Autowired
     public AssuranceController(AssuranceService assuranceService) {
+
         this.assuranceService = assuranceService;
     }
 
     @GetMapping
     public ResponseEntity<List<AssuranceDTO>> getAllAssurances() {
+
         return assuranceService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AssuranceDTO> getAssuranceById(@PathVariable Integer id) {
+
         return assuranceService.getById(id);
     }
 
     @PostMapping
     public ResponseEntity<AssuranceDTO> createAssurance(@RequestBody AssuranceDTO assuranceDTO) {
+
         return assuranceService.create(assuranceDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AssuranceDTO> updateAssurance(@PathVariable Integer id, @RequestBody AssuranceDTO assuranceDTO) {
+
         return assuranceService.update(id, assuranceDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAssurance(@PathVariable Integer id) {
+
         return assuranceService.delete(id);
     }
+
+    // méthode qui permet de vérifier si une assurance existe en bdd ou de la créer dans le cas contraire
+    @PostMapping("/find-or-create")
+    public AssuranceDTO findOrCreateAssurance(@RequestParam String nomAssurance, @RequestParam String numeroBeneficiaire) {
+
+        return assuranceService.findOrCreateAssurance(nomAssurance, numeroBeneficiaire);
+    }
 }
+

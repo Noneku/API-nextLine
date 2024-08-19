@@ -1,7 +1,8 @@
 package fr.ln.nextLine.Model.Mapper;
 
-import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
-import fr.ln.nextLine.Model.Entity.Entreprise;
+import fr.ln.nextLine.Model.Dto.*;
+import fr.ln.nextLine.Model.Entity.*;
+
 
 public class EntrepriseMapper {
 
@@ -11,6 +12,12 @@ public class EntrepriseMapper {
         if (entreprise == null) {
             return null;
         }
+
+        VilleDTO villeDTO = VilleMapper.toDTO(entreprise.getIdVille());
+        FormeJuridiqueDTO formeJuridiqueDTO = FormeJuridiqueMapper.toDTO(entreprise.getIdFormeJuridique());
+        DirigeantDTO dirigeantDTO = DirigeantMapper.toDTO(entreprise.getIdDirigeant());
+        AssuranceDTO assuranceDTO = AssuranceMapper.toDTO(entreprise.getIdAssurance());
+
         EntrepriseDTO entrepriseDto = new EntrepriseDTO();
 
         entrepriseDto.setId(entreprise.getId());
@@ -21,10 +28,10 @@ public class EntrepriseMapper {
         entrepriseDto.setEmailEntreprise(entreprise.getEmailEntreprise());
 
         //Foreign key
-        entrepriseDto.setIdVille(entreprise.getIdVille());
-        entrepriseDto.setIdFormeJuridique(entreprise.getIdFormeJuridique());
-        entrepriseDto.setIdDirigeant(entreprise.getIdDirigeant());
-        entrepriseDto.setIdAssurance(entreprise.getIdAssurance());
+        entrepriseDto.setIdVille(villeDTO);
+        entrepriseDto.setIdFormeJuridique(formeJuridiqueDTO);
+        entrepriseDto.setIdDirigeant(dirigeantDTO);
+        entrepriseDto.setIdAssurance(assuranceDTO);
 
         return entrepriseDto;
     }
@@ -33,6 +40,12 @@ public class EntrepriseMapper {
         if (entrepriseDto == null) {
             return null;
         }
+
+        Ville ville = VilleMapper.toEntity(entrepriseDto.getIdVille());
+        FormeJuridique formeJuridique = FormeJuridiqueMapper.toEntity(entrepriseDto.getIdFormeJuridique());
+        Dirigeant dirigeant = DirigeantMapper.toEntity(entrepriseDto.getIdDirigeant());
+        Assurance assurance = AssuranceMapper.toEntity(entrepriseDto.getIdAssurance());
+
         Entreprise entreprise = new Entreprise();
 
         entreprise.setId(entrepriseDto.getId());
@@ -43,10 +56,10 @@ public class EntrepriseMapper {
         entreprise.setEmailEntreprise(entrepriseDto.getEmailEntreprise());
 
         //Foreign key
-        entreprise.setIdVille(entrepriseDto.getIdVille());
-        entreprise.setIdFormeJuridique(entrepriseDto.getIdFormeJuridique());
-        entreprise.setIdDirigeant(entrepriseDto.getIdDirigeant());
-        entreprise.setIdAssurance(entrepriseDto.getIdAssurance());
+        entreprise.setIdVille(ville);
+        entreprise.setIdFormeJuridique(formeJuridique);
+        entreprise.setIdDirigeant(dirigeant);
+        entreprise.setIdAssurance(assurance);
 
         return entreprise;
     }

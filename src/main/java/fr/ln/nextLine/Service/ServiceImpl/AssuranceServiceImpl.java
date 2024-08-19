@@ -88,4 +88,31 @@ public class AssuranceServiceImpl implements AssuranceService {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+
+    // methode pour rechercher ou créer une assurance
+    public AssuranceDTO findOrCreateAssurance(String nomAssurance, String numeroSocietaire) {
+
+        Optional<Assurance> optionalAssurance = assuranceRepository.findByNomAssurance(nomAssurance);
+
+        Assurance assurance;
+
+        // si l'assurance est présente en bdd, récupération des informations de l'assurance
+        if (optionalAssurance.isPresent()) {
+
+            assurance = optionalAssurance.get();
+
+            // si l'assurance n'est pas présente en bdd, persistance d'un nouvel objet assurance en bdd
+        } else {
+
+            assurance = new Assurance();
+            assurance.setNomAssurance(nomAssurance);
+            assurance.setNumeroSocietaire(numeroSocietaire);
+
+            assurance = assuranceRepository.save(assurance);
+        }
+
+        // retour de l'assurance selon les données fournies en paramètres
+        return AssuranceMapper.toDTO(assurance);
+    }
 }

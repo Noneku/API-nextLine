@@ -1,9 +1,6 @@
 package fr.ln.nextLine.Model.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -14,6 +11,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Table(name = "locaux", schema = "public")
 public class Locaux {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('locaux_id_locaux_seq'::regclass)")
     @Column(name = "id_locaux", nullable = false)
     private Integer id;

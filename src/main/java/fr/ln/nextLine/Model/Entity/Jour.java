@@ -1,9 +1,6 @@
 package fr.ln.nextLine.Model.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -15,6 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 public class Jour {
     @Id
     @ColumnDefault("nextval('jour_id_jour_seq'::regclass)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_jour", nullable = false)
     private Integer id;
 

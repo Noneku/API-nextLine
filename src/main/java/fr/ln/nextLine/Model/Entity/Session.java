@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Table(name = "session", schema = "public")
 public class Session {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('session_id_session_seq'::regclass)")
     @Column(name = "id_session", nullable = false)
     private Integer id;

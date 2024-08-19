@@ -1,6 +1,8 @@
 package fr.ln.nextLine.Model.Mapper;
 
+import fr.ln.nextLine.Model.Dto.FormationDTO;
 import fr.ln.nextLine.Model.Dto.SessionDTO;
+import fr.ln.nextLine.Model.Entity.Formation;
 import fr.ln.nextLine.Model.Entity.Session;
 
 public class SessionMapper {
@@ -13,6 +15,8 @@ public class SessionMapper {
             return null;
         }
 
+        FormationDTO formationDTO = FormationMapper.toDTO(session.getIdFormation());
+
         SessionDTO sessionDTO = new SessionDTO();
 
         sessionDTO.setId(session.getId());
@@ -21,7 +25,7 @@ public class SessionMapper {
         sessionDTO.setNumeroOffre(session.getNumeroOffre());
         sessionDTO.setDateDebutStage(session.getDateDebutStage());
         sessionDTO.setDateFinStage(session.getDateFinStage());
-        sessionDTO.setIdFormation(session.getIdFormation());
+        sessionDTO.setIdFormation(formationDTO);
 
         return sessionDTO;
     }
@@ -32,6 +36,8 @@ public class SessionMapper {
             return null;
         }
 
+        Formation formation = FormationMapper.toEntity(sessionDTO.getIdFormation());
+
         Session session = new Session();
 
         session.setId(sessionDTO.getId());
@@ -40,7 +46,7 @@ public class SessionMapper {
         session.setNumeroOffre(sessionDTO.getNumeroOffre());
         session.setDateDebutStage(sessionDTO.getDateDebutStage());
         session.setDateFinStage(sessionDTO.getDateFinStage());
-        session.setIdFormation(sessionDTO.getIdFormation());
+        session.setIdFormation(formation);
 
         return session;
     }

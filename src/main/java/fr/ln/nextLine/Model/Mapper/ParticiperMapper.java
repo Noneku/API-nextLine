@@ -1,7 +1,11 @@
 package fr.ln.nextLine.Model.Mapper;
 
 import fr.ln.nextLine.Model.Dto.ParticiperDTO;
+import fr.ln.nextLine.Model.Dto.SessionDTO;
+import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Entity.Participer;
+import fr.ln.nextLine.Model.Entity.Session;
+import fr.ln.nextLine.Model.Entity.Utilisateur;
 
 public class ParticiperMapper {
 
@@ -13,10 +17,13 @@ public class ParticiperMapper {
             return null;
         }
 
+        SessionDTO sessionDTO = SessionMapper.toDTO(participer.getIdSession());
+        UtilisateurDTO utilisateurDTO = UtilisateurMapper.toDTO(participer.getIdUtilisateur());
+
         ParticiperDTO participerDTO = new ParticiperDTO();
 
-        participerDTO.setIdSession(participer.getIdSession());
-        participerDTO.setIdUtilisateur(participer.getIdUtilisateur());
+        participerDTO.setIdSession(sessionDTO);
+        participerDTO.setIdUtilisateur(utilisateurDTO);
 
         return participerDTO;
     }
@@ -27,10 +34,13 @@ public class ParticiperMapper {
             return null;
         }
 
+        Session session = SessionMapper.toEntity(participerDTO.getIdSession());
+        Utilisateur utilisateur = UtilisateurMapper.toEntity(participerDTO.getIdUtilisateur());
+
         Participer participer = new Participer();
 
-        participer.setIdSession(participerDTO.getIdSession());
-        participer.setIdUtilisateur(participerDTO.getIdUtilisateur());
+        participer.setIdSession(session);
+        participer.setIdUtilisateur(utilisateur);
 
         return participer;
     }
