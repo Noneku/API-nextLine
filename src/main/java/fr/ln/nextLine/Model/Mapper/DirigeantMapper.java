@@ -13,7 +13,7 @@ public class DirigeantMapper {
         if (dirigeant == null) {
             return null;
         }
-        FonctionDTO fonctionDTO = FonctionMapper.toDTO(dirigeant.getIdFonction());
+        FonctionDTO fonctionDTO = FonctionMapper.toDTO(dirigeant.getFonction());
 
         DirigeantDTO dirigeantDTO = new DirigeantDTO();
 
@@ -23,17 +23,18 @@ public class DirigeantMapper {
         dirigeantDTO.setEmailDirigeant(dirigeant.getEmailDirigeant());
 
         //Foreign key
-        dirigeantDTO.setIdFonction(fonctionDTO);
+        dirigeantDTO.setFonctionDTO(fonctionDTO);
 
         return dirigeantDTO;
     }
 
     public static Dirigeant toEntity(DirigeantDTO dirigeantDTO) {
+
         if (dirigeantDTO == null) {
             return null;
         }
 
-        Fonction fonction = FonctionMapper.toEntity(dirigeantDTO.getIdFonction());
+        Fonction fonction = FonctionMapper.toEntity(dirigeantDTO.getFonctionDTO());
 
         Dirigeant dirigeant = new Dirigeant();
 
@@ -43,7 +44,7 @@ public class DirigeantMapper {
         dirigeant.setEmailDirigeant(dirigeantDTO.getEmailDirigeant());
 
         //Foreign key
-        dirigeant.setIdFonction(fonction);
+        dirigeant.setFonction(fonction);
 
         return dirigeant;
     }

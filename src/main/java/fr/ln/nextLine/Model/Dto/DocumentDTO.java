@@ -16,6 +16,6 @@ public class DocumentDTO {
     private Integer id;
     private String nomPdf;
     private LocalDate dateGenerationDocument;
-    private StageDTO idStage;
+    private StageDTO stageDTO;
 
 }

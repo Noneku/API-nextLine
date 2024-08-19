@@ -15,11 +15,11 @@ public class Definir {
     @MapsId("idTypeTravaux")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_type_travaux", nullable = false)
-    private TypeTravauxDangereux idTypeTravaux;
+    private TypeTravauxDangereux typeTravauxDangereux;
 
     @MapsId("idActivite")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_activite", nullable = false)
-    private Activite idActivite;
+    private Activite activite;
 
 }

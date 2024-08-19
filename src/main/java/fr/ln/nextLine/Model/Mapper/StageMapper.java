@@ -13,12 +13,12 @@ public class StageMapper {
             return null;
         }
 
-        TuteurDTO tuteurDTO = TuteurMapper.toDTO(stage.getIdTuteur());
-        UtilisateurDTO utilisateurDTO = UtilisateurMapper.toDTO(stage.getIdUtilisateur());
-        EntrepriseDTO entrepriseDTO = EntrepriseMapper.toDTO(stage.getIdEntreprise());
-        SessionDTO sessionDTO = SessionMapper.toDTO(stage.getIdSession());
-        LieuRealisationDTO lieuRealisationDTO = LieuRealisationMapper.toDTO(stage.getIdLieuRealisation());
-        ActiviteDTO activiteDTO = ActiviteMapper.toDTO(stage.getIdActivite());
+        TuteurDTO tuteurDTO = TuteurMapper.toDTO(stage.getTuteur());
+        UtilisateurDTO utilisateurDTO = UtilisateurMapper.toDTO(stage.getUtilisateur());
+        EntrepriseDTO entrepriseDTO = EntrepriseMapper.toDTO(stage.getEntreprise());
+        SessionDTO sessionDTO = SessionMapper.toDTO(stage.getSession());
+        LieuRealisationDTO lieuRealisationDTO = LieuRealisationMapper.toDTO(stage.getLieuRealisation());
+        ActiviteDTO activiteDTO = ActiviteMapper.toDTO(stage.getActivite());
 
         StageDTO stageDTO = new StageDTO();
 
@@ -26,12 +26,12 @@ public class StageMapper {
         stageDTO.setModifDateDebutStage(stage.getModifDateDebutStage());
         stageDTO.setObjectifStage(stage.getObjectifStage());
         stageDTO.setDateValidationStage(stage.getDateValidationStage());
-        stageDTO.setIdTuteur(tuteurDTO);
-        stageDTO.setIdUtilisateur(utilisateurDTO);
-        stageDTO.setIdEntreprise(entrepriseDTO);
-        stageDTO.setIdSession(sessionDTO);
-        stageDTO.setIdLieuRealisation(lieuRealisationDTO);
-        stageDTO.setIdActivite(activiteDTO);
+        stageDTO.setTuteurDTO(tuteurDTO);
+        stageDTO.setUtilisateurDTO(utilisateurDTO);
+        stageDTO.setEntrepriseDTO(entrepriseDTO);
+        stageDTO.setSessionDTO(sessionDTO);
+        stageDTO.setLieuRealisationDTO(lieuRealisationDTO);
+        stageDTO.setActiviteDTO(activiteDTO);
 
         return stageDTO;
     }
@@ -42,12 +42,12 @@ public class StageMapper {
             return null;
         }
 
-        Tuteur tuteur = TuteurMapper.toEntity(stageDTO.getIdTuteur());
-        Utilisateur utilisateur = UtilisateurMapper.toEntity(stageDTO.getIdUtilisateur());
-        Entreprise entreprise = EntrepriseMapper.toEntity(stageDTO.getIdEntreprise());
-        Session session = SessionMapper.toEntity(stageDTO.getIdSession());
-        LieuRealisation lieuRealisation = LieuRealisationMapper.toEntity(stageDTO.getIdLieuRealisation());
-        Activite activite = ActiviteMapper.toEntity(stageDTO.getIdActivite());
+        Tuteur tuteur = TuteurMapper.toEntity(stageDTO.getTuteurDTO());
+        Utilisateur utilisateur = UtilisateurMapper.toEntity(stageDTO.getUtilisateurDTO());
+        Entreprise entreprise = EntrepriseMapper.toEntity(stageDTO.getEntrepriseDTO());
+        Session session = SessionMapper.toEntity(stageDTO.getSessionDTO());
+        LieuRealisation lieuRealisation = LieuRealisationMapper.toEntity(stageDTO.getLieuRealisationDTO());
+        Activite activite = ActiviteMapper.toEntity(stageDTO.getActiviteDTO());
 
         Stage stage = new Stage();
 
@@ -55,12 +55,12 @@ public class StageMapper {
         stage.setModifDateDebutStage(stageDTO.getModifDateDebutStage());
         stage.setObjectifStage(stageDTO.getObjectifStage());
         stage.setDateValidationStage(stageDTO.getDateValidationStage());
-        stage.setIdTuteur(tuteur);
-        stage.setIdUtilisateur(utilisateur);
-        stage.setIdEntreprise(entreprise);
-        stage.setIdSession(session);
-        stage.setIdLieuRealisation(lieuRealisation);
-        stage.setIdActivite(activite);
+        stage.setTuteur(tuteur);
+        stage.setUtilisateur(utilisateur);
+        stage.setEntreprise(entreprise);
+        stage.setSession(session);
+        stage.setLieuRealisation(lieuRealisation);
+        stage.setActivite(activite);
 
         return stage;
     }

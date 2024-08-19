@@ -15,7 +15,7 @@ public class LienFormulaireMapper {
             return null;
         }
 
-        UtilisateurDTO utilisateurDTO = UtilisateurMapper.toDTO(lienFormulaire.getIdUtilisateur());
+        UtilisateurDTO utilisateurDTO = UtilisateurMapper.toDTO(lienFormulaire.getUtilisateur());
 
         LienFormulaireDTO lienFormulaireDTO = new LienFormulaireDTO();
 
@@ -23,7 +23,7 @@ public class LienFormulaireMapper {
         lienFormulaireDTO.setTokenLien(lienFormulaire.getTokenLien());
         lienFormulaireDTO.setDateGeneration(lienFormulaire.getDateGeneration());
         lienFormulaireDTO.setStatut(lienFormulaire.getStatut());
-        lienFormulaireDTO.setIdUtilisateur(utilisateurDTO);
+        lienFormulaireDTO.setUtilisateurDTO(utilisateurDTO);
 
         return lienFormulaireDTO;
     }
@@ -34,7 +34,7 @@ public class LienFormulaireMapper {
             return null;
         }
 
-        Utilisateur utilisateur = UtilisateurMapper.toEntity(lienFormulaireDTO.getIdUtilisateur());
+        Utilisateur utilisateur = UtilisateurMapper.toEntity(lienFormulaireDTO.getUtilisateurDTO());
 
         LienFormulaire lienFormulaire = new LienFormulaire();
 
@@ -42,7 +42,7 @@ public class LienFormulaireMapper {
         lienFormulaire.setTokenLien(lienFormulaireDTO.getTokenLien());
         lienFormulaire.setDateGeneration(lienFormulaireDTO.getDateGeneration());
         lienFormulaire.setStatut(lienFormulaireDTO.getStatut());
-        lienFormulaire.setIdUtilisateur(utilisateur);
+        lienFormulaire.setUtilisateur(utilisateur);
 
         return lienFormulaire;
     }

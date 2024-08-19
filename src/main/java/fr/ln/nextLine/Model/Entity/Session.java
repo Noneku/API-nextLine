@@ -35,6 +35,6 @@ public class Session {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_formation", nullable = false)
-    private Formation idFormation;
+    private Formation formation;
 
 }

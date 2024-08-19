@@ -145,7 +145,7 @@ public class LienFormulaireServiceImpl implements LienFormulaireService {
         lienFormulaire.setTokenLien(token);
         lienFormulaire.setDateGeneration(LocalDate.now());
         lienFormulaire.setStatut(false);
-        lienFormulaire.setIdUtilisateur(utilisateur);
+        lienFormulaire.setUtilisateur(utilisateur);
 
         return lienFormulaire;
     }

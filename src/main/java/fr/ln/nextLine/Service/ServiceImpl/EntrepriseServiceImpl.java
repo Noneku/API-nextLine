@@ -170,11 +170,11 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             entrepriseDTO.setAdresseEntreprise(formatAddress(root));
             entrepriseDTO.setTelephoneEntreprise(DEFAULT_TELEPHONE);
             entrepriseDTO.setEmailEntreprise(DEFAULT_EMAIL);
-            entrepriseDTO.setIdVille(createdVilleDTO);
+            entrepriseDTO.setVilleDTO(createdVilleDTO);
 
-            entrepriseDTO.setIdFormeJuridique(getDefaultFormeJuridiqueDTO());
-            entrepriseDTO.setIdDirigeant(getDefaultDirigeantDTO());
-            entrepriseDTO.setIdAssurance(getDefaultAssuranceDTO());
+            entrepriseDTO.setFormeJuridiqueDTO(getDefaultFormeJuridiqueDTO());
+            entrepriseDTO.setDirigeantDTO(getDefaultDirigeantDTO());
+            entrepriseDTO.setAssuranceDTO(getDefaultAssuranceDTO());
 
             return entrepriseDTO;
 

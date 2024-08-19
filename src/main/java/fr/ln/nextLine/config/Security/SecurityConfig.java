@@ -34,11 +34,11 @@ public class SecurityConfig {
                 // Définir les autorisations pour les requêtes HTTP
                 .authorizeHttpRequests((authorize) -> authorize
                         //Disabled Security
-                            //.anyRequest().permitAll()
+                            .anyRequest().permitAll()
                         //Disabled Security
 
-                        .requestMatchers("/login").permitAll()
-                        .anyRequest().authenticated()
+                     //   .requestMatchers("/login").permitAll()
+                     //   .anyRequest().authenticated()
                 )
 
                 // Configurer la gestion des sessions

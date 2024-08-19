@@ -18,7 +18,7 @@ public class HorairesStageDTO {
     private OffsetTime heureDebutPauseDej;
     private OffsetTime heureFinPauseDej;
     private OffsetTime heureFin;
-    private StageDTO idStage;
-    private JourDTO idJour;
+    private StageDTO stageDTO;
+    private JourDTO jourDTO;
 
 }

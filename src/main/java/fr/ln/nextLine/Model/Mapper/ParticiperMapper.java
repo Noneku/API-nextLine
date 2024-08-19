@@ -17,13 +17,13 @@ public class ParticiperMapper {
             return null;
         }
 
-        SessionDTO sessionDTO = SessionMapper.toDTO(participer.getIdSession());
-        UtilisateurDTO utilisateurDTO = UtilisateurMapper.toDTO(participer.getIdUtilisateur());
+        SessionDTO sessionDTO = SessionMapper.toDTO(participer.getSession());
+        UtilisateurDTO utilisateurDTO = UtilisateurMapper.toDTO(participer.getUtilisateur());
 
         ParticiperDTO participerDTO = new ParticiperDTO();
 
-        participerDTO.setIdSession(sessionDTO);
-        participerDTO.setIdUtilisateur(utilisateurDTO);
+        participerDTO.setSessionDTO(sessionDTO);
+        participerDTO.setUtilisateurDTO(utilisateurDTO);
 
         return participerDTO;
     }
@@ -34,13 +34,13 @@ public class ParticiperMapper {
             return null;
         }
 
-        Session session = SessionMapper.toEntity(participerDTO.getIdSession());
-        Utilisateur utilisateur = UtilisateurMapper.toEntity(participerDTO.getIdUtilisateur());
+        Session session = SessionMapper.toEntity(participerDTO.getSessionDTO());
+        Utilisateur utilisateur = UtilisateurMapper.toEntity(participerDTO.getUtilisateurDTO());
 
         Participer participer = new Participer();
 
-        participer.setIdSession(session);
-        participer.setIdUtilisateur(utilisateur);
+        participer.setSession(session);
+        participer.setUtilisateur(utilisateur);
 
         return participer;
     }

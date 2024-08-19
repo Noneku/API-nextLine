@@ -17,8 +17,8 @@ public class TuteurMapper {
             return null;
         }
 
-        EntrepriseDTO entrepriseDTO = EntrepriseMapper.toDTO(tuteur.getIdEntreprise());
-        FonctionDTO fonctionDTO = FonctionMapper.toDTO(tuteur.getIdFonction());
+        EntrepriseDTO entrepriseDTO = EntrepriseMapper.toDTO(tuteur.getEntreprise());
+        FonctionDTO fonctionDTO = FonctionMapper.toDTO(tuteur.getFonction());
 
         TuteurDTO tuteurDTO = new TuteurDTO();
 
@@ -27,8 +27,8 @@ public class TuteurMapper {
         tuteurDTO.setPrenomTuteur(tuteur.getPrenomTuteur());
         tuteurDTO.setEmailTuteur(tuteur.getEmailTuteur());
         tuteurDTO.setTelTuteur(tuteur.getTelTuteur());
-        tuteurDTO.setIdEntreprise(entrepriseDTO);
-        tuteurDTO.setIdFonction(fonctionDTO);
+        tuteurDTO.setEntrepriseDTO(entrepriseDTO);
+        tuteurDTO.setFonctionDTO(fonctionDTO);
 
         return tuteurDTO;
     }
@@ -39,8 +39,8 @@ public class TuteurMapper {
             return null;
         }
 
-        Entreprise entreprise = EntrepriseMapper.toEntity(tuteurDTO.getIdEntreprise());
-        Fonction fonction = FonctionMapper.toEntity(tuteurDTO.getIdFonction());
+        Entreprise entreprise = EntrepriseMapper.toEntity(tuteurDTO.getEntrepriseDTO());
+        Fonction fonction = FonctionMapper.toEntity(tuteurDTO.getFonctionDTO());
 
         Tuteur tuteur = new Tuteur();
 
@@ -49,8 +49,8 @@ public class TuteurMapper {
         tuteur.setPrenomTuteur(tuteurDTO.getPrenomTuteur());
         tuteur.setEmailTuteur(tuteurDTO.getEmailTuteur());
         tuteur.setTelTuteur(tuteurDTO.getTelTuteur());
-        tuteur.setIdEntreprise(entreprise);
-        tuteur.setIdFonction(fonction);
+        tuteur.setEntreprise(entreprise);
+        tuteur.setFonction(fonction);
 
         return tuteur;
     }

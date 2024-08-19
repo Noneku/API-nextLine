@@ -11,9 +11,9 @@ import lombok.Setter;
 @Setter
 public class FormulaireDTO {
 
-    private UtilisateurDTO idUtilisateur;
-    private EntrepriseDTO idEntreprise;
-    private HorairesStageDTO idHorairesStage;
-    private LieuRealisationDTO idLieuRealisation;
-    private ActiviteDTO idActivite;
+    private UtilisateurDTO utilisateurDTO;
+    private EntrepriseDTO entrepriseDTO;
+    private HorairesStageDTO horairesStageDTO;
+    private LieuRealisationDTO lieuRealisationDTO;
+    private ActiviteDTO activiteDTO;
 }

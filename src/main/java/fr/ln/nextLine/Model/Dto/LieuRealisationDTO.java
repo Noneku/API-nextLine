@@ -16,8 +16,8 @@ public class LieuRealisationDTO {
     private String autresLocaux;
     private String autreFrequence;
     private String autreModeDeplacement;
-    private LocauxDTO idLocaux;
-    private FrequenceDTO idFrequence;
-    private ModesDeplacementDTO idModeDeplacement;
+    private LocauxDTO locauxDTO;
+    private FrequenceDTO frequenceDTO;
+    private ModesDeplacementDTO modesDeplacementDTO;
 
 }

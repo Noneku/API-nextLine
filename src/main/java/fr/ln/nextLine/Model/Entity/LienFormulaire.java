@@ -29,6 +29,6 @@ public class LienFormulaire {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_utilisateur", nullable = false)
-    private Utilisateur idUtilisateur;
+    private Utilisateur utilisateur;
 
 }

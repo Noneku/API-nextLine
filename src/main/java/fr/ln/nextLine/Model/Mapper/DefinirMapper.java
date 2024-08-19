@@ -1,7 +1,11 @@
 package fr.ln.nextLine.Model.Mapper;
 
+import fr.ln.nextLine.Model.Dto.ActiviteDTO;
 import fr.ln.nextLine.Model.Dto.DefinirDTO;
+import fr.ln.nextLine.Model.Dto.TypeTravauxDangereuxDTO;
+import fr.ln.nextLine.Model.Entity.Activite;
 import fr.ln.nextLine.Model.Entity.Definir;
+import fr.ln.nextLine.Model.Entity.TypeTravauxDangereux;
 
 
 public class DefinirMapper {
@@ -12,10 +16,13 @@ public class DefinirMapper {
         if (definir == null) {
             return null;
         }
-        DefinirDTO definirDTO = new DefinirDTO();
 
-        definirDTO.setIdTypeTravaux(definir.getIdTypeTravaux());
-        definirDTO.setIdActivite(definir.getIdActivite());
+        DefinirDTO definirDTO = new DefinirDTO();
+        TypeTravauxDangereuxDTO typeTravauxDangereuxDTO = TypeTravauxDangereuxMapper.toDTO(definir.getTypeTravauxDangereux());
+        ActiviteDTO activiteDTO = ActiviteMapper.toDTO(definir.getActivite());
+
+        definirDTO.setTypeTravauxDTO(typeTravauxDangereuxDTO);
+        definirDTO.setActiviteDTO(activiteDTO);
 
         return definirDTO;
     }
@@ -24,10 +31,13 @@ public class DefinirMapper {
         if (definirDTO == null) {
             return null;
         }
-        Definir definir = new Definir();
 
-        definir.setIdTypeTravaux(definirDTO.getIdTypeTravaux());
-        definir.setIdActivite(definirDTO.getIdActivite());
+        Definir definir = new Definir();
+        TypeTravauxDangereux typeTravauxDangereux = TypeTravauxDangereuxMapper.toEntity(definirDTO.getTypeTravauxDTO());
+        Activite activite = ActiviteMapper.toEntity(definirDTO.getActiviteDTO());
+
+        definir.setTypeTravauxDangereux(typeTravauxDangereux);
+        definir.setActivite(activite);
 
         return definir;
     }

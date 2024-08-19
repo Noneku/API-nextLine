@@ -32,6 +32,6 @@ public class Dirigeant {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_fonction", nullable = false)
-    private Fonction idFonction;
+    private Fonction fonction;
 
 }

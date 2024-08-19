@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class ParticiperDTO {
 
-    private SessionDTO idSession;
-    private UtilisateurDTO idUtilisateur;
+    private SessionDTO sessionDTO;
+    private UtilisateurDTO utilisateurDTO;
 }

@@ -29,26 +29,26 @@ public class Stage {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_tuteur", nullable = false)
-    private Tuteur idTuteur;
+    private Tuteur tuteur;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_utilisateur", nullable = false)
-    private Utilisateur idUtilisateur;
+    private Utilisateur utilisateur;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_entreprise", nullable = false)
-    private Entreprise idEntreprise;
+    private Entreprise entreprise;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_session", nullable = false)
-    private Session idSession;
+    private Session session;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_lieu_realisation", nullable = false)
-    private LieuRealisation idLieuRealisation;
+    private LieuRealisation lieuRealisation;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_activite", nullable = false)
-    private Activite idActivite;
+    private Activite activite;
 
 }

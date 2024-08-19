@@ -33,18 +33,18 @@ public class Entreprise {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_ville", nullable = false)
-    private Ville idVille;
+    private Ville ville;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_forme_juridique", nullable = false)
-    private FormeJuridique idFormeJuridique;
+    private FormeJuridique formeJuridique;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_dirigeant", nullable = false)
-    private Dirigeant idDirigeant;
+    private Dirigeant dirigeant;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_assurance", nullable = false)
-    private Assurance idAssurance;
+    private Assurance assurance;
 
 }

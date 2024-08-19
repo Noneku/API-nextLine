@@ -30,10 +30,10 @@ public class Tuteur {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_entreprise", nullable = false)
-    private Entreprise idEntreprise;
+    private Entreprise entreprise;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_fonction", nullable = false)
-    private Fonction idFonction;
+    private Fonction fonction;
 
 }
