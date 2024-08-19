@@ -11,8 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -21,9 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
+    private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService userDetailsService) {
         this.jwtRequestFilter = jwtRequestFilter;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -32,6 +33,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // Définir les autorisations pour les requêtes HTTP
                 .authorizeHttpRequests((authorize) -> authorize
+                        //Disabled Security
+                            //.anyRequest().permitAll()
+                        //Disabled Security
+
                         .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -46,24 +51,16 @@ public class SecurityConfig {
         return http.build();
     }
 
+    public static BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean //Gère le processus d'authentification des utilisateurs.
-    public AuthenticationManager authenticationManager(
-            UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
+    public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
 
         return new ProviderManager(authenticationProvider);
     }
-
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // Utiliser NoOpPasswordEncoder pour les mots de passe en clair (uniquement pour le développement/test)
-        return NoOpPasswordEncoder.getInstance();
-        //return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
 }

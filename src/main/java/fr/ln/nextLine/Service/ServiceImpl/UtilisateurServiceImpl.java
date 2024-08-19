@@ -5,7 +5,7 @@ import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
 import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
 import fr.ln.nextLine.Service.UtilisateurService;
-import fr.ln.nextLine.config.Security.CustomUserDetails;
+import fr.ln.nextLine.config.Security.SessionUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -69,7 +69,6 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
         if (utilisateurRepository.existsById(id)) {
 
             Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
-            utilisateur.setId(id);
             Utilisateur updatedUtilisateur = utilisateurRepository.save(utilisateur);
             UtilisateurDTO updatedUtilisateurDTO = UtilisateurMapper.toDTO(updatedUtilisateur);
 
@@ -112,12 +111,11 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
             logger.info("Utilisateur trouvé : Login = {}", utilisateur.getUtilisateurLogin());
             logger.info("Mot de passe : {}", utilisateur.getMdpUtilisateur()); // Attention : Ne pas loguer le mot de passe en production !
 
-            return new CustomUserDetails(utilisateur);
+            return new SessionUserDetails(utilisateur);
         } else {
             logger.warn("Utilisateur non trouvé : {}", login);
             throw new UsernameNotFoundException("Invalid username or password.");
         }
     }
-
 }
 

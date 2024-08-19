@@ -54,5 +54,5 @@ public class Utilisateur {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_role", nullable = false)
-    private Role idRole;
+    private Role role;
 }

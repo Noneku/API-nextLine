@@ -5,4 +5,5 @@ package fr.ln.nextLine.config.Security;
     facilitant leur passage entre différentes couches de l'application.
  */
 public record LoginRequest(String login, String password) {
+
 }

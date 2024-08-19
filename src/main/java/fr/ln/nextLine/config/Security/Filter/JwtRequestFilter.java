@@ -34,7 +34,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwtToken = null;
 
-        // Vérifie si l'en-tête Authorization est présent et commence par "Bearer "
+        // Vérifie si l'en-tête Authorization est présent et commence par "Bearer"
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwtToken = authorizationHeader.substring(7);
             username = jwtUtil.getUsernameFromToken(jwtToken);

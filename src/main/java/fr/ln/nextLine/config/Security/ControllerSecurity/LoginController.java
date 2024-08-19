@@ -2,8 +2,6 @@ package fr.ln.nextLine.config.Security.ControllerSecurity;
 
 import fr.ln.nextLine.config.Security.JwtUtil;
 import fr.ln.nextLine.config.Security.LoginRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +17,6 @@ import java.util.Map;
 
 @RestController
 public class LoginController {
-
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;

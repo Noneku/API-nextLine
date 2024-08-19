@@ -8,14 +8,15 @@ import java.util.Collection;
 import java.util.List;
 
 /*
-    La classe CustomUserDetails encapsule les informations spécifiques à l'utilisateur (ici, l'objet Utilisateur)
+    La classe SessionUserDetails encapsule les informations spécifiques à l'utilisateur lors de son authentification
     pour fournir ces informations à Spring Security de manière structurée.
  */
-public class CustomUserDetails implements UserDetails {
+
+public class SessionUserDetails implements UserDetails {
 
     private final Utilisateur utilisateur;
 
-    public CustomUserDetails(Utilisateur utilisateur) {
+    public SessionUserDetails(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
     }
 
