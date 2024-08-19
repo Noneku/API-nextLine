@@ -12,7 +12,7 @@ import lombok.Setter;
 public class DefinirDTO {
 
     private Integer id;
-    private TypeTravauxDangereuxDTO typeTravauxDTO;
+    private TypeTravauxDangereuxDTO typeTravauxDangereuxDTO;
     private ActiviteDTO activiteDTO;
 
 }

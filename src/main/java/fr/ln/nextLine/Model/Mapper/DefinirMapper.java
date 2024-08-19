@@ -21,7 +21,7 @@ public class DefinirMapper {
         TypeTravauxDangereuxDTO typeTravauxDangereuxDTO = TypeTravauxDangereuxMapper.toDTO(definir.getTypeTravauxDangereux());
         ActiviteDTO activiteDTO = ActiviteMapper.toDTO(definir.getActivite());
 
-        definirDTO.setTypeTravauxDTO(typeTravauxDangereuxDTO);
+        definirDTO.setTypeTravauxDangereuxDTO(typeTravauxDangereuxDTO);
         definirDTO.setActiviteDTO(activiteDTO);
 
         return definirDTO;
@@ -33,7 +33,7 @@ public class DefinirMapper {
         }
 
         Definir definir = new Definir();
-        TypeTravauxDangereux typeTravauxDangereux = TypeTravauxDangereuxMapper.toEntity(definirDTO.getTypeTravauxDTO());
+        TypeTravauxDangereux typeTravauxDangereux = TypeTravauxDangereuxMapper.toEntity(definirDTO.getTypeTravauxDangereuxDTO());
         Activite activite = ActiviteMapper.toEntity(definirDTO.getActiviteDTO());
 
         definir.setTypeTravauxDangereux(typeTravauxDangereux);
