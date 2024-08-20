@@ -27,7 +27,9 @@ public class UtilisateurController {
         this.utilisateurService = utilisateurService;
     }
 
+
     @GetMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UtilisateurDTO>> getAllUtilisateurs() {
 
         return utilisateurService.getAll();

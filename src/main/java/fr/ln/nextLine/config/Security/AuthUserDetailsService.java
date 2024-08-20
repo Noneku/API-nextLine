@@ -31,7 +31,6 @@ public class AuthUserDetailsService implements UserDetailsService {
 
             // Log les détails de l'utilisateur (sans mot de passe en production)
             logger.info("Utilisateur trouvé : Login = {}", utilisateur.getUtilisateurLogin());
-
             return new CustomUserDetails(utilisateur);
         } else {
             logger.warn("Utilisateur non trouvé : {}", login);

@@ -52,7 +52,8 @@ public class Utilisateur {
     @Column(name = "date_naissance")
     private LocalDate dateNaissance;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_role", nullable = false)
     private Role role;
+
 }

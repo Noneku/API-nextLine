@@ -4,10 +4,13 @@ import fr.ln.nextLine.Model.Dto.RoleDTO;
 import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Entity.Role;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
+import fr.ln.nextLine.Model.Repository.RoleRepository;
+import fr.ln.nextLine.Service.RoleService;
 
 import static fr.ln.nextLine.config.Security.SecurityConfig.passwordEncoder;
 
 public class UtilisateurMapper {
+
 
     private UtilisateurMapper () {
     }

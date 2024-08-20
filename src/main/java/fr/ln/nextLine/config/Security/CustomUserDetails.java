@@ -1,6 +1,9 @@
 package fr.ln.nextLine.config.Security;
 
+import fr.ln.nextLine.Model.Entity.Role;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +15,7 @@ import java.util.stream.Collectors;
 public class CustomUserDetails implements UserDetails {
 
         private final Utilisateur utilisateur;
+        private final Logger logger = LoggerFactory.getLogger(getClass());
 
         public CustomUserDetails(Utilisateur utilisateur) {
             this.utilisateur = utilisateur;
@@ -19,7 +23,11 @@ public class CustomUserDetails implements UserDetails {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return Collections.singletonList(new SimpleGrantedAuthority(utilisateur.getRole().getNomRole()));
+            Collection<? extends GrantedAuthority> authorities = Collections.singletonList(
+                    new SimpleGrantedAuthority("ROLE_" + utilisateur.getRole().getNomRole()));
+
+            authorities.forEach(auth -> logger.info("Authority: " + auth.getAuthority()));
+            return authorities;
         }
 
         @Override
