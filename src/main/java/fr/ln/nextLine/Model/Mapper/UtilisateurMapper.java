@@ -19,7 +19,7 @@ public class UtilisateurMapper {
         }
 
         UtilisateurDTO utilisateurDTO = new UtilisateurDTO();
-        RoleDTO roleDTO = new RoleDTO();
+        RoleDTO roleDTO = RoleMapper.toDTO(utilisateur.getRole());
 
         utilisateurDTO.setId(utilisateur.getId());
         utilisateurDTO.setNomUtilisateur(utilisateur.getNomUtilisateur());
@@ -44,7 +44,7 @@ public class UtilisateurMapper {
         }
 
         Utilisateur utilisateur = new Utilisateur();
-        Role role = new Role();
+        Role role = RoleMapper.toEntity(utilisateurDTO.getRoleDTO());
 
         utilisateur.setId(utilisateurDTO.getId());
         utilisateur.setNomUtilisateur(utilisateurDTO.getNomUtilisateur());
