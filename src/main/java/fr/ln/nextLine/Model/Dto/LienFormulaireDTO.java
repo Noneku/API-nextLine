@@ -17,6 +17,6 @@ public class LienFormulaireDTO {
     private String tokenLien;
     private LocalDate dateGeneration;
     private Boolean statut;
-    private UtilisateurDTO idUtilisateur;
+    private UtilisateurDTO utilisateurDTO;
 
 }

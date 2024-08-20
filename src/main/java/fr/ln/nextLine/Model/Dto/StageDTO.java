@@ -17,10 +17,10 @@ public class StageDTO {
     private LocalDate modifDateDebutStage;
     private String objectifStage;
     private LocalDate dateValidationStage;
-    private TuteurDTO idTuteur;
-    private UtilisateurDTO idUtilisateur;
-    private EntrepriseDTO idEntreprise;
-    private SessionDTO idSession;
-    private LieuRealisationDTO idLieuRealisation;
-    private ActiviteDTO idActivite;
+    private TuteurDTO tuteurDTO;
+    private UtilisateurDTO utilisateurDTO;
+    private EntrepriseDTO entrepriseDTO;
+    private SessionDTO sessionDTO;
+    private LieuRealisationDTO lieuRealisationDTO;
+    private ActiviteDTO activiteDTO;
 }

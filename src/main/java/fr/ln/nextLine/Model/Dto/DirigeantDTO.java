@@ -15,6 +15,6 @@ public class DirigeantDTO {
     private String nomDirigeant;
     private String prenomDirigeant;
     private String emailDirigeant;
-    private FonctionDTO idFonction;
+    private FonctionDTO fonctionDTO;
 
 }

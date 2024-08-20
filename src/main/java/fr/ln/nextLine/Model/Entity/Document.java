@@ -26,6 +26,6 @@ public class Document {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_stage", nullable = false)
-    private Stage idStage;
+    private Stage stage;
 
 }

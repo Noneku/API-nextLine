@@ -15,7 +15,7 @@ public class SessionMapper {
             return null;
         }
 
-        FormationDTO formationDTO = FormationMapper.toDTO(session.getIdFormation());
+        FormationDTO formationDTO = FormationMapper.toDTO(session.getFormation());
 
         SessionDTO sessionDTO = new SessionDTO();
 
@@ -25,7 +25,7 @@ public class SessionMapper {
         sessionDTO.setNumeroOffre(session.getNumeroOffre());
         sessionDTO.setDateDebutStage(session.getDateDebutStage());
         sessionDTO.setDateFinStage(session.getDateFinStage());
-        sessionDTO.setIdFormation(formationDTO);
+        sessionDTO.setFormationDTO(formationDTO);
 
         return sessionDTO;
     }
@@ -36,7 +36,7 @@ public class SessionMapper {
             return null;
         }
 
-        Formation formation = FormationMapper.toEntity(sessionDTO.getIdFormation());
+        Formation formation = FormationMapper.toEntity(sessionDTO.getFormationDTO());
 
         Session session = new Session();
 
@@ -46,7 +46,7 @@ public class SessionMapper {
         session.setNumeroOffre(sessionDTO.getNumeroOffre());
         session.setDateDebutStage(sessionDTO.getDateDebutStage());
         session.setDateFinStage(sessionDTO.getDateFinStage());
-        session.setIdFormation(formation);
+        session.setFormation(formation);
 
         return session;
     }

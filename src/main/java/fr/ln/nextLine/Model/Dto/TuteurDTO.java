@@ -16,6 +16,6 @@ public class TuteurDTO {
     private String prenomTuteur;
     private String emailTuteur;
     private String telTuteur;
-    private EntrepriseDTO idEntreprise;
-    private FonctionDTO idFonction;
+    private EntrepriseDTO entrepriseDTO;
+    private FonctionDTO fonctionDTO;
 }

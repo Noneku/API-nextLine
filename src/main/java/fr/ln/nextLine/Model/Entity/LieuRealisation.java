@@ -30,14 +30,14 @@ public class LieuRealisation {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_locaux", nullable = false)
-    private Locaux idLocaux;
+    private Locaux locaux;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_frequence", nullable = false)
-    private Frequence idFrequence;
+    private Frequence frequence;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_mode_deplacement", nullable = false)
-    private ModesDeplacement idModeDeplacement;
+    private ModesDeplacement modeDeplacement;
 
 }

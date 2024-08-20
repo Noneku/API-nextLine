@@ -15,11 +15,11 @@ public class Participer {
     @MapsId("idSession")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_session", nullable = false)
-    private Session idSession;
+    private Session session;
 
     @MapsId("idUtilisateur")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_utilisateur", nullable = false)
-    private Utilisateur idUtilisateur;
+    private Utilisateur utilisateur;
 
 }

@@ -19,9 +19,9 @@ public class LieuRealisationMapper {
             return null;
         }
 
-        LocauxDTO locauxDTO = LocauxMapper.toDTO(lieuRealisation.getIdLocaux());
-        FrequenceDTO frequenceDTO = FrequenceMapper.toDTO(lieuRealisation.getIdFrequence());
-        ModesDeplacementDTO modesDeplacementDTO = ModesDeplacementMapper.toDTO(lieuRealisation.getIdModeDeplacement());
+        LocauxDTO locauxDTO = LocauxMapper.toDTO(lieuRealisation.getLocaux());
+        FrequenceDTO frequenceDTO = FrequenceMapper.toDTO(lieuRealisation.getFrequence());
+        ModesDeplacementDTO modesDeplacementDTO = ModesDeplacementMapper.toDTO(lieuRealisation.getModeDeplacement());
 
         LieuRealisationDTO lieuRealisationDTO = new LieuRealisationDTO();
 
@@ -30,9 +30,9 @@ public class LieuRealisationMapper {
         lieuRealisationDTO.setAutresLocaux(lieuRealisation.getAutresLocaux());
         lieuRealisationDTO.setAutreFrequence(lieuRealisation.getAutreFrequence());
         lieuRealisationDTO.setAutreModeDeplacement(lieuRealisation.getAutreModeDeplacement());
-        lieuRealisationDTO.setIdLocaux(locauxDTO);
-        lieuRealisationDTO.setIdFrequence(frequenceDTO);
-        lieuRealisationDTO.setIdModeDeplacement(modesDeplacementDTO);
+        lieuRealisationDTO.setLocauxDTO(locauxDTO);
+        lieuRealisationDTO.setFrequenceDTO(frequenceDTO);
+        lieuRealisationDTO.setModesDeplacementDTO(modesDeplacementDTO);
 
         return lieuRealisationDTO;
     }
@@ -43,9 +43,9 @@ public class LieuRealisationMapper {
             return null;
         }
 
-        Locaux locaux = LocauxMapper.toEntity(lieuRealisationDTO.getIdLocaux());
-        Frequence frequence = FrequenceMapper.toEntity(lieuRealisationDTO.getIdFrequence());
-        ModesDeplacement modesDeplacement = ModesDeplacementMapper.toEntity(lieuRealisationDTO.getIdModeDeplacement());
+        Locaux locaux = LocauxMapper.toEntity(lieuRealisationDTO.getLocauxDTO());
+        Frequence frequence = FrequenceMapper.toEntity(lieuRealisationDTO.getFrequenceDTO());
+        ModesDeplacement modesDeplacement = ModesDeplacementMapper.toEntity(lieuRealisationDTO.getModesDeplacementDTO());
 
         LieuRealisation lieuRealisation = new LieuRealisation();
 
@@ -54,9 +54,9 @@ public class LieuRealisationMapper {
         lieuRealisation.setAutresLocaux(lieuRealisationDTO.getAutresLocaux());
         lieuRealisation.setAutreFrequence(lieuRealisationDTO.getAutreFrequence());
         lieuRealisation.setAutreModeDeplacement(lieuRealisationDTO.getAutreModeDeplacement());
-        lieuRealisation.setIdLocaux(locaux);
-        lieuRealisation.setIdFrequence(frequence);
-        lieuRealisation.setIdModeDeplacement(modesDeplacement);
+        lieuRealisation.setLocaux(locaux);
+        lieuRealisation.setFrequence(frequence);
+        lieuRealisation.setModeDeplacement(modesDeplacement);
 
         return lieuRealisation;
     }

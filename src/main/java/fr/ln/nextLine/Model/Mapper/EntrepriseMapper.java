@@ -13,10 +13,10 @@ public class EntrepriseMapper {
             return null;
         }
 
-        VilleDTO villeDTO = VilleMapper.toDTO(entreprise.getIdVille());
-        FormeJuridiqueDTO formeJuridiqueDTO = FormeJuridiqueMapper.toDTO(entreprise.getIdFormeJuridique());
-        DirigeantDTO dirigeantDTO = DirigeantMapper.toDTO(entreprise.getIdDirigeant());
-        AssuranceDTO assuranceDTO = AssuranceMapper.toDTO(entreprise.getIdAssurance());
+        VilleDTO villeDTO = VilleMapper.toDTO(entreprise.getVille());
+        FormeJuridiqueDTO formeJuridiqueDTO = FormeJuridiqueMapper.toDTO(entreprise.getFormeJuridique());
+        DirigeantDTO dirigeantDTO = DirigeantMapper.toDTO(entreprise.getDirigeant());
+        AssuranceDTO assuranceDTO = AssuranceMapper.toDTO(entreprise.getAssurance());
 
         EntrepriseDTO entrepriseDto = new EntrepriseDTO();
 
@@ -28,10 +28,10 @@ public class EntrepriseMapper {
         entrepriseDto.setEmailEntreprise(entreprise.getEmailEntreprise());
 
         //Foreign key
-        entrepriseDto.setIdVille(villeDTO);
-        entrepriseDto.setIdFormeJuridique(formeJuridiqueDTO);
-        entrepriseDto.setIdDirigeant(dirigeantDTO);
-        entrepriseDto.setIdAssurance(assuranceDTO);
+        entrepriseDto.setVilleDTO(villeDTO);
+        entrepriseDto.setFormeJuridiqueDTO(formeJuridiqueDTO);
+        entrepriseDto.setDirigeantDTO(dirigeantDTO);
+        entrepriseDto.setAssuranceDTO(assuranceDTO);
 
         return entrepriseDto;
     }
@@ -41,10 +41,10 @@ public class EntrepriseMapper {
             return null;
         }
 
-        Ville ville = VilleMapper.toEntity(entrepriseDto.getIdVille());
-        FormeJuridique formeJuridique = FormeJuridiqueMapper.toEntity(entrepriseDto.getIdFormeJuridique());
-        Dirigeant dirigeant = DirigeantMapper.toEntity(entrepriseDto.getIdDirigeant());
-        Assurance assurance = AssuranceMapper.toEntity(entrepriseDto.getIdAssurance());
+        Ville ville = VilleMapper.toEntity(entrepriseDto.getVilleDTO());
+        FormeJuridique formeJuridique = FormeJuridiqueMapper.toEntity(entrepriseDto.getFormeJuridiqueDTO());
+        Dirigeant dirigeant = DirigeantMapper.toEntity(entrepriseDto.getDirigeantDTO());
+        Assurance assurance = AssuranceMapper.toEntity(entrepriseDto.getAssuranceDTO());
 
         Entreprise entreprise = new Entreprise();
 
@@ -56,10 +56,10 @@ public class EntrepriseMapper {
         entreprise.setEmailEntreprise(entrepriseDto.getEmailEntreprise());
 
         //Foreign key
-        entreprise.setIdVille(ville);
-        entreprise.setIdFormeJuridique(formeJuridique);
-        entreprise.setIdDirigeant(dirigeant);
-        entreprise.setIdAssurance(assurance);
+        entreprise.setVille(ville);
+        entreprise.setFormeJuridique(formeJuridique);
+        entreprise.setDirigeant(dirigeant);
+        entreprise.setAssurance(assurance);
 
         return entreprise;
     }

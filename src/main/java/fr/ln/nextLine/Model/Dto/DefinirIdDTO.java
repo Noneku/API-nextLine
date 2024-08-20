@@ -16,6 +16,6 @@ import java.io.Serializable;
 @Setter
 public class DefinirIdDTO implements Serializable {
 
-    private TypeTravauxDangereux idTypeTravaux;
-    private Activite idActivite;
+    private TypeTravauxDangereux TypeTravaux;
+    private Activite Activite;
 }

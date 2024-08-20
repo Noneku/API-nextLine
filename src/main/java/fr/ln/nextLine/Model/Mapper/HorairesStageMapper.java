@@ -17,16 +17,16 @@ public class HorairesStageMapper {
         }
         HorairesStageDTO horairesStageDTO = new HorairesStageDTO();
 
-        StageDTO stageDTO = StageMapper.toDTO(horairesStage.getIdStage());
-        JourDTO jourDTO = JourMapper.toDTO(horairesStage.getIdJour());
+        StageDTO stageDTO = StageMapper.toDTO(horairesStage.getStage());
+        JourDTO jourDTO = JourMapper.toDTO(horairesStage.getJour());
 
         horairesStageDTO.setId(horairesStage.getId());
         horairesStageDTO.setHeureDebut(horairesStage.getHeureDebut());
         horairesStageDTO.setHeureDebutPauseDej(horairesStage.getHeureDebutPauseDej());
         horairesStageDTO.setHeureFinPauseDej(horairesStage.getHeureFinPauseDej());
         horairesStageDTO.setHeureFin(horairesStage.getHeureFin());
-        horairesStageDTO.setIdStage(stageDTO);
-        horairesStageDTO.setIdJour(jourDTO);
+        horairesStageDTO.setStageDTO(stageDTO);
+        horairesStageDTO.setJourDTO(jourDTO);
 
         return horairesStageDTO;
     }
@@ -36,8 +36,8 @@ public class HorairesStageMapper {
             return null;
         }
 
-        Stage stage = StageMapper.toEntity(horairesStageDTO.getIdStage());
-        Jour jour = JourMapper.toEntity(horairesStageDTO.getIdJour());
+        Stage stage = StageMapper.toEntity(horairesStageDTO.getStageDTO());
+        Jour jour = JourMapper.toEntity(horairesStageDTO.getJourDTO());
 
         HorairesStage horairesStage = new HorairesStage();
 
@@ -46,8 +46,8 @@ public class HorairesStageMapper {
         horairesStage.setHeureDebutPauseDej(horairesStageDTO.getHeureDebutPauseDej());
         horairesStage.setHeureFinPauseDej(horairesStageDTO.getHeureFinPauseDej());
         horairesStage.setHeureFin(horairesStageDTO.getHeureFin());
-        horairesStage.setIdStage(stage);
-        horairesStage.setIdJour(jour);
+        horairesStage.setStage(stage);
+        horairesStage.setJour(jour);
 
         return horairesStage;
     }

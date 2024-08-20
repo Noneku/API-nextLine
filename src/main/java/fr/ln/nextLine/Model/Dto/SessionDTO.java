@@ -19,5 +19,5 @@ public class SessionDTO {
     private String numeroOffre;
     private LocalDate dateDebutStage;
     private LocalDate dateFinStage;
-    private FormationDTO idFormation;
+    private FormationDTO formationDTO;
 }

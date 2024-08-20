@@ -32,10 +32,10 @@ public class HorairesStage {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_stage", nullable = false)
-    private Stage idStage;
+    private Stage stage;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_jour", nullable = false)
-    private Jour idJour;
+    private Jour jour;
 
 }
