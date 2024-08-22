@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static fr.ln.nextLine.config.Security.SecurityConfig.passwordEncoder;
+
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
 
@@ -50,6 +52,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public ResponseEntity<UtilisateurDTO> create(UtilisateurDTO utilisateurDTO) {
 
         Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
+        String passwordNoEncoded = utilisateur.getMdpUtilisateur();
+
+        utilisateur.setMdpUtilisateur(
+                passwordEncoder().encode(passwordNoEncoded)
+        );
 
         Utilisateur createdUtilisateur = utilisateurRepository.save(utilisateur);
         UtilisateurDTO createdUtilisateurDTO = UtilisateurMapper.toDTO(createdUtilisateur);

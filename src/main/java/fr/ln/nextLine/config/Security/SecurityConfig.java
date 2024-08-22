@@ -33,12 +33,12 @@ public class SecurityConfig {
                 // Définir les autorisations pour les requêtes HTTP
                 .authorizeHttpRequests((authorize) -> authorize
                         //Disabled Security
-                            //.anyRequest().permitAll()
+                            .anyRequest().permitAll()
                         //Disabled Security
 
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/api-nextline/users").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        //.requestMatchers("/login").permitAll()
+                        //.requestMatchers("/api-nextline/users").hasRole("ADMIN")
+                        //.anyRequest().authenticated()
                 )
 
                 // Configurer la gestion des sessions
