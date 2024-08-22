@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,5 +95,32 @@ public class SessionServiceImpl implements SessionService {
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+    }
+
+    @Override
+    public Integer calculNombreSemaines(LocalDate dateDebutStage, LocalDate dateFinStage) {
+
+        // vérification que les dates saisies ne sont pas nulles
+        if (dateDebutStage == null || dateFinStage == null) {
+            throw new IllegalArgumentException("Les dates de début et de fin de stage ne peuvent pas être nulles");
+        }
+
+        // Vérification que la date de début est avant la date de fin
+        if (dateDebutStage.isAfter(dateFinStage)) {
+            throw new IllegalArgumentException("La date de début de stage doit être antérieure à la date de fin de stage");
+        }
+
+        // Calcul du nombre de jours entre les deux dates
+        long nombreJours = ChronoUnit.DAYS.between(dateDebutStage, dateFinStage);
+
+        // Conversion des jours en semaines
+        int nombreSemaines = (int) (nombreJours / 7);
+
+        // Si la division n'est pas exacte, ajouter une semaine pour inclure les jours restants
+        if (nombreJours % 7 != 0) {
+            nombreSemaines++;
+        }
+
+        return nombreSemaines;
     }
 }
