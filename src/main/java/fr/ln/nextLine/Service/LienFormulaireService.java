@@ -9,6 +9,6 @@ public interface LienFormulaireService extends GeneriqueCrudService <LienFormula
 
     ResponseEntity<String> generateAndSendLink (Integer id_utilisateur, String emailEntreprise);
 
-    boolean isTokenValid(LienFormulaireDTO lienFormulaireDTO);
+    boolean isTokenValid(String token);
 
 }
