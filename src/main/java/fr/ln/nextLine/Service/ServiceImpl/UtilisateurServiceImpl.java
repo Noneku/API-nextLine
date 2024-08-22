@@ -69,8 +69,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
         if (utilisateurRepository.existsById(id)) {
 
-            Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
-            Utilisateur updatedUtilisateur = utilisateurRepository.save(utilisateur);
+            Utilisateur existingUtilisateur = utilisateurRepository.findById(id).orElseThrow();
+
+            Utilisateur updatedUtilisateur = utilisateurRepository.save(existingUtilisateur);
+
             UtilisateurDTO updatedUtilisateurDTO = UtilisateurMapper.toDTO(updatedUtilisateur);
 
             return new ResponseEntity<>(updatedUtilisateurDTO, HttpStatus.OK);

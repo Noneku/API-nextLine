@@ -1,6 +1,7 @@
 package fr.ln.nextLine.config.Security;
 
 import fr.ln.nextLine.config.Security.Filter.JwtRequestFilter;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,12 +34,19 @@ public class SecurityConfig {
                 // Définir les autorisations pour les requêtes HTTP
                 .authorizeHttpRequests((authorize) -> authorize
                         //Disabled Security
-                            .anyRequest().permitAll()
+                            //.anyRequest().permitAll()
                         //Disabled Security
 
-                        //.requestMatchers("/login").permitAll()
-                        //.requestMatchers("/api-nextline/users").hasRole("ADMIN")
-                        //.anyRequest().authenticated()
+                        .requestMatchers("auth/login").permitAll()
+
+                        //Utilisateur
+                                .requestMatchers("/user/all-users").hasAnyRole("ADMIN", "FORMATEUR")
+                                .requestMatchers("/user/create-user").hasAnyRole("ADMIN", "FORMATEUR")
+                                .requestMatchers("/user/update-user/*").hasAnyRole("ADMIN", "FORMATEUR", "STAGIAIRE")
+                                .requestMatchers("/user/delete-user/*").hasAnyRole("ADMIN", "FORMATEUR")
+
+                            .anyRequest().authenticated()
+                        //Utilisateur
                 )
 
                 // Configurer la gestion des sessions
