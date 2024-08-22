@@ -32,7 +32,7 @@ public class FormulaireServiceImpl implements FormulaireService {
 
         if (!lienFormulaireService.isTokenValid(token)) {
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le token est expiré ou le formulaire a déjà été complété.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le lien est expiré ou le formulaire a déjà été complété.");
         }
 
         return ResponseEntity.ok("Formulaire valide. Veuillez compléter les informations.");
