@@ -153,7 +153,7 @@ public class LienFormulaireServiceImpl implements LienFormulaireService {
     // méthode pour paramétrer le contenu du mail envoyé
     private String createEmailContent(String token) {
 
-        return "Veuillez compléter le formulaire à l'adresse suivante : http://localhost:8081/formulaire?token=" + token;
+        return "Veuillez compléter le formulaire à l'adresse suivante : http://localhost:8081/api-nextline/formulaire?token=" + token;
     }
 
 
