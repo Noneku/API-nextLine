@@ -111,13 +111,14 @@ public class SessionServiceImpl implements SessionService {
         }
 
         // Calcul du nombre de jours entre les deux dates
-        long nombreJours = ChronoUnit.DAYS.between(dateDebutStage, dateFinStage);
+        int nombreJours = (int) ChronoUnit.DAYS.between(dateDebutStage, dateFinStage);
 
         // Conversion des jours en semaines
         int nombreSemaines = (int) (nombreJours / 7);
 
-        // Si la division n'est pas exacte, ajouter une semaine pour inclure les jours restants
+        // Si le nombre restant ne permet pas de constituer une semaine complète, ajoute une semaine tout de même
         if (nombreJours % 7 != 0) {
+
             nombreSemaines++;
         }
 
