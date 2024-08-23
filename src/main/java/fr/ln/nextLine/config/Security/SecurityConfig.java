@@ -1,6 +1,7 @@
 package fr.ln.nextLine.config.Security;
 
 import fr.ln.nextLine.config.Security.Filter.JwtRequestFilter;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,11 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
-    private final UserDetailsService userDetailsService;
+    private final AuthUserDetailsService authUserDetailsService;
 
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService userDetailsService) {
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter, AuthUserDetailsService authUserDetailsService) {
         this.jwtRequestFilter = jwtRequestFilter;
-        this.userDetailsService = userDetailsService;
+        this.authUserDetailsService = authUserDetailsService;
     }
 
     @Bean
@@ -34,14 +34,23 @@ public class SecurityConfig {
                 // Définir les autorisations pour les requêtes HTTP
                 .authorizeHttpRequests((authorize) -> authorize
                         //Disabled Security
-                            .anyRequest().permitAll()
+                            //.anyRequest().permitAll()
                         //Disabled Security
 
-                     //   .requestMatchers("/login").permitAll()
-                     //   .anyRequest().authenticated()
+                        .requestMatchers("auth/login").permitAll()
+
+                        //Utilisateur
+                                .requestMatchers("/user/all-users").hasAnyRole("ADMIN", "FORMATEUR")
+                                .requestMatchers("/user/create-user").hasAnyRole("ADMIN", "FORMATEUR")
+                                .requestMatchers("/user/update-user/*").hasAnyRole("ADMIN", "FORMATEUR", "STAGIAIRE")
+                                .requestMatchers("/user/delete-user/*").hasAnyRole("ADMIN", "FORMATEUR")
+
+                            .anyRequest().authenticated()
+                        //Utilisateur
                 )
 
                 // Configurer la gestion des sessions
+
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Session Stateless est utilisé pour les Tokens JWT (Bearer)
                 )
@@ -58,7 +67,7 @@ public class SecurityConfig {
     @Bean //Gère le processus d'authentification des utilisateurs.
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setUserDetailsService(authUserDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
 
         return new ProviderManager(authenticationProvider);

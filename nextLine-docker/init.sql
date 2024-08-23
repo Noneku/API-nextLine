@@ -355,7 +355,7 @@ INSERT INTO public.role (id_role, nom_role) VALUES (1, 'Admin'), (2, 'Stagiaire'
 -- Table: utilisateur
 INSERT INTO public.utilisateur (nom_utilisateur, prenom_utilisateur, utilisateur_login, email_utilisateur, mdp_utilisateur, date_creation, isActive, numero_secu_stagiaire, numero_beneficiaire_stagiaire, date_naissance, id_role)
 VALUES ('Dupont', 'Jean', 'jdupont', 'j.dupont@example.com', 'mdp123', '2023-01-01', TRUE, '123456789012345', '9876543210', '1990-01-01', 2),
-       ('Grey', 'Robert', 'grob34', 'r.grey@gmail.com', 'mdprob34', '2024-02-02', TRUE, '178055945678932', '4524769347', '1978-05-05', 3),
+        ('Grey', 'Robert', 'grob34', 'r.grey@gmail.com', 'mdprob34', '2024-02-02', TRUE, '178055945678932', '4524769347', '1978-05-05', 3),
        ('Fretier', 'Clémentine', 'bclem79', 'c.boulanger@gmail.com', 'mdpclem79', '2023-05-05', TRUE, '268045934669821', '5279452747', '1968-04-04', 1),
        ('Messaoui', 'Fatima', 'mfat56', 'f.messaoui@gmail.com', 'mdpfat657', '2023-09-09', TRUE, '292085334862489', '4782395763', '1992-08-08', 2);
 

@@ -1,5 +1,6 @@
 package fr.ln.nextLine.config.Security.Filter;
 
+import fr.ln.nextLine.config.Security.AuthUserDetailsService;
 import fr.ln.nextLine.config.Security.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,11 +20,11 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private final AuthUserDetailsService authUserDetailsService;
 
-    public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+    public JwtRequestFilter(JwtUtil jwtUtil, AuthUserDetailsService authUserDetailsService) {
         this.jwtUtil = jwtUtil;
-        this.userDetailsService = userDetailsService;
+        this.authUserDetailsService = authUserDetailsService;
     }
 
     @Override
@@ -45,7 +46,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // Vérifie si le nom d'utilisateur est non nul et s'il n'y a pas déjà une authentification dans le contexte de sécurité
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtUtil.validateToken(jwtToken)) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = authUserDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);

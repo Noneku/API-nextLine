@@ -5,9 +5,8 @@ import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Entity.Role;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
 
-import static fr.ln.nextLine.config.Security.SecurityConfig.passwordEncoder;
-
 public class UtilisateurMapper {
+
 
     private UtilisateurMapper () {
     }
@@ -26,7 +25,7 @@ public class UtilisateurMapper {
         utilisateurDTO.setPrenomUtilisateur(utilisateur.getPrenomUtilisateur());
         utilisateurDTO.setUtilisateurLogin(utilisateur.getUtilisateurLogin());
         utilisateurDTO.setEmailUtilisateur(utilisateur.getEmailUtilisateur());
-        utilisateurDTO.setMdpUtilisateur(passwordEncoder().encode(utilisateur.getMdpUtilisateur()));
+        utilisateurDTO.setMdpUtilisateur(utilisateur.getMdpUtilisateur());
         utilisateurDTO.setDateCreation(utilisateur.getDateCreation());
         utilisateurDTO.setIsactive(utilisateur.getIsactive());
         utilisateurDTO.setNumeroSecuStagiaire(utilisateur.getNumeroSecuStagiaire());
@@ -51,7 +50,7 @@ public class UtilisateurMapper {
         utilisateur.setPrenomUtilisateur(utilisateurDTO.getPrenomUtilisateur());
         utilisateur.setUtilisateurLogin(utilisateurDTO.getUtilisateurLogin());
         utilisateur.setEmailUtilisateur(utilisateurDTO.getEmailUtilisateur());
-        utilisateur.setMdpUtilisateur(passwordEncoder().encode(utilisateurDTO.getMdpUtilisateur()));
+        utilisateur.setMdpUtilisateur(utilisateurDTO.getMdpUtilisateur());
         utilisateur.setDateCreation(utilisateurDTO.getDateCreation());
         utilisateur.setIsactive(utilisateurDTO.getIsactive());
         utilisateur.setNumeroSecuStagiaire(utilisateurDTO.getNumeroSecuStagiaire());
