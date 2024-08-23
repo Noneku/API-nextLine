@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface LienFormulaireRepository extends JpaRepository <LienFormulaire, Integer> {
 
-    Optional<LienFormulaire> findByTokenLien(String tokenLien);
+    Optional<LienFormulaire> findLienByTokenLien(String tokenLien);
 }

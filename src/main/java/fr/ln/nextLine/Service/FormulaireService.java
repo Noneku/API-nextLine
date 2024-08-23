@@ -7,5 +7,4 @@ import org.springframework.stereotype.Service;
 public interface FormulaireService {
 
     ResponseEntity<String> afficherFormulaire(String token);
-    boolean isTokenValid(String token);
 }

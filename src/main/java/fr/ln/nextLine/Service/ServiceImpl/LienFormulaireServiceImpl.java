@@ -159,14 +159,15 @@ public class LienFormulaireServiceImpl implements LienFormulaireService {
 
     // méthode qui vérifie la validité du token : si le lien est en statut "true" (formulaire complété) ou que le token a été généré il y a moins de
     // 24h alors le token n'est plus valide
-    public boolean isTokenValid(LienFormulaireDTO lienFormulaireDTO) {
-
-        LienFormulaire lienFormulaire = LienFormulaireMapper.toEntity(lienFormulaireDTO);
-
-        LocalDateTime dateGeneration = lienFormulaire.getDateGeneration().atStartOfDay(ZoneId.systemDefault()).toLocalDateTime();
-        LocalDateTime now = LocalDateTime.now();
-
-        return !dateGeneration.plusHours(24).isBefore(now) && !lienFormulaire.getStatut();
+    public boolean isTokenValid(String token) {
+        return lienFormulaireRepository.findLienByTokenLien(token)
+                .map(lienFormulaire -> {
+                    LocalDateTime dateGeneration = lienFormulaire.getDateGeneration()
+                            .atStartOfDay(ZoneId.systemDefault()).toLocalDateTime();
+                    LocalDateTime now = LocalDateTime.now();
+                    return !dateGeneration.plusHours(24).isBefore(now) && !lienFormulaire.getStatut();
+                })
+                .orElse(false);
     }
 }
 
