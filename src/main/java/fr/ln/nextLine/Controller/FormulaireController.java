@@ -33,8 +33,11 @@ public class FormulaireController {
         return formulaireService.afficherFormulaire(token);
     }
 
+
     @GetMapping("/utilisateur-connecte")
     public UtilisateurDTO afficherUtilisateurConnecte() {
         return utilisateurService.recupererUtilisateurConnecte();
     }
+
+
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api-nextline/entreprises")
+@RequestMapping("/entreprises")
 public class EntrepriseController {
 
     private final EntrepriseService entrepriseService;
@@ -56,11 +56,25 @@ public class EntrepriseController {
 
     }
 
-    @GetMapping("/verifier/{siret}")
-    public ResponseEntity<EntrepriseDTO> checkEntreprise(@PathVariable String siret) {
+    @GetMapping("/verifier/{token}/{siret}")
+    public ResponseEntity<EntrepriseDTO> checkEntreprise(
+            @PathVariable String token,
+            @PathVariable String siret) {
 
-        EntrepriseDTO entrepriseDTO = entrepriseService.checkEntreprise(siret);
+        EntrepriseDTO entrepriseDTO = entrepriseService.checkEntreprise(token, siret);
         return new ResponseEntity<>(entrepriseDTO, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/cache/entreprise/{token}")
+    public ResponseEntity<EntrepriseDTO> getEntrepriseFromCache(@PathVariable String token) {
+        // Tentative de récupération de l'entreprise depuis le cache
+        EntrepriseDTO entrepriseDTO = entrepriseService.getEntrepriseFromCache(token);
+
+        if (entrepriseDTO != null) {
+            return new ResponseEntity<>(entrepriseDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

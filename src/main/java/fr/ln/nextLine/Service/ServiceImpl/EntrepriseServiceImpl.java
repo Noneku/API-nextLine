@@ -10,6 +10,9 @@ import fr.ln.nextLine.Service.ServiceExt.ApiSirenService;
 import fr.ln.nextLine.Service.EntrepriseService;
 import fr.ln.nextLine.Service.VilleService;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     private final DirigeantRepository dirigeantRepository;
     private final AssuranceRepository assuranceRepository;
     private final ObjectMapper objectMapper;
+    private CacheManager cacheManager;
 
 
     // Constantes pour attribuer des valeurs par défaut temporaires
@@ -44,7 +48,8 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             FormeJuridiqueRepository formeJuridiqueRepository,
             DirigeantRepository dirigeantRepository,
             AssuranceRepository assuranceRepository,
-            VilleService villeService) {
+            VilleService villeService,
+            CacheManager cacheManager) {
 
         this.entrepriseRepository = entrepriseRepository;
         this.apiSirenService = apiSirenService;
@@ -53,6 +58,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         this.formeJuridiqueRepository = formeJuridiqueRepository;
         this.dirigeantRepository = dirigeantRepository;
         this.assuranceRepository = assuranceRepository;
+        this.cacheManager = cacheManager;
     }
 
     @Override
@@ -142,16 +148,19 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 
 
     // méthode permettant de faire un appel au service apiSirenService pour interroger l'api et recupérer les informations de l'entreprise à partir du numéro siret saisi
-    public EntrepriseDTO checkEntreprise(String siret) {
+    public EntrepriseDTO checkEntreprise(String token, String siret) {
 
         String jsonData = apiSirenService.verifierEntreprise(siret);
-        return getEntreprise(jsonData, siret);
+        return getEntreprise(token, jsonData, siret);
     }
 
 
     // méthode qui récupère les données depuis l'api siren à partir du numero siret de l'entreprise saisi pour créer un objet entrepriseDTO
+    // cet objet entrepriseDTO est mis en cache afin de pouvoir être récupéré ultérieurement à la validation du formulaire
+    // la clé de récupération de l'objet entrepriseDTO situé en cache est le token du lien ayant permis d'accéder au formulaire et à la saisie du numéro SIRET
     @Override
-    public EntrepriseDTO getEntreprise(String jsonData, String siret) {
+    @Cacheable(value = "formulaireCache", key = "#token")
+    public EntrepriseDTO getEntreprise(String token, String jsonData, String siret) {
         try {
             JsonNode root = objectMapper.readTree(jsonData);
 
@@ -175,6 +184,8 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             entrepriseDTO.setFormeJuridiqueDTO(getDefaultFormeJuridiqueDTO());
             entrepriseDTO.setDirigeantDTO(getDefaultDirigeantDTO());
             entrepriseDTO.setAssuranceDTO(getDefaultAssuranceDTO());
+
+            System.out.println("token : " + token);
 
             return entrepriseDTO;
 
@@ -227,5 +238,16 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     private AssuranceDTO getDefaultAssuranceDTO() {
         Assurance defaultAssurance = assuranceRepository.getById(DEFAULT_ASSURANCE_ID);
         return AssuranceMapper.toDTO(defaultAssurance);
+    }
+
+
+    @Override
+    public EntrepriseDTO getEntrepriseFromCache(String token) {
+        // Récupération du cache
+        Cache cache = cacheManager.getCache("formulaireCache");
+        if (cache != null) {
+            return cache.get(token, EntrepriseDTO.class);
+        }
+        return null;
     }
 }

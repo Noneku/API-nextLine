@@ -11,8 +11,9 @@ import java.util.Optional;
 @Service
 public interface EntrepriseService extends GeneriqueCrudService <EntrepriseDTO> {
 
-    EntrepriseDTO checkEntreprise(String siret);
-    EntrepriseDTO getEntreprise(String jsonData, String siret);
+    EntrepriseDTO checkEntreprise(String token, String siret);
+    EntrepriseDTO getEntreprise(String token, String jsonData, String siret);
     ResponseEntity<EntrepriseDTO> getByNumeroSiret (String numeroSiret);
+    EntrepriseDTO getEntrepriseFromCache(String token);
 
 }
