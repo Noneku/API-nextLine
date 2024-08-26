@@ -12,6 +12,9 @@ import lombok.Setter;
 public class FormulaireDTO {
 
     private UtilisateurDTO utilisateurDTO;
+    private FormationDTO formationDTO;
+    private SessionDTO sessionDTO;
+    private ParticiperDTO participerDTO;
     private EntrepriseDTO entrepriseDTO;
     private HorairesStageDTO horairesStageDTO;
     private LieuRealisationDTO lieuRealisationDTO;

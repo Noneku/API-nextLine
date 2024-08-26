@@ -3,8 +3,12 @@ package fr.ln.nextLine.Service.ServiceImpl;
 import fr.ln.nextLine.Model.Dto.ParticiperDTO;
 import fr.ln.nextLine.Model.Entity.Participer;
 import fr.ln.nextLine.Model.Entity.ParticiperId;
+import fr.ln.nextLine.Model.Entity.Session;
+import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.ParticiperMapper;
 import fr.ln.nextLine.Model.Repository.ParticiperRepository;
+import fr.ln.nextLine.Model.Repository.SessionRepository;
+import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
 import fr.ln.nextLine.Service.ParticiperService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -19,10 +23,17 @@ import java.util.Optional;
 public class ParticiperServiceImpl implements ParticiperService {
 
     private final ParticiperRepository participerRepository;
+    private final SessionRepository sessionRepository;
+    private final UtilisateurRepository utilisateurRepository;
 
-    public ParticiperServiceImpl(ParticiperRepository participerRepository) {
+    public ParticiperServiceImpl(
+            ParticiperRepository participerRepository,
+            SessionRepository sessionRepository,
+            UtilisateurRepository utilisateurRepository) {
 
         this.participerRepository = participerRepository;
+        this.sessionRepository = sessionRepository;
+        this.utilisateurRepository = utilisateurRepository;
     }
 
 
@@ -94,4 +105,25 @@ public class ParticiperServiceImpl implements ParticiperService {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+    @Override
+    public void ajouterUtilisateurAUneSession(Integer sessionId, Integer utilisateurId) {
+
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new RuntimeException("Session not found"));
+        Utilisateur utilisateur = utilisateurRepository.findById(utilisateurId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur not found"));
+
+        ParticiperId participerId = new ParticiperId();
+        participerId.setIdSession(session.getId());
+        participerId.setIdUtilisateur(utilisateur.getId());
+
+        Participer participer = new Participer();
+        participer.setId(participerId);
+        participer.setSession(session);
+        participer.setUtilisateur(utilisateur);
+
+        participerRepository.save(participer);
+    }
 }
+
