@@ -149,8 +149,17 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     // méthode permettant de faire un appel au service apiSirenService pour interroger l'api et recupérer les informations de l'entreprise à partir du numéro siret saisi
     public EntrepriseDTO checkEntreprise(String token, String siret) {
 
-        String jsonData = apiSirenService.verifierEntreprise(siret);
-        return getEntreprise(token, jsonData, siret);
+        if (entrepriseRepository.findByNumeroSiret(siret).isPresent()) {
+
+            Entreprise entreprise = entrepriseRepository.findByNumeroSiret(siret).get();
+
+            return EntrepriseMapper.toDTO(entreprise);
+
+        } else {
+
+            String jsonData = apiSirenService.verifierEntreprise(siret);
+            return getEntreprise(token, jsonData, siret);
+        }
     }
 
 
