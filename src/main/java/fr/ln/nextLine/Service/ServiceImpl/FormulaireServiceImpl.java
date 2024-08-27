@@ -1,13 +1,16 @@
 package fr.ln.nextLine.Service.ServiceImpl;
 
+import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
 import fr.ln.nextLine.Model.Dto.FormulaireDTO;
 import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Repository.LienFormulaireRepository;
 import fr.ln.nextLine.Service.FormulaireService;
 import fr.ln.nextLine.Service.LienFormulaireService;
+import fr.ln.nextLine.Service.ServiceExt.CacheService;
 import fr.ln.nextLine.Service.UtilisateurService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,16 +22,19 @@ public class FormulaireServiceImpl implements FormulaireService {
     @Autowired
     private final LienFormulaireRepository lienFormulaireRepository;
     private final LienFormulaireService lienFormulaireService;
+    private final CacheService cacheService;
 
     @Autowired
     private UtilisateurService utilisateurService;
 
     public FormulaireServiceImpl(
             LienFormulaireRepository lienFormulaireRepository,
-            LienFormulaireService lienFormulaireService) {
+            LienFormulaireService lienFormulaireService,
+            CacheService cacheService) {
 
         this.lienFormulaireRepository = lienFormulaireRepository;
         this.lienFormulaireService = lienFormulaireService;
+        this.cacheService = cacheService;
     }
 
 
@@ -43,6 +49,7 @@ public class FormulaireServiceImpl implements FormulaireService {
 
         return ResponseEntity.ok("Formulaire valide. Veuillez entrer votre numéro SIRET.");
     }
+
 
 
     @Override

@@ -8,10 +8,9 @@ import fr.ln.nextLine.Model.Mapper.*;
 import fr.ln.nextLine.Model.Repository.*;
 import fr.ln.nextLine.Service.ServiceExt.ApiSirenService;
 import fr.ln.nextLine.Service.EntrepriseService;
+import fr.ln.nextLine.Service.ServiceExt.CacheService;
 import fr.ln.nextLine.Service.VilleService;
 import jakarta.transaction.Transactional;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     private final DirigeantRepository dirigeantRepository;
     private final AssuranceRepository assuranceRepository;
     private final ObjectMapper objectMapper;
-    private CacheManager cacheManager;
+    private final CacheService cacheService;
 
 
     // Constantes pour attribuer des valeurs par défaut temporaires
@@ -49,7 +48,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             DirigeantRepository dirigeantRepository,
             AssuranceRepository assuranceRepository,
             VilleService villeService,
-            CacheManager cacheManager) {
+            CacheService cacheService) {
 
         this.entrepriseRepository = entrepriseRepository;
         this.apiSirenService = apiSirenService;
@@ -58,7 +57,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         this.formeJuridiqueRepository = formeJuridiqueRepository;
         this.dirigeantRepository = dirigeantRepository;
         this.assuranceRepository = assuranceRepository;
-        this.cacheManager = cacheManager;
+        this.cacheService = cacheService;
     }
 
     @Override
@@ -159,7 +158,6 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     // cet objet entrepriseDTO est mis en cache afin de pouvoir être récupéré ultérieurement à la validation du formulaire
     // la clé de récupération de l'objet entrepriseDTO situé en cache est le token du lien ayant permis d'accéder au formulaire et à la saisie du numéro SIRET
     @Override
-    @Cacheable(value = "formulaireCache", key = "#token")
     public EntrepriseDTO getEntreprise(String token, String jsonData, String siret) {
         try {
             JsonNode root = objectMapper.readTree(jsonData);
@@ -185,12 +183,18 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             entrepriseDTO.setDirigeantDTO(getDefaultDirigeantDTO());
             entrepriseDTO.setAssuranceDTO(getDefaultAssuranceDTO());
 
-            System.out.println("token : " + token);
+            System.out.println("Token: " + token);
+            System.out.println("Objet EntrepriseDTO : " + entrepriseDTO.getRaisonSociale());
+
+            // mise en cache de l'objet retourné en utilisant le cacheService
+            cacheService.cacheEntrepriseDTO(token, entrepriseDTO);
 
             return entrepriseDTO;
 
         } catch (Exception e) {
+
             e.printStackTrace();
+
             return null;
         }
     }
@@ -238,16 +242,5 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     private AssuranceDTO getDefaultAssuranceDTO() {
         Assurance defaultAssurance = assuranceRepository.getById(DEFAULT_ASSURANCE_ID);
         return AssuranceMapper.toDTO(defaultAssurance);
-    }
-
-
-    @Override
-    public EntrepriseDTO getEntrepriseFromCache(String token) {
-        // Récupération du cache
-        Cache cache = cacheManager.getCache("formulaireCache");
-        if (cache != null) {
-            return cache.get(token, EntrepriseDTO.class);
-        }
-        return null;
     }
 }

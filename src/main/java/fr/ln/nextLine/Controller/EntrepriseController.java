@@ -2,6 +2,7 @@ package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
 import fr.ln.nextLine.Service.EntrepriseService;
+import fr.ln.nextLine.Service.FormulaireService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +14,13 @@ import java.util.List;
 public class EntrepriseController {
 
     private final EntrepriseService entrepriseService;
+    private final FormulaireService formulaireService;
 
-    public EntrepriseController(EntrepriseService entrepriseService) {
+    public EntrepriseController(EntrepriseService entrepriseService,
+                                FormulaireService formulaireService) {
 
         this.entrepriseService = entrepriseService;
+        this.formulaireService = formulaireService;
     }
 
     @GetMapping
@@ -64,17 +68,5 @@ public class EntrepriseController {
         EntrepriseDTO entrepriseDTO = entrepriseService.checkEntreprise(token, siret);
         return new ResponseEntity<>(entrepriseDTO, HttpStatus.OK);
 
-    }
-
-    @GetMapping("/cache/entreprise/{token}")
-    public ResponseEntity<EntrepriseDTO> getEntrepriseFromCache(@PathVariable String token) {
-        // Tentative de récupération de l'entreprise depuis le cache
-        EntrepriseDTO entrepriseDTO = entrepriseService.getEntrepriseFromCache(token);
-
-        if (entrepriseDTO != null) {
-            return new ResponseEntity<>(entrepriseDTO, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 }
