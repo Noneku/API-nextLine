@@ -47,7 +47,8 @@ public class FormulaireController {
 
     @GetMapping("/cache/entreprise/{token}")
     public ResponseEntity<EntrepriseDTO> getEntrepriseFromCache(@PathVariable String token) {
-        // Tentative de récupération de l'entreprise depuis le cache
+
+        // Récupération de l'entreprise depuis le cache
         EntrepriseDTO entrepriseDTO = cacheService.getEntrepriseFromCache(token);
 
         if (entrepriseDTO != null) {
