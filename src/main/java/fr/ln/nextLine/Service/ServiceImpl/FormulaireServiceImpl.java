@@ -1,6 +1,5 @@
 package fr.ln.nextLine.Service.ServiceImpl;
 
-import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
 import fr.ln.nextLine.Model.Dto.FormulaireDTO;
 import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Repository.LienFormulaireRepository;
@@ -10,7 +9,6 @@ import fr.ln.nextLine.Service.ServiceExt.CacheService;
 import fr.ln.nextLine.Service.UtilisateurService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
