@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api-nextline/formes-juridiques")
+@RequestMapping("/formes-juridiques")
 public class FormeJuridiqueController {
 
     private final FormeJuridiqueService formeJuridiqueService;
