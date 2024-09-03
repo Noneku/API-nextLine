@@ -1,6 +1,8 @@
 package fr.ln.nextLine.config.Security;
 
+import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
+import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,6 +13,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class CustomUserDetails implements UserDetails {
+    
 
         private final Utilisateur utilisateur;
         private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -21,6 +24,7 @@ public class CustomUserDetails implements UserDetails {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
+
             Collection<? extends GrantedAuthority> authorities = Collections.singletonList(
                     new SimpleGrantedAuthority("ROLE_" + utilisateur.getRole().getNomRole()));
 
@@ -57,4 +61,7 @@ public class CustomUserDetails implements UserDetails {
         public boolean isEnabled() {
             return true;
         }
+
+        public UtilisateurDTO getUserAuthentified() {  return UtilisateurMapper.toDTO(this.utilisateur); }
+    
 }
