@@ -49,7 +49,7 @@ public class SecurityConfig {
 
                         //Utilisateur
                                 .requestMatchers("/user/all-users").hasAnyRole("ADMIN", "FORMATEUR")
-                                .requestMatchers("/user/create-user").hasAnyRole("ADMIN", "FORMATEUR")
+                                //.requestMatchers("/user/create-user").hasAnyRole("ADMIN", "FORMATEUR")
                                 .requestMatchers("/user/update-user/*").hasAnyRole("ADMIN", "FORMATEUR", "STAGIAIRE")
                                 .requestMatchers("/user/delete-user/*").hasAnyRole("ADMIN", "FORMATEUR")
                             .anyRequest().authenticated()

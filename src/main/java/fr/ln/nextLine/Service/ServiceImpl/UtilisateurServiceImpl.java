@@ -23,14 +23,10 @@ import static fr.ln.nextLine.config.Security.SecurityConfig.passwordEncoder;
 public class UtilisateurServiceImpl implements UtilisateurService {
 
     private final UtilisateurRepository utilisateurRepository;
-    private final UUIDGeneratorService uuidGeneratorService;
-    private final PasswordGeneratorService passwordGeneratorService;
     private final EmailSenderService emailSenderService;
 
     public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, UUIDGeneratorService uuidGeneratorService, PasswordGeneratorService passwordGeneratorService, EmailSenderService emailSenderService) {
         this.utilisateurRepository = utilisateurRepository;
-        this.uuidGeneratorService = uuidGeneratorService;
-        this.passwordGeneratorService = passwordGeneratorService;
         this.emailSenderService = emailSenderService;
     }
 
@@ -64,8 +60,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
 
         String passwordNoEncoded = utilisateur.getMdpUtilisateur();
-        String uniqueLogin = uuidGeneratorService.generateUUID();
-        String uniquePassword = passwordGeneratorService.generatePassword(12);
+        String uniqueLogin = UUIDGeneratorService.generateUUID(utilisateur.getNomUtilisateur(), utilisateur.getPrenomUtilisateur());
+        String uniquePassword = PasswordGeneratorService.generatePassword();
+
 
         utilisateur.setIsactive(false);
         utilisateur.setUtilisateurLogin(uniqueLogin);
@@ -74,19 +71,23 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Utilisateur createdUtilisateur = utilisateurRepository.save(utilisateur);
         UtilisateurDTO createdUtilisateurDTO = UtilisateurMapper.toDTO(createdUtilisateur);
 
-        emailSenderService.sendEmail(
-                "leila.mouaci@gmail.com",
-                "Identifiants de Connexion NextLine",
-                "Bonjour Leila,\n\n" +
-                        "Voici vos identifiants de connexion temporaires pour accéder à votre compte NextLine :\n\n" +
-                        "🔹 **Login** : " + utilisateur.getUtilisateurLogin() + "\n\n" +
-                        "🔹 **Mot de passe** : " + utilisateur.getMdpUtilisateur() + "\n\n" +
-                        "Veuillez vous connecter dès que possible et modifier ces identifiants pour garantir la sécurité de votre compte.\n\n" +
-                        "Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à contacter notre support.\n\n" +
-                        "Cordialement,\n" +
-                        "L'équipe NextLine"
-        );
+        System.out.print("Le compte exist");
 
+        if (createdUtilisateurDTO != null) {
+
+            emailSenderService.sendEmail(
+                    createdUtilisateur.getEmailUtilisateur(),
+                    "Identifiants de Connexion NextLine",
+                    "Bonjour " + createdUtilisateurDTO.getNomUtilisateur() + " " + createdUtilisateur.getPrenomUtilisateur() + "\n\n" +
+                            "Voici vos identifiants de connexion temporaires pour accéder à votre compte NextLine :\n\n" +
+                            "🔹 **Login** : " + utilisateur.getUtilisateurLogin() + "\n\n" +
+                            "🔹 **Mot de passe** : " + uniquePassword + "\n\n" +
+                            "Veuillez vous connecter dès que possible et modifier ces identifiants pour garantir la sécurité de votre compte.\n\n" +
+                            "Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à contacter notre support.\n\n" +
+                            "Cordialement,\n" +
+                            "L'équipe NextLine"
+            );
+        }
 
         return new ResponseEntity<>(createdUtilisateurDTO, HttpStatus.CREATED);
     }
@@ -145,6 +146,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             return null;
         }
     }
+
+    @Override
+    public boolean existsByUtilisateurLogin(String utilisateurLogin) {
+        return existsByUtilisateurLogin(utilisateurLogin);
+    }
+
 
 }
 

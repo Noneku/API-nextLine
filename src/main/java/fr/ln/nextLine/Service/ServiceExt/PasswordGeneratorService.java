@@ -14,10 +14,12 @@ public class PasswordGeneratorService {
 
     private static final String ALL_CHARS = UPPER + LOWER + DIGITS + SPECIAL;
 
-    public static String generatePassword(int length) {
+    public static String generatePassword() {
+        int length = 5;
         Random random = new SecureRandom();
         StringBuilder password = new StringBuilder(length);
 
+        // Générer exactement 5 caractères aléatoires
         for (int i = 0; i < length; i++) {
             int index = random.nextInt(ALL_CHARS.length());
             password.append(ALL_CHARS.charAt(index));
@@ -25,5 +27,4 @@ public class PasswordGeneratorService {
 
         return password.toString();
     }
-
 }
