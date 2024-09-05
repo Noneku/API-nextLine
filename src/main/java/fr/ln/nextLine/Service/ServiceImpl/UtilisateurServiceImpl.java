@@ -4,6 +4,9 @@ import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
 import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
+import fr.ln.nextLine.Service.ServiceExt.EmailSenderService;
+import fr.ln.nextLine.Service.ServiceExt.PasswordGeneratorService;
+import fr.ln.nextLine.Service.ServiceExt.UUIDGeneratorService;
 import fr.ln.nextLine.Service.UtilisateurService;
 import fr.ln.nextLine.config.Security.CustomUserDetails;
 import org.springframework.http.HttpStatus;
@@ -20,9 +23,15 @@ import static fr.ln.nextLine.config.Security.SecurityConfig.passwordEncoder;
 public class UtilisateurServiceImpl implements UtilisateurService {
 
     private final UtilisateurRepository utilisateurRepository;
+    private final UUIDGeneratorService uuidGeneratorService;
+    private final PasswordGeneratorService passwordGeneratorService;
+    private final EmailSenderService emailSenderService;
 
-    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository) {
+    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, UUIDGeneratorService uuidGeneratorService, PasswordGeneratorService passwordGeneratorService, EmailSenderService emailSenderService) {
         this.utilisateurRepository = utilisateurRepository;
+        this.uuidGeneratorService = uuidGeneratorService;
+        this.passwordGeneratorService = passwordGeneratorService;
+        this.emailSenderService = emailSenderService;
     }
 
     @Override
@@ -52,16 +61,32 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public ResponseEntity<UtilisateurDTO> create(UtilisateurDTO utilisateurDTO) {
-
         Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
-        String passwordNoEncoded = utilisateur.getMdpUtilisateur();
 
-        utilisateur.setMdpUtilisateur(
-                passwordEncoder().encode(passwordNoEncoded)
-        );
+        String passwordNoEncoded = utilisateur.getMdpUtilisateur();
+        String uniqueLogin = uuidGeneratorService.generateUUID();
+        String uniquePassword = passwordGeneratorService.generatePassword(12);
+
+        utilisateur.setIsactive(false);
+        utilisateur.setUtilisateurLogin(uniqueLogin);
+        utilisateur.setMdpUtilisateur(passwordEncoder().encode(uniquePassword));
 
         Utilisateur createdUtilisateur = utilisateurRepository.save(utilisateur);
         UtilisateurDTO createdUtilisateurDTO = UtilisateurMapper.toDTO(createdUtilisateur);
+
+        emailSenderService.sendEmail(
+                "leila.mouaci@gmail.com",
+                "Identifiants de Connexion NextLine",
+                "Bonjour Leila,\n\n" +
+                        "Voici vos identifiants de connexion temporaires pour accéder à votre compte NextLine :\n\n" +
+                        "🔹 **Login** : " + utilisateur.getUtilisateurLogin() + "\n\n" +
+                        "🔹 **Mot de passe** : " + utilisateur.getMdpUtilisateur() + "\n\n" +
+                        "Veuillez vous connecter dès que possible et modifier ces identifiants pour garantir la sécurité de votre compte.\n\n" +
+                        "Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à contacter notre support.\n\n" +
+                        "Cordialement,\n" +
+                        "L'équipe NextLine"
+        );
+
 
         return new ResponseEntity<>(createdUtilisateurDTO, HttpStatus.CREATED);
     }
