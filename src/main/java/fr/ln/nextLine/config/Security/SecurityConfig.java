@@ -17,8 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
@@ -48,10 +46,19 @@ public class SecurityConfig {
                         .requestMatchers("auth/login").permitAll()
 
                         //Utilisateur
+
                                 .requestMatchers("/user/all-users").hasAnyRole("ADMIN", "FORMATEUR")
                                 .requestMatchers("/user/create-user").hasAnyRole("ADMIN", "FORMATEUR")
                                 .requestMatchers("/user/update-user/*").hasAnyRole("ADMIN", "FORMATEUR", "STAGIAIRE")
                                 .requestMatchers("/user/delete-user/*").hasAnyRole("ADMIN", "FORMATEUR")
+
+                        // Entreprises
+
+                                .requestMatchers("/entreprises/**").permitAll()
+                                .requestMatchers("/formes-juridiques/**").permitAll()
+                                .requestMatchers("/dirigeants/**").permitAll()
+                                .requestMatchers("/assurances/**").permitAll()
+                                .requestMatchers("/fonctions/**").permitAll()
 
                             .anyRequest().authenticated()
                         //Utilisateur
