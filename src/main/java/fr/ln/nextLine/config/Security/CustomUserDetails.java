@@ -1,6 +1,8 @@
 package fr.ln.nextLine.config.Security;
 
+import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
+import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class CustomUserDetails implements UserDetails {
+    
 
         @Getter
         private final Utilisateur utilisateur;
@@ -23,6 +26,7 @@ public class CustomUserDetails implements UserDetails {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
+
             Collection<? extends GrantedAuthority> authorities = Collections.singletonList(
                     new SimpleGrantedAuthority("ROLE_" + utilisateur.getRole().getNomRole()));
 
@@ -59,4 +63,7 @@ public class CustomUserDetails implements UserDetails {
         public boolean isEnabled() {
             return true;
         }
+
+        public UtilisateurDTO getUserAuthentified() {  return UtilisateurMapper.toDTO(this.utilisateur); }
+    
 }
