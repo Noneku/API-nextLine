@@ -2,6 +2,7 @@ package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.EntrepriseDTO;
 import fr.ln.nextLine.Service.EntrepriseService;
+import fr.ln.nextLine.Service.FormulaireService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,14 +10,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api-nextline/entreprises")
+@RequestMapping("/entreprises")
 public class EntrepriseController {
 
     private final EntrepriseService entrepriseService;
+    private final FormulaireService formulaireService;
 
-    public EntrepriseController(EntrepriseService entrepriseService) {
+    public EntrepriseController(EntrepriseService entrepriseService,
+                                FormulaireService formulaireService) {
 
         this.entrepriseService = entrepriseService;
+        this.formulaireService = formulaireService;
     }
 
     @GetMapping
@@ -56,10 +60,12 @@ public class EntrepriseController {
 
     }
 
-    @GetMapping("/verifier/{siret}")
-    public ResponseEntity<EntrepriseDTO> checkEntreprise(@PathVariable String siret) {
+    @GetMapping("/verifier/{token}/{siret}")
+    public ResponseEntity<EntrepriseDTO> checkEntreprise(
+            @PathVariable String token,
+            @PathVariable String siret) {
 
-        EntrepriseDTO entrepriseDTO = entrepriseService.checkEntreprise(siret);
+        EntrepriseDTO entrepriseDTO = entrepriseService.checkEntreprise(token, siret);
         return new ResponseEntity<>(entrepriseDTO, HttpStatus.OK);
 
     }

@@ -50,4 +50,11 @@ public class ParticiperController {
         return participerService.delete(id);
 
     }
+
+    @PostMapping("/ajouter-utilisateur")
+    public void addUtilisateurToSession(
+            @RequestParam Integer sessionId,
+            @RequestParam Integer utilisateurId) {
+        participerService.ajouterUtilisateurAUneSession(sessionId, utilisateurId);
+    }
 }

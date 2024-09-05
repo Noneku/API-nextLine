@@ -5,8 +5,10 @@ import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
 import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
 import fr.ln.nextLine.Service.UtilisateurService;
+import fr.ln.nextLine.config.Security.CustomUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -99,5 +101,25 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+    // méthode pour récupérer l'utilisateur connecté et le transformer en objet UtilisateurDTO
+    @Override
+    public UtilisateurDTO recupererUtilisateurConnecte() {
+
+        // Récupère les détails de l'utilisateur actuellement authentifié
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof CustomUserDetails) {
+
+            Utilisateur utilisateur = ((CustomUserDetails) principal).getUtilisateur();
+
+            return UtilisateurMapper.toDTO(utilisateur);
+
+        } else {
+
+            return null;
+        }
+    }
+
 }
 

@@ -8,8 +8,10 @@ import fr.ln.nextLine.Model.Mapper.*;
 import fr.ln.nextLine.Model.Repository.*;
 import fr.ln.nextLine.Service.ServiceExt.ApiSirenService;
 import fr.ln.nextLine.Service.EntrepriseService;
+import fr.ln.nextLine.Service.ServiceExt.CacheService;
 import fr.ln.nextLine.Service.VilleService;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     private final DirigeantRepository dirigeantRepository;
     private final AssuranceRepository assuranceRepository;
     private final ObjectMapper objectMapper;
+    private final CacheService cacheService;
 
 
     // Constantes pour attribuer des valeurs par défaut temporaires
@@ -44,7 +47,8 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             FormeJuridiqueRepository formeJuridiqueRepository,
             DirigeantRepository dirigeantRepository,
             AssuranceRepository assuranceRepository,
-            VilleService villeService) {
+            VilleService villeService,
+            CacheService cacheService) {
 
         this.entrepriseRepository = entrepriseRepository;
         this.apiSirenService = apiSirenService;
@@ -53,6 +57,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         this.formeJuridiqueRepository = formeJuridiqueRepository;
         this.dirigeantRepository = dirigeantRepository;
         this.assuranceRepository = assuranceRepository;
+        this.cacheService = cacheService;
     }
 
     @Override
@@ -142,16 +147,29 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 
 
     // méthode permettant de faire un appel au service apiSirenService pour interroger l'api et recupérer les informations de l'entreprise à partir du numéro siret saisi
-    public EntrepriseDTO checkEntreprise(String siret) {
+    public EntrepriseDTO checkEntreprise(String token, String siret) {
 
-        String jsonData = apiSirenService.verifierEntreprise(siret);
-        return getEntreprise(jsonData, siret);
+        // vérification si l'entreprise saisie existe déjà en bdd, si oui, retourne l'objet entreprise correspondant depuis la bdd
+        if (entrepriseRepository.findByNumeroSiret(siret).isPresent()) {
+
+            Entreprise entreprise = entrepriseRepository.findByNumeroSiret(siret).get();
+
+            return EntrepriseMapper.toDTO(entreprise);
+
+        } else {
+
+            // si non présente en bdd, création de l'objet entrepriseDTO à partir du retour des informations de l'api siren
+            String jsonData = apiSirenService.verifierEntreprise(siret);
+            return getEntreprise(token, jsonData, siret);
+        }
     }
 
 
     // méthode qui récupère les données depuis l'api siren à partir du numero siret de l'entreprise saisi pour créer un objet entrepriseDTO
+    // cet objet entrepriseDTO est mis en cache afin de pouvoir être récupéré ultérieurement à la validation du formulaire
+    // la clé de récupération de l'objet entrepriseDTO situé en cache est le token du lien ayant permis d'accéder au formulaire et à la saisie du numéro SIRET
     @Override
-    public EntrepriseDTO getEntreprise(String jsonData, String siret) {
+    public EntrepriseDTO getEntreprise(String token, String jsonData, String siret) {
         try {
             JsonNode root = objectMapper.readTree(jsonData);
 
@@ -176,10 +194,18 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             entrepriseDTO.setDirigeantDTO(getDefaultDirigeantDTO());
             entrepriseDTO.setAssuranceDTO(getDefaultAssuranceDTO());
 
+            System.out.println("Token: " + token);
+            System.out.println("Objet EntrepriseDTO : " + entrepriseDTO.getRaisonSociale());
+
+            // mise en cache de l'objet retourné en utilisant le cacheService
+            cacheService.cacheEntrepriseDTO(token, entrepriseDTO);
+
             return entrepriseDTO;
 
         } catch (Exception e) {
+
             e.printStackTrace();
+
             return null;
         }
     }

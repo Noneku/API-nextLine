@@ -3,6 +3,7 @@ package fr.ln.nextLine.config.Security;
 import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,7 @@ import java.util.Collections;
 public class CustomUserDetails implements UserDetails {
     
 
+        @Getter
         private final Utilisateur utilisateur;
         private final Logger logger = LoggerFactory.getLogger(getClass());
 

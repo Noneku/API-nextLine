@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api-nextline/jours")
+@RequestMapping("/jours")
 public class JourController {
 
     private final JourService jourService;
