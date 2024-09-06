@@ -56,7 +56,7 @@ public class DirigeantServiceImpl implements DirigeantService {
             Optional<Dirigeant> dirigeant = dirigeantRepository.findById(id);
 
             return dirigeant.map(
-                            value -> new ResponseEntity<>(DirigeantMapper.toDTO(value), HttpStatus.FOUND))
+                            value -> new ResponseEntity<>(DirigeantMapper.toDTO(value), HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
     }
@@ -72,6 +72,8 @@ public class DirigeantServiceImpl implements DirigeantService {
             dirigeant.setFonction(fonction);
             Dirigeant createddirigeant = dirigeantRepository.save(dirigeant);
             DirigeantDTO createdVDirigeantDTO = DirigeantMapper.toDTO(createddirigeant);
+
+            System.out.println("Dirigeant créé OK !! Son nom : " + createddirigeant.getNomDirigeant());
 
             return new ResponseEntity<>(createdVDirigeantDTO, HttpStatus.CREATED);
         }

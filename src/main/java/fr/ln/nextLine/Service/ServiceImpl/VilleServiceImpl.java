@@ -45,7 +45,7 @@ public class VilleServiceImpl implements VilleService {
         Optional<Ville> ville = villeRepository.findById(id);
 
         return ville.map(
-                        value -> new ResponseEntity<>(VilleMapper.toDTO(value), HttpStatus.FOUND))
+                        value -> new ResponseEntity<>(VilleMapper.toDTO(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -101,7 +101,7 @@ public class VilleServiceImpl implements VilleService {
         Optional<Ville> ville = villeRepository.findByCodePostalAndCodeInsee(codePostal,codeInsee);
 
         return ville.map(
-                        value -> new ResponseEntity<>(VilleMapper.toDTO(value), HttpStatus.FOUND))
+                        value -> new ResponseEntity<>(VilleMapper.toDTO(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

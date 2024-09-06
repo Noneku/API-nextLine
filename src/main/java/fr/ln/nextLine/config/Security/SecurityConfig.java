@@ -54,13 +54,18 @@ public class SecurityConfig {
 
                         // Entreprises
 
+
                                 .requestMatchers("/entreprises/**").permitAll()
                                 .requestMatchers("/formes-juridiques/**").permitAll()
                                 .requestMatchers("/dirigeants/**").permitAll()
                                 .requestMatchers("/assurances/**").permitAll()
                                 .requestMatchers("/fonctions/**").permitAll()
+                                .requestMatchers("/villes/**").permitAll()
 
-                            .anyRequest().authenticated()
+
+
+
+
                         //Utilisateur
                 )
 
@@ -68,9 +73,9 @@ public class SecurityConfig {
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Session Stateless est utilisé pour les Tokens JWT (Bearer)
-                )
+                );
                 //Mise en place d'un filtre personnalisé JWT
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+             //   .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

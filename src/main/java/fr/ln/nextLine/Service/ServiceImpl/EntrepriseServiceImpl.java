@@ -81,7 +81,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         Optional<Entreprise> entreprise = entrepriseRepository.findById(id);
 
         return entreprise.map(
-                        value -> new ResponseEntity<>(EntrepriseMapper.toDTO(value), HttpStatus.FOUND))
+                        value -> new ResponseEntity<>(EntrepriseMapper.toDTO(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -107,7 +107,9 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         Entreprise createdEntreprise = entrepriseRepository.save(entreprise);
         EntrepriseDTO createdEntrepriseDTO = EntrepriseMapper.toDTO(createdEntreprise);
 
-        return new ResponseEntity<>(createdEntrepriseDTO, HttpStatus.CREATED);
+        System.out.println("Création entreprise ok !!");
+
+        return new ResponseEntity<>(createdEntrepriseDTO, HttpStatus.OK);
     }
 
     @Override
