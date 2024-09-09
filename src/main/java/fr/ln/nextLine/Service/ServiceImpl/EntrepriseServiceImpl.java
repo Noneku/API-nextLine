@@ -160,6 +160,8 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 
         } else {
 
+
+
             // si non présente en bdd, création de l'objet entrepriseDTO à partir du retour des informations de l'api siren
             String jsonData = apiSirenService.verifierEntreprise(siret);
             return getEntreprise(token, jsonData, siret);

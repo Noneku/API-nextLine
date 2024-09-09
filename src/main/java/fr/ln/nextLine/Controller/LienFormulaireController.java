@@ -3,6 +3,7 @@ package fr.ln.nextLine.Controller;
 import fr.ln.nextLine.Model.Dto.LienFormulaireDTO;
 import fr.ln.nextLine.Service.LienFormulaireService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,5 +60,13 @@ public class LienFormulaireController {
         String emailEntreprise = request.get("email_entreprise");
 
         return lienFormulaireService.generateAndSendLink(idUtilisateur, emailEntreprise);
+    }
+
+    @GetMapping("/verify-token")
+    public ResponseEntity<Boolean> verifyToken(@RequestParam String token) {
+        boolean isValid = lienFormulaireService.isTokenValid(token);
+
+        System.out.println("isValid = " + isValid);
+        return new ResponseEntity<>(isValid, isValid ? HttpStatus.OK : HttpStatus.UNAUTHORIZED);
     }
 }
