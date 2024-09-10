@@ -42,19 +42,19 @@ public class EntrepriseController {
     }
 
     @PostMapping("/save-entreprise")
-    public ResponseEntity<EntrepriseDTO> createEntreprise(@RequestBody EntrepriseDTO entrepriseDTO) {
+    public ResponseEntity<?> createEntreprise(@RequestBody EntrepriseDTO entrepriseDTO) {
 
         return entrepriseService.create(entrepriseDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntrepriseDTO> updateEntreprise(@PathVariable Integer id, @RequestBody EntrepriseDTO entrepriseDTO) {
+    public ResponseEntity<?> updateEntreprise(@PathVariable Integer id, @RequestBody EntrepriseDTO entrepriseDTO) {
 
         return entrepriseService.update(id, entrepriseDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEntreprise(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteEntreprise(@PathVariable Integer id) {
 
         return entrepriseService.delete(id);
 

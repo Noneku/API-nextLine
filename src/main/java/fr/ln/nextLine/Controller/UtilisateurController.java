@@ -44,19 +44,19 @@ public class UtilisateurController {
     }
 
     @PostMapping("/create-user")
-    public ResponseEntity<UtilisateurDTO> createUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
+    public ResponseEntity<?> createUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
 
         return utilisateurService.create(utilisateurDTO);
     }
 
     @PutMapping("/update-user/{id}")
-    public ResponseEntity<UtilisateurDTO> updateUtilisateur(@PathVariable Integer id, @RequestBody UtilisateurDTO utilisateurDTO) {
+    public ResponseEntity<?> updateUtilisateur(@PathVariable Integer id, @RequestBody UtilisateurDTO utilisateurDTO) {
 
         return utilisateurService.update(id,utilisateurDTO);
     }
 
     @DeleteMapping("/delete-by/id/{id}")
-    public ResponseEntity<Void> deleteUtilisateur(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteUtilisateur(@PathVariable Integer id) {
 
         return utilisateurService.delete(id);
 

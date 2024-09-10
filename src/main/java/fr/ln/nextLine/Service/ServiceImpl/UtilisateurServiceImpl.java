@@ -56,39 +56,48 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public ResponseEntity<UtilisateurDTO> create(UtilisateurDTO utilisateurDTO) {
+    public ResponseEntity<?> create(UtilisateurDTO utilisateurDTO) {
         Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
 
+        // Génération des identifiants uniques
         String passwordNoEncoded = utilisateur.getMdpUtilisateur();
         String uniqueLogin = UUIDGeneratorService.generateUUID(utilisateur.getNomUtilisateur(), utilisateur.getPrenomUtilisateur());
         String uniquePassword = PasswordGeneratorService.generatePassword();
 
-
+        // Initialisation des valeurs
         utilisateur.setIsactive(false);
         utilisateur.setUtilisateurLogin(uniqueLogin);
         utilisateur.setMdpUtilisateur(passwordEncoder().encode(uniquePassword));
 
+        // Vérification de l'existence de l'utilisateur
+        if (utilisateurRepository.existsByEmailUtilisateur(utilisateur.getEmailUtilisateur())) {
+            UtilisateurDTO utilisateurDTO1 = UtilisateurMapper.toDTO(utilisateur);
+
+            return new ResponseEntity<String>("Adresse email déjà existante", HttpStatus.CONFLICT);
+        }
+
+        // Sauvegarde de l'utilisateur
         Utilisateur createdUtilisateur = utilisateurRepository.save(utilisateur);
         UtilisateurDTO createdUtilisateurDTO = UtilisateurMapper.toDTO(createdUtilisateur);
 
-        if (createdUtilisateurDTO != null) {
+        // Envoi de l'email si l'utilisateur est créé avec succès
+        emailSenderService.sendEmail(
+                createdUtilisateur.getEmailUtilisateur(),
+                "Identifiants de Connexion NextLine",
+                "Bonjour " + createdUtilisateurDTO.getNomUtilisateur() + " " + createdUtilisateur.getPrenomUtilisateur() + "\n\n" +
+                        "Voici vos identifiants de connexion temporaires pour accéder à votre compte NextLine :\n\n" +
+                        "🔹 Login : " + utilisateur.getUtilisateurLogin() + "\n\n" +
+                        "🔹 Mot de passe : " + uniquePassword + "\n\n" +
+                        "Veuillez vous connecter dès que possible et modifier ces identifiants pour garantir la sécurité de votre compte.\n\n" +
+                        "Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à contacter notre support.\n\n" +
+                        "Cordialement,\n" +
+                        "L'équipe NextLine"
+        );
 
-            emailSenderService.sendEmail(
-                    createdUtilisateur.getEmailUtilisateur(),
-                    "Identifiants de Connexion NextLine",
-                    "Bonjour " + createdUtilisateurDTO.getNomUtilisateur() + " " + createdUtilisateur.getPrenomUtilisateur() + "\n\n" +
-                            "Voici vos identifiants de connexion temporaires pour accéder à votre compte NextLine :\n\n" +
-                            "🔹 Login : " + utilisateur.getUtilisateurLogin() + "\n\n" +
-                            "🔹 Mot de passe : " + uniquePassword + "\n\n" +
-                            "Veuillez vous connecter dès que possible et modifier ces identifiants pour garantir la sécurité de votre compte.\n\n" +
-                            "Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à contacter notre support.\n\n" +
-                            "Cordialement,\n" +
-                            "L'équipe NextLine"
-            );
-        }
-
+        // Retourne la réponse avec succès et le statut CREATED
         return new ResponseEntity<>(createdUtilisateurDTO, HttpStatus.CREATED);
     }
+
 
     @Override
     public ResponseEntity<UtilisateurDTO> update(Integer id, UtilisateurDTO utilisateurDTO) {

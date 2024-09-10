@@ -31,19 +31,19 @@ public class FrequenceController {
     }
 
     @PostMapping
-    public ResponseEntity<FrequenceDTO> createFrequence(@RequestBody FrequenceDTO frequenceDTO) {
+    public ResponseEntity<?> createFrequence(@RequestBody FrequenceDTO frequenceDTO) {
 
         return frequenceService.create(frequenceDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FrequenceDTO> updateFrequence(@PathVariable Integer id, @RequestBody FrequenceDTO frequenceDTO) {
+    public ResponseEntity<?> updateFrequence(@PathVariable Integer id, @RequestBody FrequenceDTO frequenceDTO) {
 
         return frequenceService.update(id, frequenceDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFrequence(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteFrequence(@PathVariable Integer id) {
 
         return frequenceService.delete(id);
 

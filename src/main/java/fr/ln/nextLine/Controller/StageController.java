@@ -33,19 +33,19 @@ public class StageController {
     }
 
     @PostMapping
-    public ResponseEntity<StageDTO> createStage(@RequestBody StageDTO stageDTO) {
+    public ResponseEntity<?> createStage(@RequestBody StageDTO stageDTO) {
 
         return stageService.create(stageDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StageDTO> updateStage(@PathVariable Integer id, @RequestBody StageDTO stageDTO) {
+    public ResponseEntity<?> updateStage(@PathVariable Integer id, @RequestBody StageDTO stageDTO) {
 
         return stageService.update(id, stageDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStage(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteStage(@PathVariable Integer id) {
 
         return stageService.delete(id);
 
