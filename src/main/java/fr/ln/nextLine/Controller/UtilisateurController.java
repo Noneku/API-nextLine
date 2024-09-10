@@ -1,6 +1,9 @@
 package fr.ln.nextLine.Controller;
 
 import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
+import fr.ln.nextLine.Model.Entity.Utilisateur;
+import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
+import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
 import fr.ln.nextLine.Service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +16,13 @@ import java.util.List;
 public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
+    private final UtilisateurRepository utilisateurRepository;
 
     @Autowired
-    public UtilisateurController(UtilisateurService utilisateurService) {
+    public UtilisateurController(UtilisateurService utilisateurService, UtilisateurRepository utilisateurRepository) {
 
         this.utilisateurService = utilisateurService;
+        this.utilisateurRepository = utilisateurRepository;
     }
 
 
@@ -47,7 +52,7 @@ public class UtilisateurController {
     @PutMapping("/update-user/{id}")
     public ResponseEntity<UtilisateurDTO> updateUtilisateur(@PathVariable Integer id, @RequestBody UtilisateurDTO utilisateurDTO) {
 
-        return utilisateurService.update(id, utilisateurDTO);
+        return utilisateurService.update(id,utilisateurDTO);
     }
 
     @DeleteMapping("/delete-by/id/{id}")

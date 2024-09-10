@@ -71,8 +71,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Utilisateur createdUtilisateur = utilisateurRepository.save(utilisateur);
         UtilisateurDTO createdUtilisateurDTO = UtilisateurMapper.toDTO(createdUtilisateur);
 
-        System.out.print("Le compte exist");
-
         if (createdUtilisateurDTO != null) {
 
             emailSenderService.sendEmail(
@@ -80,8 +78,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                     "Identifiants de Connexion NextLine",
                     "Bonjour " + createdUtilisateurDTO.getNomUtilisateur() + " " + createdUtilisateur.getPrenomUtilisateur() + "\n\n" +
                             "Voici vos identifiants de connexion temporaires pour accéder à votre compte NextLine :\n\n" +
-                            "🔹 **Login** : " + utilisateur.getUtilisateurLogin() + "\n\n" +
-                            "🔹 **Mot de passe** : " + uniquePassword + "\n\n" +
+                            "🔹 Login : " + utilisateur.getUtilisateurLogin() + "\n\n" +
+                            "🔹 Mot de passe : " + uniquePassword + "\n\n" +
                             "Veuillez vous connecter dès que possible et modifier ces identifiants pour garantir la sécurité de votre compte.\n\n" +
                             "Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à contacter notre support.\n\n" +
                             "Cordialement,\n" +
@@ -95,20 +93,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public ResponseEntity<UtilisateurDTO> update(Integer id, UtilisateurDTO utilisateurDTO) {
 
-        if (utilisateurRepository.existsById(id)) {
+        Optional <Utilisateur> utilisateur = utilisateurRepository.findById(id);
 
-            Utilisateur existingUtilisateur = utilisateurRepository.findById(id).orElseThrow();
+        if (utilisateur.isPresent()) {
+            Utilisateur utilisateurUpdate = UtilisateurMapper.toEntity(utilisateurDTO);
 
-            Utilisateur updatedUtilisateur = utilisateurRepository.save(existingUtilisateur);
+            utilisateurUpdate.setId(id);
 
-            UtilisateurDTO updatedUtilisateurDTO = UtilisateurMapper.toDTO(updatedUtilisateur);
-
-            return new ResponseEntity<>(updatedUtilisateurDTO, HttpStatus.OK);
-
-        } else {
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            utilisateurRepository.save(utilisateurUpdate);
         }
+
+        return new ResponseEntity<>(utilisateurDTO, HttpStatus.OK);
     }
 
     @Override
