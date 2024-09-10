@@ -95,28 +95,31 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         );
 
         // Retourne la réponse avec succès et le statut CREATED
-        return new ResponseEntity<>(createdUtilisateurDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>("Utilisateur enregistré !", HttpStatus.CREATED);
     }
 
 
     @Override
-    public ResponseEntity<UtilisateurDTO> update(Integer id, UtilisateurDTO utilisateurDTO) {
+    public ResponseEntity<?> update(Integer id, UtilisateurDTO utilisateurDTO) {
 
         Optional <Utilisateur> utilisateur = utilisateurRepository.findById(id);
+        String passwordNoEncoded = utilisateurDTO.getMdpUtilisateur();
 
         if (utilisateur.isPresent()) {
             Utilisateur utilisateurUpdate = UtilisateurMapper.toEntity(utilisateurDTO);
-
+            utilisateurUpdate.setMdpUtilisateur(passwordEncoder().encode(passwordNoEncoded));
             utilisateurUpdate.setId(id);
 
             utilisateurRepository.save(utilisateurUpdate);
+
+            return new ResponseEntity<>("Modification prise en compte !", HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(utilisateurDTO, HttpStatus.OK);
+        return new ResponseEntity<>("Utilisateur non existant", HttpStatus.NOT_FOUND);
     }
 
     @Override
-    public ResponseEntity<Void> delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
 
         Optional<Utilisateur> utilisateurOptional = utilisateurRepository.findById(id);
 
@@ -124,11 +127,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
             utilisateurRepository.deleteById(id);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Utilisateur supprimé",HttpStatus.OK);
 
         } else {
 
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Echec de la suppression", HttpStatus.NO_CONTENT);
         }
     }
 
