@@ -2,6 +2,10 @@ package fr.ln.nextLine;
 
 import fr.ln.nextLine.Model.Dto.RoleDTO;
 import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
+import fr.ln.nextLine.Model.Entity.Utilisateur;
+import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
+import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
+import fr.ln.nextLine.Service.ServiceExt.PasswordGeneratorService;
 import fr.ln.nextLine.Service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -10,11 +14,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
 
+import static fr.ln.nextLine.config.Security.SecurityConfig.passwordEncoder;
+
 @SpringBootApplication
 public class NextLineApplication implements CommandLineRunner {
 
 	@Autowired
 	private UtilisateurService utilisateurService;
+	@Autowired
+	private UtilisateurRepository utilisateurRepository;
+	private UtilisateurMapper utilisateurMapper;
 
 	public static void main(String[] args) {
 
@@ -32,9 +41,13 @@ public class NextLineApplication implements CommandLineRunner {
 		utilisateurDTO.setPrenomUtilisateur("Nassim");
 		utilisateurDTO.setEmailUtilisateur("admin@example.com");
 		utilisateurDTO.setMdpUtilisateur("password123");
+		utilisateurDTO.setMdpUtilisateur(passwordEncoder().encode(utilisateurDTO.getMdpUtilisateur()));
 		utilisateurDTO.setUtilisateurLogin("admin");
+		utilisateurDTO.setIsactive(false);
 		utilisateurDTO.setRoleDTO(roleDTO);
 		utilisateurDTO.setDateCreation(LocalDate.now());
+
+		utilisateurRepository.save(utilisateurMapper.toEntity(utilisateurDTO));
 
 		UtilisateurDTO stagiaire = new UtilisateurDTO();
 		RoleDTO roleDTOStagiaire = new RoleDTO( 2, "STAGIAIRE");
@@ -43,23 +56,29 @@ public class NextLineApplication implements CommandLineRunner {
 		stagiaire.setUtilisateurLogin("stagiaire");
 		stagiaire.setEmailUtilisateur("stagiaire@example.com");
 		stagiaire.setMdpUtilisateur("password123");
+		stagiaire.setMdpUtilisateur(passwordEncoder().encode(stagiaire.getMdpUtilisateur()));
+		stagiaire.setIsactive(false);
 		stagiaire.setRoleDTO(roleDTOStagiaire);
 		stagiaire.setDateCreation(LocalDate.now());
+
+		utilisateurRepository.save(utilisateurMapper.toEntity(stagiaire));
+
 
 		UtilisateurDTO formateur = new UtilisateurDTO();
 		RoleDTO roleDTOFormateur = new RoleDTO(3, "FORMATEUR");
 		formateur.setNomUtilisateur("Ronom");
 		formateur.setPrenomUtilisateur("Edouard");
-		formateur.setEmailUtilisateur("formateur@example.com");
+		formateur.setEmailUtilisateur("leila.mouaci@gmail.com");
 		formateur.setMdpUtilisateur("password123");
+		formateur.setMdpUtilisateur(passwordEncoder().encode(formateur.getMdpUtilisateur()));
 		formateur.setUtilisateurLogin("formateur");
+		formateur.setIsactive(false);
 		formateur.setRoleDTO(roleDTOFormateur);
 		formateur.setDateCreation(LocalDate.now());
 
 		// Appel de la méthode create() pour créer l'utilisateur
-		utilisateurService.create(utilisateurDTO);
-		utilisateurService.create(stagiaire);
-		utilisateurService.create(formateur);
+
+		utilisateurRepository.save(utilisateurMapper.toEntity(formateur));
 
 		System.out.println("Utilisateur créé au démarrage de l'application !");
 	}
