@@ -17,7 +17,8 @@ fr\ln\nextLine\Model\Entity\Participer.class
 fr\ln\nextLine\Model\Mapper\FormationMapper.class
 fr\ln\nextLine\Model\Mapper\FormeJuridiqueMapper.class
 fr\ln\nextLine\Controller\EntrepriseController.class
-fr\ln\nextLine\Service\ServiceImpl\FormationServiceImpl.class
+fr\ln\nextLine\Service\ServiceImpl\
+Impl.class
 fr\ln\nextLine\Model\Entity\Tuteur.class
 fr\ln\nextLine\Controller\ParticiperController.class
 fr\ln\nextLine\Service\ServiceImpl\LocauxServiceImpl.class
@@ -149,6 +150,7 @@ fr\ln\nextLine\Model\Dto\AssuranceDTO.class
 fr\ln\nextLine\Service\ServiceImpl\FormeJuridiqueServiceImpl.class
 fr\ln\nextLine\Model\Dto\EntrepriseDTO.class
 fr\ln\nextLine\exception\RessourceNotFoundException.class
+fr\ln\nextLine\Service\ServiceExt\CacheService.class
 fr\ln\nextLine\Service\AssuranceService.class
 fr\ln\nextLine\Service\ServiceImpl\FrequenceServiceImpl.class
 fr\ln\nextLine\Model\Dto\FormulaireDTO.class

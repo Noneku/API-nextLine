@@ -1,9 +1,13 @@
 package fr.ln.nextLine.Service.ServiceImpl;
 
 import fr.ln.nextLine.Model.Dto.DirigeantDTO;
+import fr.ln.nextLine.Model.Dto.FonctionDTO;
 import fr.ln.nextLine.Model.Entity.Dirigeant;
+import fr.ln.nextLine.Model.Entity.Fonction;
 import fr.ln.nextLine.Model.Mapper.DirigeantMapper;
+import fr.ln.nextLine.Model.Mapper.FonctionMapper;
 import fr.ln.nextLine.Model.Repository.DirigeantRepository;
+import fr.ln.nextLine.Model.Repository.FonctionRepository;
 import fr.ln.nextLine.Service.DirigeantService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -18,9 +22,14 @@ import java.util.Optional;
 public class DirigeantServiceImpl implements DirigeantService {
 
     DirigeantRepository dirigeantRepository;
+    FonctionRepository fonctionRepository;
 
-    public DirigeantServiceImpl(DirigeantRepository dirigeantRepository) {
+    public DirigeantServiceImpl(
+            DirigeantRepository dirigeantRepository,
+            FonctionRepository fonctionRepository) {
+
         this.dirigeantRepository = dirigeantRepository;
+        this.fonctionRepository = fonctionRepository;
     }
 
     @Override
@@ -47,7 +56,7 @@ public class DirigeantServiceImpl implements DirigeantService {
             Optional<Dirigeant> dirigeant = dirigeantRepository.findById(id);
 
             return dirigeant.map(
-                            value -> new ResponseEntity<>(DirigeantMapper.toDTO(value), HttpStatus.FOUND))
+                            value -> new ResponseEntity<>(DirigeantMapper.toDTO(value), HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
     }
@@ -55,10 +64,16 @@ public class DirigeantServiceImpl implements DirigeantService {
     @Override
     public ResponseEntity<DirigeantDTO> create(DirigeantDTO dirigeantDTO) {
         {
+            // Définition de la fonction du nouveau dirigeant en tant que directeur car déjà en bdd
+            Fonction fonction = fonctionRepository.findById(1)
+                    .orElseThrow(() -> new RuntimeException("Fonction non trouvée"));
 
             Dirigeant dirigeant = DirigeantMapper.toEntity(dirigeantDTO);
+            dirigeant.setFonction(fonction);
             Dirigeant createddirigeant = dirigeantRepository.save(dirigeant);
             DirigeantDTO createdVDirigeantDTO = DirigeantMapper.toDTO(createddirigeant);
+
+            System.out.println("Dirigeant créé OK !! Son nom : " + createddirigeant.getNomDirigeant());
 
             return new ResponseEntity<>(createdVDirigeantDTO, HttpStatus.CREATED);
         }

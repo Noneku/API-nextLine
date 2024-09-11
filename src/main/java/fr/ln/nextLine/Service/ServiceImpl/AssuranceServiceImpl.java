@@ -43,7 +43,7 @@ public class AssuranceServiceImpl implements AssuranceService {
         Optional<Assurance> assurance = assuranceRepository.findById(id);
 
         return assurance.map(
-                        value -> new ResponseEntity<>(AssuranceMapper.toDTO(value), HttpStatus.FOUND))
+                        value ->  new ResponseEntity<>(AssuranceMapper.toDTO(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

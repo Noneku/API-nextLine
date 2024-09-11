@@ -45,7 +45,7 @@ public class FormeJuridiqueServiceImpl implements FormeJuridiqueService {
         Optional<FormeJuridique> formeJuridique = formeJuridiqueRepository.findById(id);
 
         return formeJuridique.map(
-                        value -> new ResponseEntity<>(FormeJuridiqueMapper.toDTO(value), HttpStatus.FOUND))
+                        value -> new ResponseEntity<>(FormeJuridiqueMapper.toDTO(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

@@ -165,7 +165,7 @@ public class LienFormulaireServiceImpl implements LienFormulaireService {
                     LocalDateTime dateGeneration = lienFormulaire.getDateGeneration()
                             .atStartOfDay(ZoneId.systemDefault()).toLocalDateTime();
                     LocalDateTime now = LocalDateTime.now();
-                    return !dateGeneration.plusHours(1).isBefore(now) && !lienFormulaire.getStatut();
+                    return !dateGeneration.plusHours(24).isBefore(now) && !lienFormulaire.getStatut();
                 })
                 .orElse(false);
     }
