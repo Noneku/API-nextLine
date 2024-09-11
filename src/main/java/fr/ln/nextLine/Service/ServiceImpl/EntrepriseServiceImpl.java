@@ -10,6 +10,7 @@ import fr.ln.nextLine.Service.ServiceExt.ApiSirenService;
 import fr.ln.nextLine.Service.EntrepriseService;
 import fr.ln.nextLine.Service.ServiceExt.CacheService;
 import fr.ln.nextLine.Service.VilleService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     private final FormeJuridiqueRepository formeJuridiqueRepository;
     private final DirigeantRepository dirigeantRepository;
     private final AssuranceRepository assuranceRepository;
+    private final VilleRepository villeRepository;
     private final ObjectMapper objectMapper;
     private final CacheService cacheService;
 
@@ -47,7 +49,8 @@ public class EntrepriseServiceImpl implements EntrepriseService {
             FormeJuridiqueRepository formeJuridiqueRepository,
             DirigeantRepository dirigeantRepository,
             AssuranceRepository assuranceRepository,
-            VilleService villeService,
+            VilleRepository villeRepository,
+            VilleService villeService, VilleRepository villeRepository1,
             CacheService cacheService) {
 
         this.entrepriseRepository = entrepriseRepository;
@@ -57,6 +60,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         this.formeJuridiqueRepository = formeJuridiqueRepository;
         this.dirigeantRepository = dirigeantRepository;
         this.assuranceRepository = assuranceRepository;
+        this.villeRepository = villeRepository1;
         this.cacheService = cacheService;
     }
 
@@ -98,12 +102,29 @@ public class EntrepriseServiceImpl implements EntrepriseService {
     @Override
     public ResponseEntity<EntrepriseDTO> create(EntrepriseDTO entrepriseDTO) {
 
+        // Vérifier si l'entreprise existe déjà
         if (entrepriseRepository.findByNumeroSiret(entrepriseDTO.getNumeroSiret()).isPresent()) {
-
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
+        // Vérifiez si les entités associées ont des IDs valides
+        if (entrepriseDTO.getVilleDTO() == null || entrepriseDTO.getVilleDTO().getId() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (entrepriseDTO.getFormeJuridiqueDTO() == null || entrepriseDTO.getFormeJuridiqueDTO().getId() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (entrepriseDTO.getDirigeantDTO() == null || entrepriseDTO.getDirigeantDTO().getId() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (entrepriseDTO.getAssuranceDTO() == null || entrepriseDTO.getAssuranceDTO().getId() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        // Convertir DTO en entité
         Entreprise entreprise = EntrepriseMapper.toEntity(entrepriseDTO);
+
+        // Sauvegarder l'entité
         Entreprise createdEntreprise = entrepriseRepository.save(entreprise);
         EntrepriseDTO createdEntrepriseDTO = EntrepriseMapper.toDTO(createdEntreprise);
 

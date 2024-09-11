@@ -33,19 +33,19 @@ public class ModesDeplacementController {
     }
 
     @PostMapping
-    public ResponseEntity<ModesDeplacementDTO> createModesDeplacement(@RequestBody ModesDeplacementDTO modesDeplacementDTO) {
+    public ResponseEntity<?> createModesDeplacement(@RequestBody ModesDeplacementDTO modesDeplacementDTO) {
 
         return modesDeplacementService.create(modesDeplacementDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ModesDeplacementDTO> updateModesDeplacement(@PathVariable Integer id, @RequestBody ModesDeplacementDTO modesDeplacementDTO) {
+    public ResponseEntity<?> updateModesDeplacement(@PathVariable Integer id, @RequestBody ModesDeplacementDTO modesDeplacementDTO) {
 
         return modesDeplacementService.update(id, modesDeplacementDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteModesDeplacement(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteModesDeplacement(@PathVariable Integer id) {
 
         return modesDeplacementService.delete(id);
 

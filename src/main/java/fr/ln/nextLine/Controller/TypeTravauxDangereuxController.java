@@ -33,19 +33,19 @@ public class TypeTravauxDangereuxController {
     }
 
     @PostMapping
-    public ResponseEntity<TypeTravauxDangereuxDTO> createTypeTravauxDangereux(@RequestBody TypeTravauxDangereuxDTO typeTravauxDangereuxDTO) {
+    public ResponseEntity<?> createTypeTravauxDangereux(@RequestBody TypeTravauxDangereuxDTO typeTravauxDangereuxDTO) {
 
         return typeTravauxDangereuxService.create(typeTravauxDangereuxDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TypeTravauxDangereuxDTO> updateTypeTravauxDangereux(@PathVariable Integer id, @RequestBody TypeTravauxDangereuxDTO typeTravauxDangereuxDTO) {
+    public ResponseEntity<?> updateTypeTravauxDangereux(@PathVariable Integer id, @RequestBody TypeTravauxDangereuxDTO typeTravauxDangereuxDTO) {
 
         return typeTravauxDangereuxService.update(id, typeTravauxDangereuxDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTypeTravauxDangereux(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteTypeTravauxDangereux(@PathVariable Integer id) {
 
         return typeTravauxDangereuxService.delete(id);
 

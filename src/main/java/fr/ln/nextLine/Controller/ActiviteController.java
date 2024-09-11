@@ -31,7 +31,7 @@ public class ActiviteController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ActiviteDTO> createActivite(@RequestBody ActiviteDTO activiteDTO) {
+    public ResponseEntity<?> createActivite(@RequestBody ActiviteDTO activiteDTO) {
 
         return activiteService.create(activiteDTO);
     }
@@ -52,7 +52,7 @@ public class ActiviteController {
     }
        */
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteActivite(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteActivite(@PathVariable Integer id) {
 
         return activiteService.delete(id);
     }

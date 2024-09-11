@@ -33,18 +33,18 @@ public class DefinirController {
     }
 
     @PostMapping
-    public ResponseEntity<DefinirDTO> createDefinir(@RequestBody DefinirDTO definirDTO) {
+    public ResponseEntity<?> createDefinir(@RequestBody DefinirDTO definirDTO) {
         return definirService.create(definirDTO);
     }
 
     //Méthode non util
     @PutMapping("/{id}")
-    public ResponseEntity<DefinirDTO> updateDefinir(@PathVariable Integer id, @RequestBody DefinirDTO definirDTO) {
+    public ResponseEntity<?> updateDefinir(@PathVariable Integer id, @RequestBody DefinirDTO definirDTO) {
         return definirService.update(id, definirDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDefinir(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteDefinir(@PathVariable Integer id) {
         return definirService.delete(id);
     }
 }

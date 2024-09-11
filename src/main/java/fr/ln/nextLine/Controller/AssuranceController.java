@@ -33,19 +33,19 @@ public class AssuranceController {
     }
 
     @PostMapping
-    public ResponseEntity<AssuranceDTO> createAssurance(@RequestBody AssuranceDTO assuranceDTO) {
+    public ResponseEntity<?> createAssurance(@RequestBody AssuranceDTO assuranceDTO) {
 
         return assuranceService.create(assuranceDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AssuranceDTO> updateAssurance(@PathVariable Integer id, @RequestBody AssuranceDTO assuranceDTO) {
+    public ResponseEntity<?> updateAssurance(@PathVariable Integer id, @RequestBody AssuranceDTO assuranceDTO) {
 
         return assuranceService.update(id, assuranceDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAssurance(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteAssurance(@PathVariable Integer id) {
 
         return assuranceService.delete(id);
     }

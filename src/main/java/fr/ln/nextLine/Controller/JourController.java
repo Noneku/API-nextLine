@@ -31,19 +31,19 @@ public class JourController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<JourDTO> createJour(@RequestBody JourDTO jourDTO) {
+    public ResponseEntity<?> createJour(@RequestBody JourDTO jourDTO) {
 
         return jourService.create(jourDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<JourDTO> updateJour(@PathVariable Integer id, @RequestBody JourDTO jourDTO) {
+    public ResponseEntity<?> updateJour(@PathVariable Integer id, @RequestBody JourDTO jourDTO) {
 
         return jourService.update(id, jourDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteJour(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteJour(@PathVariable Integer id) {
 
         return jourService.delete(id);
 

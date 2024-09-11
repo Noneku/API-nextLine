@@ -31,19 +31,19 @@ public class HorairesStageController {
     }
 
     @PostMapping
-    public ResponseEntity<HorairesStageDTO> createHorairesStage(@RequestBody HorairesStageDTO horairesStageDTO) {
+    public ResponseEntity<?> createHorairesStage(@RequestBody HorairesStageDTO horairesStageDTO) {
 
         return horairesStageService.create(horairesStageDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HorairesStageDTO> updateHorairesStage(@PathVariable Integer id, @RequestBody HorairesStageDTO horairesStageDTO) {
+    public ResponseEntity<?> updateHorairesStage(@PathVariable Integer id, @RequestBody HorairesStageDTO horairesStageDTO) {
 
         return horairesStageService.update(id, horairesStageDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHorairesStage(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteHorairesStage(@PathVariable Integer id) {
 
         return horairesStageService.delete(id);
     }

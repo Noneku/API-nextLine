@@ -350,56 +350,21 @@ CREATE TABLE public.definir(
 ------------------------------------------------------------
 
 -- Table: role
-INSERT INTO public.role (id_role, nom_role) VALUES (1, 'Admin'), (2, 'Stagiaire'), (3, 'Formateur');
-
--- Table: utilisateur
-INSERT INTO public.utilisateur (nom_utilisateur, prenom_utilisateur, utilisateur_login, email_utilisateur, mdp_utilisateur, date_creation, isActive, numero_secu_stagiaire, numero_beneficiaire_stagiaire, date_naissance, id_role)
-VALUES ('Dupont', 'Jean', 'jdupont', 'j.dupont@example.com', 'mdp123', '2023-01-01', TRUE, '123456789012345', '9876543210', '1990-01-01', 2),
-        ('Grey', 'Robert', 'grob34', 'r.grey@gmail.com', 'mdprob34', '2024-02-02', TRUE, '178055945678932', '4524769347', '1978-05-05', 3),
-       ('Fretier', 'Clémentine', 'bclem79', 'c.boulanger@gmail.com', 'mdpclem79', '2023-05-05', TRUE, '268045934669821', '5279452747', '1968-04-04', 1),
-       ('Messaoui', 'Fatima', 'mfat56', 'f.messaoui@gmail.com', 'mdpfat657', '2023-09-09', TRUE, '292085334862489', '4782395763', '1992-08-08', 2);
-
--- Table: formation
-INSERT INTO public.formation (nom_formation, code_grn) VALUES ('Concepteur développeur applications', 'GRN123'), ('Patissier', 'GRN456'), ('Electricien', 'GRN789');
-
--- Table: ville
-INSERT INTO public.ville (nom_ville, code_postal, code_insee) VALUES ('Lens', '62300', '62498'), ('Lyon', '69000', '69123'), ('Laval', '53000', '53130');
-
--- Table: lien_formulaire
-INSERT INTO public.lien_formulaire (token_lien, date_generation, statut, id_utilisateur)
-VALUES ('token123', '2023-01-01', TRUE, 1);
+INSERT INTO public.role (id_role, nom_role) VALUES (1, 'ADMIN'), (2, 'STAGIAIRE'), (3, 'FORMATEUR');
 
 -- Table: forme_juridique
-INSERT INTO public.forme_juridique (nom_forme_juridique) VALUES ('SARL'), ('SAS');
-
--- Table: session
-INSERT INTO public.session (date_debut_session, date_fin_session, numero_offre, date_debut_stage, date_fin_stage, id_formation)
-VALUES ('2023-02-01', '2023-06-01', 'OFF123', '2023-02-15', '2023-05-30', 1);
+INSERT INTO public.forme_juridique (nom_forme_juridique) VALUES ('SARL'), ('SAS'), ('SA'), ('SCI'), ('SNC'), ('EURL'), ('EI'), ('SASU'), ('SCOP'), ('SCA'), ('SCM'), ('GIE');
 
 -- Table: fonction
-INSERT INTO public.fonction (nom_fonction) VALUES ('Directeur'), ('Tuteur');
+INSERT INTO public.fonction (nom_fonction) VALUES ('DIRECTEUR');
 
--- Table: dirigeant
-INSERT INTO public.dirigeant (nom_dirigeant, prenom_dirigeant, email_dirigeant, id_fonction)
-VALUES ('Martin', 'Paul', 'p.martin@example.com', 1);
-
--- Table: assurance
-INSERT INTO public.assurance (nom_assurance, numero_societaire) VALUES ('Assurance A', 'SOC123');
-
--- Table: entreprise
-INSERT INTO public.entreprise (raison_sociale, adresse_entreprise, numero_siret, telephone_entreprise, email_entreprise, id_ville, id_forme_juridique, id_dirigeant, id_assurance)
-VALUES ('Entreprise A', '123 Rue A', '12345678901234', '0123456789', 'contact@entrepriseA.com', 1, 1, 1, 1);
-
--- Table: tuteur
-INSERT INTO public.tuteur (nom_tuteur, prenom_tuteur, email_tuteur, tel_tuteur, id_entreprise, id_fonction)
-VALUES ('Bernard', 'Jacques', 'j.bernard@example.com', '0987654321', 1, 2);
 
 -- Table: activites
 INSERT INTO public.activites (attestation_reglementaire, nom_attestation, visite_medicale, travaux_dangereux, date_declaration_derogee)
 VALUES (TRUE, 'Attestation A', TRUE, TRUE, '2023-01-01');
 
 -- Table: jour
-INSERT INTO public.jour (nom_jour) VALUES ('Lundi'), ('Mardi');
+INSERT INTO public.jour (nom_jour) VALUES ('Lundi'), ('Mardi'), ('Mercredi'), ('Jeudi'), ('Vendredi');
 
 -- Table: locaux
 INSERT INTO public.locaux (nom_locaux) VALUES ('Locaux Entreprise'), ('Chantier'), ('Locaux clients');
@@ -416,22 +381,6 @@ INSERT INTO public.modes_deplacements (nom_deplacement) VALUES ('Voiture'), ('V�
 -- Table: lieu_realisation
 INSERT INTO public.lieu_realisation (deplacements, autres_locaux, autre_frequence, autre_mode_deplacement, id_locaux, id_frequence, id_mode_deplacement)
 VALUES (TRUE, 'Autres locaux A', 'Autre fréquence A', 'Autre déplacement A', 1, 1, 1);
-
--- Table: stage
-INSERT INTO public.stage (modif_date_debut_stage, objectif_stage, date_validation_stage, id_tuteur, id_utilisateur, id_entreprise, id_session, id_lieu_realisation, id_activite)
-VALUES ('2023-02-20', 'Objectif A', '2023-02-01', 1, 1, 1, 1, 1, 1);
-
--- Table: horaires_stage
-INSERT INTO public.horaires_stage (heure_debut, heure_debut_pause_dej, heure_fin_pause_dej, heure_fin, id_stage, id_jour)
-VALUES ('08:00:00+00', '12:00:00+00', '13:00:00+00', '17:00:00+00', 1, 1);
-
--- Table: document
-INSERT INTO public.document (nom_pdf, date_generation_document, id_stage)
-VALUES ('Document A', '2023-02-01', 1);
-
--- Table: participer
-INSERT INTO public.participer (id_session, id_utilisateur)
-VALUES (1, 1);
 
 -- Table: définir
 INSERT INTO public.definir (id_type_travaux, id_activite)

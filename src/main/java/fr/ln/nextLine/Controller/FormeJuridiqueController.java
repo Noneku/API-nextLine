@@ -31,19 +31,19 @@ public class FormeJuridiqueController {
     }
 
     @PostMapping
-    public ResponseEntity<FormeJuridiqueDTO> createFormeJuridique(@RequestBody FormeJuridiqueDTO formeJuridiqueDTO) {
+    public ResponseEntity<?> createFormeJuridique(@RequestBody FormeJuridiqueDTO formeJuridiqueDTO) {
 
         return formeJuridiqueService.create(formeJuridiqueDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FormeJuridiqueDTO> updateFormeJuridique(@PathVariable Integer id, @RequestBody FormeJuridiqueDTO formeJuridiqueDTO) {
+    public ResponseEntity<?> updateFormeJuridique(@PathVariable Integer id, @RequestBody FormeJuridiqueDTO formeJuridiqueDTO) {
 
         return formeJuridiqueService.update(id, formeJuridiqueDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFormeJuridique(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteFormeJuridique(@PathVariable Integer id) {
 
         return formeJuridiqueService.delete(id);
     }

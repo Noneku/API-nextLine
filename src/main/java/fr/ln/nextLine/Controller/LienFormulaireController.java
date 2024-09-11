@@ -35,19 +35,19 @@ public class LienFormulaireController {
     }
 
     @PostMapping
-    public ResponseEntity<LienFormulaireDTO> createLienFormulaire(@RequestBody LienFormulaireDTO lienFormulaireDTO) {
+    public ResponseEntity<?> createLienFormulaire(@RequestBody LienFormulaireDTO lienFormulaireDTO) {
 
         return lienFormulaireService.create(lienFormulaireDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LienFormulaireDTO> updateLienFormulaire(@PathVariable Integer id, @RequestBody LienFormulaireDTO lienFormulaireDTO) {
+    public ResponseEntity<?> updateLienFormulaire(@PathVariable Integer id, @RequestBody LienFormulaireDTO lienFormulaireDTO) {
 
         return lienFormulaireService.update(id, lienFormulaireDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLienFormulaire(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteLienFormulaire(@PathVariable Integer id) {
 
         return lienFormulaireService.delete(id);
 

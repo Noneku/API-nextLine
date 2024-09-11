@@ -33,19 +33,19 @@ public class SessionController {
     }
 
     @PostMapping
-    public ResponseEntity<SessionDTO> createSession(@RequestBody SessionDTO sessionDTO) {
+    public ResponseEntity<?> createSession(@RequestBody SessionDTO sessionDTO) {
 
         return sessionService.create(sessionDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SessionDTO> updateSession(@PathVariable Integer id, @RequestBody SessionDTO sessionDTO) {
+    public ResponseEntity<?> updateSession(@PathVariable Integer id, @RequestBody SessionDTO sessionDTO) {
 
         return sessionService.update(id, sessionDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSession(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteSession(@PathVariable Integer id) {
 
         return sessionService.delete(id);
 

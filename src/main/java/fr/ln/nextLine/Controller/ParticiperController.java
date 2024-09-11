@@ -33,19 +33,19 @@ public class ParticiperController {
     }
 
     @PostMapping
-    public ResponseEntity<ParticiperDTO> createParticiper(@RequestBody ParticiperDTO participerDTO) {
+    public ResponseEntity<?> createParticiper(@RequestBody ParticiperDTO participerDTO) {
 
         return participerService.create(participerDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ParticiperDTO> updateParticiper(@PathVariable Integer id, @RequestBody ParticiperDTO participerDTO) {
+    public ResponseEntity<?> updateParticiper(@PathVariable Integer id, @RequestBody ParticiperDTO participerDTO) {
 
         return participerService.update(id, participerDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteParticiper(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteParticiper(@PathVariable Integer id) {
 
         return participerService.delete(id);
 
