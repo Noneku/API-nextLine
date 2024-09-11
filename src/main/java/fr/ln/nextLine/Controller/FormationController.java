@@ -31,19 +31,19 @@ public class FormationController {
     }
 
     @PostMapping
-    public ResponseEntity<FormationDTO> createFormation(@RequestBody FormationDTO formationDTO) {
+    public ResponseEntity<?> createFormation(@RequestBody FormationDTO formationDTO) {
 
         return formationService.create(formationDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FormationDTO> updateFormation(@PathVariable Integer id, @RequestBody FormationDTO formationDTO) {
+    public ResponseEntity<?> updateFormation(@PathVariable Integer id, @RequestBody FormationDTO formationDTO) {
 
         return formationService.update(id, formationDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFormation(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteFormation(@PathVariable Integer id) {
 
         return formationService.delete(id);
     }

@@ -31,19 +31,19 @@ public class DirigeantController {
     }
 
     @PostMapping
-    public ResponseEntity<DirigeantDTO> createDirigeant(@RequestBody DirigeantDTO dirigeantDTO) {
+    public ResponseEntity<?> createDirigeant(@RequestBody DirigeantDTO dirigeantDTO) {
 
         return dirigeantService.create(dirigeantDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DirigeantDTO> updateDirigeant(@PathVariable Integer id, @RequestBody DirigeantDTO dirigeantDTO) {
+    public ResponseEntity<?> updateDirigeant(@PathVariable Integer id, @RequestBody DirigeantDTO dirigeantDTO) {
 
         return dirigeantService.update(id, dirigeantDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDirigeant(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteDirigeant(@PathVariable Integer id) {
 
         return dirigeantService.delete(id);
 

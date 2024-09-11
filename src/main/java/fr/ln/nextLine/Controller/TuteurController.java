@@ -33,19 +33,19 @@ public class TuteurController {
     }
 
     @PostMapping
-    public ResponseEntity<TuteurDTO> createTuteur(@RequestBody TuteurDTO tuteurDTO) {
+    public ResponseEntity<?> createTuteur(@RequestBody TuteurDTO tuteurDTO) {
 
         return tuteurService.create(tuteurDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TuteurDTO> updateTuteur(@PathVariable Integer id, @RequestBody TuteurDTO tuteurDTO) {
+    public ResponseEntity<?> updateTuteur(@PathVariable Integer id, @RequestBody TuteurDTO tuteurDTO) {
 
         return tuteurService.update(id, tuteurDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTuteur(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteTuteur(@PathVariable Integer id) {
 
         return tuteurService.delete(id);
 

@@ -42,28 +42,27 @@ public class SecurityConfig {
                 // Définir les autorisations pour les requêtes HTTP
                 .authorizeHttpRequests((authorize) -> authorize
                         //Disabled Security
-                            //.anyRequest().permitAll()
+                            .anyRequest().permitAll());
                         //Disabled Security
 
-                        .requestMatchers("auth/login").permitAll()
-
-                        //Utilisateur
-                                .requestMatchers("/user/all-users").hasAnyRole("ADMIN", "FORMATEUR")
-                                .requestMatchers("/user/create-user").hasAnyRole("ADMIN", "FORMATEUR")
-                                .requestMatchers("/user/update-user/*").hasAnyRole("ADMIN", "FORMATEUR", "STAGIAIRE")
-                                .requestMatchers("/user/delete-user/*").hasAnyRole("ADMIN", "FORMATEUR")
-
-                            .anyRequest().authenticated()
-                        //Utilisateur
-                )
-
-                // Configurer la gestion des sessions
-
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Session Stateless est utilisé pour les Tokens JWT (Bearer)
-                )
-                //Mise en place d'un filtre personnalisé JWT
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//                        .requestMatchers("auth/login").permitAll()
+//
+//                        //Utilisateur
+//                                .requestMatchers("/user/all-users").hasAnyRole("ADMIN", "FORMATEUR")
+//                                //.requestMatchers("/user/create-user").hasAnyRole("ADMIN", "FORMATEUR")
+//                                .requestMatchers("/user/update-user/*").hasAnyRole("ADMIN", "FORMATEUR", "STAGIAIRE")
+//                                .requestMatchers("/user/delete-user/*").hasAnyRole("ADMIN", "FORMATEUR")
+//                            .anyRequest().authenticated()
+//                        //Utilisateur
+//                )
+//
+//                // Configurer la gestion des sessions
+//
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Session Stateless est utilisé pour les Tokens JWT (Bearer)
+//                )
+//                //Mise en place d'un filtre personnalisé JWT
+//                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -84,7 +83,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

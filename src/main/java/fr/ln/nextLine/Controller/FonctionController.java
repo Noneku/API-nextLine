@@ -31,19 +31,19 @@ public class FonctionController {
     }
 
     @PostMapping
-    public ResponseEntity<FonctionDTO> createFonction(@RequestBody FonctionDTO fonctionDTO) {
+    public ResponseEntity<?> createFonction(@RequestBody FonctionDTO fonctionDTO) {
 
         return fonctionService.create(fonctionDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FonctionDTO> updateFonction(@PathVariable Integer id, @RequestBody FonctionDTO fonctionDTO) {
+    public ResponseEntity<?> updateFonction(@PathVariable Integer id, @RequestBody FonctionDTO fonctionDTO) {
 
         return fonctionService.update(id, fonctionDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFonction(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteFonction(@PathVariable Integer id) {
 
         return fonctionService.delete(id);
 

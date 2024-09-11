@@ -33,19 +33,19 @@ public class LieuRealisationController {
     }
 
     @PostMapping
-    public ResponseEntity<LieuRealisationDTO> createLieuRealisation(@RequestBody LieuRealisationDTO lieuRealisationDTO) {
+    public ResponseEntity<?> createLieuRealisation(@RequestBody LieuRealisationDTO lieuRealisationDTO) {
 
         return lieuRealisationService.create(lieuRealisationDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LieuRealisationDTO> updateLieuRealisation(@PathVariable Integer id, @RequestBody LieuRealisationDTO lieuRealisationDTO) {
+    public ResponseEntity<?> updateLieuRealisation(@PathVariable Integer id, @RequestBody LieuRealisationDTO lieuRealisationDTO) {
 
         return lieuRealisationService.update(id, lieuRealisationDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVille(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteVille(@PathVariable Integer id) {
 
         return lieuRealisationService.delete(id);
 

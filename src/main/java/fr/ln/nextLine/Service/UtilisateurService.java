@@ -6,4 +6,5 @@ public interface UtilisateurService extends GeneriqueCrudService <UtilisateurDTO
 
     UtilisateurDTO recupererUtilisateurConnecte();
 
+    boolean existsByUtilisateurLogin(String utilisateurLogin);
 }

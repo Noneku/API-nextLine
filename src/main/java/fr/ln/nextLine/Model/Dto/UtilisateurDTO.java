@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Setter
 public class UtilisateurDTO {
 
-    private Integer id;
     private String nomUtilisateur;
     private String prenomUtilisateur;
     private String emailUtilisateur;
@@ -23,8 +22,7 @@ public class UtilisateurDTO {
     private String numeroBeneficiaireStagiaire;
     private LocalDate dateNaissance;
     private RoleDTO roleDTO;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Integer id;
     private String utilisateurLogin;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

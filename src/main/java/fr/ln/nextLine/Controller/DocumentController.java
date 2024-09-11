@@ -31,19 +31,19 @@ public class DocumentController {
     }
 
     @PostMapping
-    public ResponseEntity<DocumentDTO> createDocument(@RequestBody DocumentDTO documentDTO) {
+    public ResponseEntity<?> createDocument(@RequestBody DocumentDTO documentDTO) {
 
         return documentService.create(documentDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DocumentDTO> updateDocument(@PathVariable Integer id, @RequestBody DocumentDTO documentDTO) {
+    public ResponseEntity<?> updateDocument(@PathVariable Integer id, @RequestBody DocumentDTO documentDTO) {
 
         return documentService.update(id, documentDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDocument(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteDocument(@PathVariable Integer id) {
 
         return documentService.delete(id);
 

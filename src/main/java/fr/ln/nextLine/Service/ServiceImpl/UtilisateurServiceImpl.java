@@ -4,6 +4,9 @@ import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Model.Entity.Utilisateur;
 import fr.ln.nextLine.Model.Mapper.UtilisateurMapper;
 import fr.ln.nextLine.Model.Repository.UtilisateurRepository;
+import fr.ln.nextLine.Service.ServiceExt.EmailSenderService;
+import fr.ln.nextLine.Service.ServiceExt.PasswordGeneratorService;
+import fr.ln.nextLine.Service.ServiceExt.UUIDGeneratorService;
 import fr.ln.nextLine.Service.UtilisateurService;
 import fr.ln.nextLine.config.Security.CustomUserDetails;
 import org.springframework.http.HttpStatus;
@@ -20,9 +23,11 @@ import static fr.ln.nextLine.config.Security.SecurityConfig.passwordEncoder;
 public class UtilisateurServiceImpl implements UtilisateurService {
 
     private final UtilisateurRepository utilisateurRepository;
+    private final EmailSenderService emailSenderService;
 
-    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository) {
+    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, UUIDGeneratorService uuidGeneratorService, PasswordGeneratorService passwordGeneratorService, EmailSenderService emailSenderService) {
         this.utilisateurRepository = utilisateurRepository;
+        this.emailSenderService = emailSenderService;
     }
 
     @Override
@@ -51,42 +56,70 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public ResponseEntity<UtilisateurDTO> create(UtilisateurDTO utilisateurDTO) {
-
+    public ResponseEntity<?> create(UtilisateurDTO utilisateurDTO) {
         Utilisateur utilisateur = UtilisateurMapper.toEntity(utilisateurDTO);
+
+        // Génération des identifiants uniques
         String passwordNoEncoded = utilisateur.getMdpUtilisateur();
+        String uniqueLogin = UUIDGeneratorService.generateUUID(utilisateur.getNomUtilisateur(), utilisateur.getPrenomUtilisateur());
+        String uniquePassword = PasswordGeneratorService.generatePassword();
 
-        utilisateur.setMdpUtilisateur(
-                passwordEncoder().encode(passwordNoEncoded)
-        );
+        // Initialisation des valeurs
+        utilisateur.setIsactive(false);
+        utilisateur.setUtilisateurLogin(uniqueLogin);
+        utilisateur.setMdpUtilisateur(passwordEncoder().encode(uniquePassword));
 
+        // Vérification de l'existence de l'utilisateur
+        if (utilisateurRepository.existsByEmailUtilisateur(utilisateur.getEmailUtilisateur())) {
+            UtilisateurDTO utilisateurDTO1 = UtilisateurMapper.toDTO(utilisateur);
+
+            return new ResponseEntity<String>("Adresse email déjà existante", HttpStatus.CONFLICT);
+        }
+
+        // Sauvegarde de l'utilisateur
         Utilisateur createdUtilisateur = utilisateurRepository.save(utilisateur);
         UtilisateurDTO createdUtilisateurDTO = UtilisateurMapper.toDTO(createdUtilisateur);
 
-        return new ResponseEntity<>(createdUtilisateurDTO, HttpStatus.CREATED);
+        // Envoi de l'email si l'utilisateur est créé avec succès
+        emailSenderService.sendEmail(
+                createdUtilisateur.getEmailUtilisateur(),
+                "Identifiants de Connexion NextLine",
+                "Bonjour " + createdUtilisateurDTO.getNomUtilisateur() + " " + createdUtilisateur.getPrenomUtilisateur() + "\n\n" +
+                        "Voici vos identifiants de connexion temporaires pour accéder à votre compte NextLine :\n\n" +
+                        "🔹 Login : " + utilisateur.getUtilisateurLogin() + "\n\n" +
+                        "🔹 Mot de passe : " + uniquePassword + "\n\n" +
+                        "Veuillez vous connecter dès que possible et modifier ces identifiants pour garantir la sécurité de votre compte.\n\n" +
+                        "Si vous avez des questions ou rencontrez des problèmes, n'hésitez pas à contacter notre support.\n\n" +
+                        "Cordialement,\n" +
+                        "L'équipe NextLine"
+        );
+
+        // Retourne la réponse avec succès et le statut CREATED
+        return new ResponseEntity<>("Utilisateur enregistré !", HttpStatus.CREATED);
     }
 
+
     @Override
-    public ResponseEntity<UtilisateurDTO> update(Integer id, UtilisateurDTO utilisateurDTO) {
+    public ResponseEntity<?> update(Integer id, UtilisateurDTO utilisateurDTO) {
 
-        if (utilisateurRepository.existsById(id)) {
+        Optional <Utilisateur> utilisateur = utilisateurRepository.findById(id);
+        String passwordNoEncoded = utilisateurDTO.getMdpUtilisateur();
 
-            Utilisateur existingUtilisateur = utilisateurRepository.findById(id).orElseThrow();
+        if (utilisateur.isPresent()) {
+            Utilisateur utilisateurUpdate = UtilisateurMapper.toEntity(utilisateurDTO);
+            utilisateurUpdate.setMdpUtilisateur(passwordEncoder().encode(passwordNoEncoded));
+            utilisateurUpdate.setId(id);
 
-            Utilisateur updatedUtilisateur = utilisateurRepository.save(existingUtilisateur);
+            utilisateurRepository.save(utilisateurUpdate);
 
-            UtilisateurDTO updatedUtilisateurDTO = UtilisateurMapper.toDTO(updatedUtilisateur);
-
-            return new ResponseEntity<>(updatedUtilisateurDTO, HttpStatus.OK);
-
-        } else {
-
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Modification prise en compte !", HttpStatus.OK);
         }
+
+        return new ResponseEntity<>("Utilisateur non existant", HttpStatus.NOT_FOUND);
     }
 
     @Override
-    public ResponseEntity<Void> delete(Integer id) {
+    public ResponseEntity<?> delete(Integer id) {
 
         Optional<Utilisateur> utilisateurOptional = utilisateurRepository.findById(id);
 
@@ -94,11 +127,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
             utilisateurRepository.deleteById(id);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Utilisateur supprimé",HttpStatus.OK);
 
         } else {
 
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Echec de la suppression", HttpStatus.NO_CONTENT);
         }
     }
 
@@ -120,6 +153,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             return null;
         }
     }
+
+    @Override
+    public boolean existsByUtilisateurLogin(String utilisateurLogin) {
+        return existsByUtilisateurLogin(utilisateurLogin);
+    }
+
 
 }
 

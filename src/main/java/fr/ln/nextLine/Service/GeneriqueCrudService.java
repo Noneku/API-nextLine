@@ -8,8 +8,8 @@ public interface GeneriqueCrudService<T> {
 
     ResponseEntity<List<T>> getAll();
     ResponseEntity<T> getById(Integer id);
-    ResponseEntity<T> create(T entity);
-    ResponseEntity<T> update(Integer id, T entity);
-    ResponseEntity<Void> delete(Integer id);
+    ResponseEntity<?> create(T entity);
+    ResponseEntity<?> update(Integer id, T entity);
+    ResponseEntity<?> delete(Integer id);
 
 }

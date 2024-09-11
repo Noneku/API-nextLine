@@ -33,19 +33,19 @@ public class LocauxController {
     }
 
     @PostMapping
-    public ResponseEntity<LocauxDTO> createLocaux(@RequestBody LocauxDTO locauxDTO) {
+    public ResponseEntity<?> createLocaux(@RequestBody LocauxDTO locauxDTO) {
 
         return locauxService.create(locauxDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LocauxDTO> updateLocaux(@PathVariable Integer id, @RequestBody LocauxDTO locauxDTO) {
+    public ResponseEntity<?> updateLocaux(@PathVariable Integer id, @RequestBody LocauxDTO locauxDTO) {
 
         return locauxService.update(id, locauxDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLocaux(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteLocaux(@PathVariable Integer id) {
 
         return locauxService.delete(id);
 

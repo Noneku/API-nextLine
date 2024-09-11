@@ -31,19 +31,19 @@ public class VilleController {
     }
 
     @PostMapping
-    public ResponseEntity<VilleDTO> createVille(@RequestBody VilleDTO villeDTO) {
+    public ResponseEntity<?> createVille(@RequestBody VilleDTO villeDTO) {
 
         return villeService.create(villeDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VilleDTO> updateVille(@PathVariable Integer id, @RequestBody VilleDTO villeDTO) {
+    public ResponseEntity<?> updateVille(@PathVariable Integer id, @RequestBody VilleDTO villeDTO) {
 
         return villeService.update(id, villeDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVille(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteVille(@PathVariable Integer id) {
 
         return villeService.delete(id);
     }
