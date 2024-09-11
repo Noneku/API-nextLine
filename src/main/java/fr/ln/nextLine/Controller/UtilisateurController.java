@@ -3,6 +3,7 @@ package fr.ln.nextLine.Controller;
 import fr.ln.nextLine.Model.Dto.UtilisateurDTO;
 import fr.ln.nextLine.Service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,5 +56,17 @@ public class UtilisateurController {
 
         return utilisateurService.delete(id);
 
+    }
+
+    @GetMapping("/user-connected")
+    public ResponseEntity<UtilisateurDTO> recupererUtilisateurConnecte() {
+
+        UtilisateurDTO utilisateurDTO = utilisateurService.recupererUtilisateurConnecte();
+
+        if (utilisateurDTO != null) {
+            return ResponseEntity.ok(utilisateurDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
